@@ -1,261 +1,344 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-function AvatarIllustration() {
-  const containerRef = useRef<HTMLDivElement>(null);
+const ROLES = [
+  "Content Strategist",
+  "Web3 Marketer",
+  "Community Builder",
+  "Storyteller",
+  "IDO Specialist",
+];
 
+function TypewriterRole() {
+  const [index, setIndex] = useState(0);
+  const [displayed, setDisplayed] = useState('');
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const word = ROLES[index];
+    let timeout: ReturnType<typeof setTimeout>;
+
+    if (!deleting && displayed.length < word.length) {
+      timeout = setTimeout(() => setDisplayed(word.slice(0, displayed.length + 1)), 70);
+    } else if (!deleting && displayed.length === word.length) {
+      timeout = setTimeout(() => setDeleting(true), 2000);
+    } else if (deleting && displayed.length > 0) {
+      timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 40);
+    } else if (deleting && displayed.length === 0) {
+      setDeleting(false);
+      setIndex((i) => (i + 1) % ROLES.length);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [displayed, deleting, index]);
+
+  return (
+    <span className="text-primary">
+      {displayed}
+      <span className="animate-pulse">|</span>
+    </span>
+  );
+}
+
+function NftAvatar() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const springCfg = { damping: 22, stiffness: 140, mass: 0.6 };
+  const x = useSpring(mouseX, springCfg);
+  const y = useSpring(mouseY, springCfg);
 
-  const springConfig = { damping: 20, stiffness: 120, mass: 0.8 };
-  const x = useSpring(mouseX, springConfig);
-  const y = useSpring(mouseY, springConfig);
-
-  // Different layers move at different speeds for depth
-  const bodyX = useTransform(x, [-1, 1], [-6, 6]);
-  const bodyY = useTransform(y, [-1, 1], [-4, 4]);
-  const headX = useTransform(x, [-1, 1], [-12, 12]);
-  const headY = useTransform(y, [-1, 1], [-8, 8]);
-  const bgX = useTransform(x, [-1, 1], [-3, 3]);
-  const bgY = useTransform(y, [-1, 1], [-2, 2]);
-  const shadowX = useTransform(x, [-1, 1], [3, -3]);
+  const cardRotateX = useTransform(y, [-1, 1], [8, -8]);
+  const cardRotateY = useTransform(x, [-1, 1], [-8, 8]);
+  const headX = useTransform(x, [-1, 1], [-10, 10]);
+  const headY = useTransform(y, [-1, 1], [-7, 7]);
+  const hairX = useTransform(x, [-1, 1], [-16, 16]);
+  const hairY = useTransform(y, [-1, 1], [-10, 10]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect) return;
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    mouseX.set((e.clientX - cx) / (rect.width / 2));
-    mouseY.set((e.clientY - cy) / (rect.height / 2));
+    mouseX.set((e.clientX - rect.left - rect.width / 2) / (rect.width / 2));
+    mouseY.set((e.clientY - rect.top - rect.height / 2) / (rect.height / 2));
   };
+  const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
 
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
+  const traits = [
+    { key: "ROLE", val: "Web3 Marketer" },
+    { key: "SKILL", val: "Storytelling" },
+    { key: "BASE", val: "Hyderabad" },
+    { key: "EDITION", val: "#001" },
+  ];
 
   return (
     <div
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full h-full flex items-center justify-center cursor-none select-none"
-      style={{ perspective: 800 }}
+      className="relative flex items-center justify-center"
+      style={{ perspective: 900 }}
     >
-      {/* Background decorative circles */}
-      <motion.div style={{ x: bgX, y: bgY }} className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <svg width="480" height="520" viewBox="0 0 480 520" fill="none" className="opacity-30">
-          <circle cx="240" cy="260" r="200" stroke="#F97316" strokeWidth="1" strokeDasharray="6 10" />
-          <circle cx="240" cy="260" r="155" stroke="#9CA3AF" strokeWidth="0.5" strokeDasharray="3 6" />
-          <circle cx="240" cy="260" r="230" stroke="#E5E7EB" strokeWidth="0.5" />
-        </svg>
+      <motion.div
+        style={{ rotateX: cardRotateX, rotateY: cardRotateY }}
+        className="relative w-[320px] rounded-3xl overflow-hidden shadow-2xl"
+        whileHover={{ scale: 1.02 }}
+        transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+      >
+        {/* Card background */}
+        <div className="absolute inset-0 bg-[#0E0E16]" />
+        {/* Subtle grid */}
+        <div className="absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(249,115,22,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(249,115,22,0.6) 1px, transparent 1px)',
+            backgroundSize: '32px 32px',
+          }}
+        />
+        {/* Orange glow top */}
+        <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-48 h-32 bg-primary/30 rounded-full blur-3xl" />
+        {/* Border glow */}
+        <div className="absolute inset-0 rounded-3xl ring-1 ring-primary/40 ring-inset" />
+
+        {/* Card header */}
+        <div className="relative z-10 flex items-center justify-between px-5 pt-5 pb-2">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-primary font-bold text-xs tracking-[0.15em] uppercase">Abhishek.eth</span>
+          </div>
+          <span className="text-[10px] font-bold tracking-widest text-white/30 uppercase">NFT · #001</span>
+        </div>
+
+        {/* Illustration area */}
+        <div className="relative z-10 h-[310px] flex items-end justify-center overflow-hidden">
+
+          {/* T-shirt / body */}
+          <motion.div style={{ x, y }} className="absolute bottom-0 w-full flex justify-center">
+            <svg width="280" height="180" viewBox="0 0 280 180" fill="none">
+              {/* T-shirt body */}
+              <path d="M60 60 L30 80 L20 160 L260 160 L250 80 L220 60 C200 70 170 80 140 80 C110 80 80 70 60 60Z"
+                fill="#1E293B" />
+              {/* T-shirt collar */}
+              <path d="M60 60 C80 90 110 100 140 100 C170 100 200 90 220 60" fill="none" stroke="#334155" strokeWidth="2"/>
+              {/* Orange stripe on shirt */}
+              <rect x="20" y="110" width="240" height="4" rx="2" fill="#F97316" opacity="0.7"/>
+              {/* Sleeve left */}
+              <path d="M60 60 L20 50 L18 80 L30 80Z" fill="#1E293B"/>
+              {/* Sleeve right */}
+              <path d="M220 60 L260 50 L262 80 L250 80Z" fill="#1E293B"/>
+              {/* Shirt outline */}
+              <path d="M60 60 L30 80 L20 160 L260 160 L250 80 L220 60 C200 70 170 80 140 80 C110 80 80 70 60 60Z"
+                stroke="#334155" strokeWidth="1.5" fill="none"/>
+              {/* Pocket detail */}
+              <rect x="155" y="88" width="26" height="22" rx="3" stroke="#F97316" strokeWidth="1" fill="none" opacity="0.5"/>
+            </svg>
+          </motion.div>
+
+          {/* Head */}
+          <motion.div style={{ x: headX, y: headY, bottom: 130 }} className="absolute">
+            <svg width="180" height="200" viewBox="0 0 180 200" fill="none">
+              {/* Neck */}
+              <path d="M72 148 L72 170 Q90 175 108 170 L108 148Z" fill="#E8B89A"/>
+              {/* Face */}
+              <ellipse cx="90" cy="110" rx="56" ry="66" fill="#F5C5A3"/>
+              {/* Face shadow sides */}
+              <ellipse cx="90" cy="112" rx="56" ry="66" fill="none" stroke="#D4956A" strokeWidth="1.5"/>
+              {/* Cheek flush left */}
+              <ellipse cx="50" cy="118" rx="12" ry="8" fill="#E8A080" opacity="0.35"/>
+              {/* Cheek flush right */}
+              <ellipse cx="130" cy="118" rx="12" ry="8" fill="#E8A080" opacity="0.35"/>
+
+              {/* Left eye white */}
+              <ellipse cx="68" cy="104" rx="13" ry="10" fill="white"/>
+              {/* Right eye white */}
+              <ellipse cx="112" cy="104" rx="13" ry="10" fill="white"/>
+              {/* Left iris */}
+              <circle cx="70" cy="104" r="7" fill="#1A1A2E"/>
+              {/* Right iris */}
+              <circle cx="114" cy="104" r="7" fill="#1A1A2E"/>
+              {/* Left pupil */}
+              <circle cx="71" cy="104" r="4" fill="#0D0D0D"/>
+              {/* Right pupil */}
+              <circle cx="115" cy="104" r="4" fill="#0D0D0D"/>
+              {/* Eye glints */}
+              <circle cx="73" cy="101" r="2" fill="white"/>
+              <circle cx="117" cy="101" r="2" fill="white"/>
+              {/* Left eyebrow */}
+              <path d="M54 90 C60 84 76 83 82 87" stroke="#4A2C0A" strokeWidth="3" strokeLinecap="round" fill="none"/>
+              {/* Right eyebrow */}
+              <path d="M98 87 C104 83 120 84 126 90" stroke="#4A2C0A" strokeWidth="3" strokeLinecap="round" fill="none"/>
+
+              {/* Nose */}
+              <path d="M85 115 C83 122 80 126 78 128 C82 131 98 131 102 128 C100 126 97 122 95 115Z"
+                fill="none" stroke="#C4875A" strokeWidth="1.5" strokeLinecap="round"/>
+
+              {/* Mouth / smile */}
+              <path d="M74 142 C80 150 100 150 106 142" stroke="#C4614A" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+              <path d="M74 142 C72 138 74 136 76 138" stroke="#C4614A" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+              <path d="M106 142 C108 138 106 136 104 138" stroke="#C4614A" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+
+              {/* Ear left */}
+              <path d="M34 104 C28 110 28 122 36 126 C40 128 44 124 44 118" fill="#F5C5A3" stroke="#D4956A" strokeWidth="1.5"/>
+              {/* Ear right */}
+              <path d="M146 104 C152 110 152 122 144 126 C140 128 136 124 136 118" fill="#F5C5A3" stroke="#D4956A" strokeWidth="1.5"/>
+
+              {/* Face outline */}
+              <ellipse cx="90" cy="110" rx="56" ry="66" fill="none" stroke="#C4875A" strokeWidth="1.5"/>
+            </svg>
+          </motion.div>
+
+          {/* Hair — top layer, moves most */}
+          <motion.div style={{ x: hairX, y: hairY, bottom: 200 }} className="absolute">
+            <svg width="200" height="130" viewBox="0 0 200 130" fill="none">
+              {/* Main hair mass */}
+              <path d="M28 80 C20 50 28 18 60 8 C76 3 100 0 120 4 C148 10 168 30 172 58 L168 80 C152 58 140 45 130 42 C118 38 108 44 100 50 C92 44 82 38 70 42 C60 45 46 58 28 80Z"
+                fill="#2D1B00"/>
+              {/* Hair shine */}
+              <path d="M68 12 C80 6 104 4 118 10 C130 15 142 28 148 44"
+                fill="none" stroke="#5C3510" strokeWidth="4" strokeLinecap="round" opacity="0.5"/>
+              {/* Side hair left */}
+              <path d="M28 80 C22 90 20 105 24 118 C26 125 32 128 36 124 C38 112 36 96 40 84"
+                fill="#2D1B00" stroke="#2D1B00" strokeWidth="1"/>
+              {/* Side hair right */}
+              <path d="M172 80 C178 90 180 105 176 118 C174 125 168 128 164 124 C162 112 164 96 160 84"
+                fill="#2D1B00" stroke="#2D1B00" strokeWidth="1"/>
+              {/* Hair strands for texture */}
+              <path d="M72 8 C68 20 62 36 58 52" stroke="#4A2C00" strokeWidth="1.5" strokeLinecap="round" opacity="0.6"/>
+              <path d="M90 4 C88 18 86 32 84 48" stroke="#4A2C00" strokeWidth="1.5" strokeLinecap="round" opacity="0.6"/>
+              <path d="M108 4 C110 18 112 32 116 46" stroke="#4A2C00" strokeWidth="1.5" strokeLinecap="round" opacity="0.6"/>
+              <path d="M126 8 C130 22 136 38 140 52" stroke="#4A2C00" strokeWidth="1.5" strokeLinecap="round" opacity="0.6"/>
+              {/* Hair outline */}
+              <path d="M28 80 C20 50 28 18 60 8 C76 3 100 0 120 4 C148 10 168 30 172 58 L168 80"
+                fill="none" stroke="#1A0F00" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </motion.div>
+
+        </div>
+
+        {/* Traits strip */}
+        <div className="relative z-10 bg-[#0A0A12] border-t border-primary/20 px-5 py-4">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+            {traits.map((t) => (
+              <div key={t.key} className="flex flex-col">
+                <span className="text-[9px] font-bold tracking-[0.15em] text-primary/50 uppercase">{t.key}</span>
+                <span className="text-xs font-semibold text-white/80">{t.val}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </motion.div>
 
-      {/* Drop shadow layer */}
-      <motion.div style={{ x: shadowX, y: 8 }} className="absolute pointer-events-none">
-        <svg width="320" height="420" viewBox="0 0 320 420" fill="none" className="opacity-[0.04]">
-          {/* shadow silhouette */}
-          <ellipse cx="160" cy="390" rx="80" ry="16" fill="#111827" />
-          <path d="M120 180 Q80 240 85 310 Q95 370 160 375 Q225 370 235 310 Q240 240 200 180Z" fill="#111827"/>
-          <circle cx="160" cy="120" r="58" fill="#111827"/>
-        </svg>
-      </motion.div>
-
-      {/* Body / torso layer */}
-      <motion.div style={{ x: bodyX, y: bodyY }} className="absolute pointer-events-none">
-        <svg width="320" height="420" viewBox="0 0 320 420" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Shoulders and torso outline */}
-          <path
-            d="M100 185 C70 195 48 220 44 260 L38 360 Q38 372 50 374 L270 374 Q282 372 282 360 L276 260 C272 220 250 195 220 185"
-            stroke="#1F2937"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
-          />
-          {/* Shirt collar V */}
-          <path d="M138 185 L160 230 L182 185" stroke="#1F2937" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-          {/* Lapel lines */}
-          <path d="M138 185 C128 200 118 220 115 245" stroke="#4B5563" strokeWidth="1" strokeLinecap="round" fill="none"/>
-          <path d="M182 185 C192 200 202 220 205 245" stroke="#4B5563" strokeWidth="1" strokeLinecap="round" fill="none"/>
-          {/* Center button line */}
-          <path d="M160 230 L160 370" stroke="#4B5563" strokeWidth="0.8" strokeDasharray="4 5" strokeLinecap="round"/>
-          {/* Shirt pocket */}
-          <rect x="188" y="220" width="28" height="20" rx="2" stroke="#9CA3AF" strokeWidth="0.8" fill="none"/>
-          {/* Left arm */}
-          <path d="M100 185 C82 210 74 250 72 300 Q72 318 82 322 Q96 326 100 308 L108 260 L120 210" stroke="#1F2937" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-          {/* Left hand */}
-          <path d="M72 300 C68 312 64 322 66 330 Q70 338 78 334" stroke="#1F2937" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          <path d="M78 334 C76 340 74 346 76 352 Q80 356 84 350" stroke="#1F2937" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          <path d="M84 330 C82 338 82 348 84 354 Q88 358 92 352" stroke="#1F2937" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          {/* Right arm */}
-          <path d="M220 185 C238 210 246 250 248 300 Q248 318 238 322 Q224 326 220 308 L212 260 L200 210" stroke="#1F2937" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-          {/* Right hand */}
-          <path d="M248 300 C252 312 256 322 254 330 Q250 338 242 334" stroke="#1F2937" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          <path d="M242 334 C244 340 246 346 244 352 Q240 356 236 350" stroke="#1F2937" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          <path d="M236 330 C238 338 238 348 236 354 Q232 358 228 352" stroke="#1F2937" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          {/* Neck */}
-          <path d="M138 155 C134 165 132 175 133 185 L187 185 C188 175 186 165 182 155" stroke="#1F2937" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          {/* Subtle fabric folds on torso */}
-          <path d="M115 245 C120 265 118 290 120 320" stroke="#D1D5DB" strokeWidth="0.7" strokeLinecap="round" fill="none"/>
-          <path d="M205 245 C200 265 202 290 200 320" stroke="#D1D5DB" strokeWidth="0.7" strokeLinecap="round" fill="none"/>
-        </svg>
-      </motion.div>
-
-      {/* Head layer — moves more than body for depth */}
-      <motion.div style={{ x: headX, y: headY }} className="absolute pointer-events-none top-0">
-        <svg width="320" height="420" viewBox="0 0 320 420" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Head shape */}
-          <path
-            d="M108 118 C104 80 116 48 140 34 C156 26 172 24 188 30 C210 38 224 62 222 98 L220 128 C216 154 200 164 182 166 L138 166 C120 164 108 150 108 128 Z"
-            stroke="#1F2937"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
-          />
-          {/* Hair — loose wavy lines on top */}
-          <path d="M110 100 C106 72 116 44 140 32" stroke="#374151" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          <path d="M120 86 C118 64 128 44 148 34" stroke="#374151" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
-          <path d="M136 76 C136 58 144 42 160 34" stroke="#374151" strokeWidth="1" strokeLinecap="round" fill="none"/>
-          <path d="M152 76 C154 58 162 42 176 36" stroke="#374151" strokeWidth="1" strokeLinecap="round" fill="none"/>
-          <path d="M168 82 C172 64 180 48 192 38" stroke="#374151" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
-          <path d="M182 96 C188 76 196 58 210 46" stroke="#374151" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          <path d="M192 118 C200 100 210 80 222 68" stroke="#374151" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          {/* Ear left */}
-          <path d="M108 118 C100 122 96 130 98 138 C100 146 108 148 112 142" stroke="#1F2937" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          {/* Ear right */}
-          <path d="M220 118 C228 122 232 130 230 138 C228 146 220 148 216 142" stroke="#1F2937" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          {/* Eyes — simple almond shapes */}
-          <path d="M130 108 C134 104 142 104 146 108 C142 112 134 112 130 108Z" stroke="#1F2937" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          <path d="M174 108 C178 104 186 104 190 108 C186 112 178 112 174 108Z" stroke="#1F2937" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          {/* Pupils */}
-          <circle cx="138" cy="108" r="2.5" fill="#1F2937"/>
-          <circle cx="182" cy="108" r="2.5" fill="#1F2937"/>
-          {/* Light glint */}
-          <circle cx="139.5" cy="106.5" r="1" fill="white"/>
-          <circle cx="183.5" cy="106.5" r="1" fill="white"/>
-          {/* Eyebrows */}
-          <path d="M127 100 C131 96 140 95 146 98" stroke="#374151" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          <path d="M173 98 C179 95 188 96 192 100" stroke="#374151" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          {/* Nose */}
-          <path d="M160 108 L155 128 C154 132 156 135 160 136 C164 135 166 132 165 128 Z" stroke="#4B5563" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-          <path d="M155 134 C151 136 148 133 148 130" stroke="#4B5563" strokeWidth="1" strokeLinecap="round" fill="none"/>
-          <path d="M165 134 C169 136 172 133 172 130" stroke="#4B5563" strokeWidth="1" strokeLinecap="round" fill="none"/>
-          {/* Mouth — slight smile */}
-          <path d="M142 146 C148 152 160 154 178 146" stroke="#1F2937" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-          <path d="M142 146 C140 142 142 140 144 142" stroke="#4B5563" strokeWidth="1" strokeLinecap="round" fill="none"/>
-          <path d="M178 146 C180 142 178 140 176 142" stroke="#4B5563" strokeWidth="1" strokeLinecap="round" fill="none"/>
-          {/* Cheekbone definition */}
-          <path d="M112 126 C114 132 118 136 122 138" stroke="#D1D5DB" strokeWidth="0.8" strokeLinecap="round" fill="none"/>
-          <path d="M208 126 C206 132 202 136 198 138" stroke="#D1D5DB" strokeWidth="0.8" strokeLinecap="round" fill="none"/>
-          {/* Orange accent — small dot above collar area like a pin/brooch */}
-          <circle cx="165" cy="196" r="5" fill="#F97316" opacity="0.9"/>
-          <circle cx="165" cy="196" r="8" stroke="#F97316" strokeWidth="1" fill="none" opacity="0.4"/>
-        </svg>
-      </motion.div>
-
-      {/* Subtle glow under the illustration */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-48 h-8 bg-primary/10 blur-2xl rounded-full pointer-events-none" />
+      {/* Outer glow */}
+      <div className="absolute inset-0 rounded-3xl pointer-events-none"
+        style={{ boxShadow: '0 0 60px 10px rgba(249,115,22,0.08)' }} />
     </div>
   );
 }
 
 export function Hero() {
   const scrollTo = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <section id="home" className="relative min-h-[100svh] flex flex-col justify-center pt-20 overflow-hidden bg-background">
-      {/* Subtle grid background */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
+      {/* Subtle grid */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.025]"
         style={{
           backgroundImage: 'linear-gradient(#111827 1px, transparent 1px), linear-gradient(90deg, #111827 1px, transparent 1px)',
           backgroundSize: '48px 48px',
         }}
       />
-
-      {/* Ambient orange glow */}
-      <div className="absolute top-1/4 -left-32 w-72 h-72 bg-primary/6 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-primary/4 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 -left-32 w-80 h-80 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
 
-          {/* Left — text content */}
-          <div>
+          {/* LEFT — text */}
+          <div className="order-2 lg:order-1">
+            {/* Eyebrow */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="flex items-center gap-3 mb-6"
+              className="flex items-center gap-3 mb-5"
             >
               <span className="h-[1px] w-8 bg-primary" />
-              <span className="text-primary font-medium tracking-wide uppercase text-sm">Content Strategist · Web3 Marketer</span>
+              <span className="text-xs font-bold tracking-[0.2em] text-muted-foreground uppercase">Abhishek Kumar</span>
             </motion.div>
 
+            {/* Main headline */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-5xl sm:text-6xl md:text-7xl font-display font-bold leading-[1.05] text-foreground mb-6"
+              transition={{ duration: 0.55, delay: 0.08 }}
+              className="text-5xl sm:text-6xl md:text-7xl font-display font-bold leading-[1.05] text-foreground mb-4"
             >
               Where <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">Stories</span>{' '}
-              Drive Growth.
+              <br className="hidden sm:block"/>Drive Growth.
             </motion.h1>
 
+            {/* Typewriter subheading */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg md:text-xl text-muted-foreground mb-10 max-w-xl leading-relaxed"
+              transition={{ duration: 0.5, delay: 0.18 }}
+              className="text-xl md:text-2xl font-light text-muted-foreground mb-3 h-8"
             >
-              Hi, I'm <strong className="text-foreground font-semibold">Abhishek Kumar</strong>. A Content Strategist & Web3 Marketer who builds content powerhouses and orchestrates growth through the power of storytelling.
+              <TypewriterRole />
             </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
+            {/* Tagline */}
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.28 }}
+              className="text-base text-muted-foreground mb-10 max-w-md leading-relaxed"
+            >
+              Turning blockchain noise into signal. Building communities from scratch, launching tokens, and crafting the narratives that move markets.
+            </motion.p>
+
+            {/* CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.36 }}
               className="flex flex-wrap items-center gap-4 mb-10"
             >
               <Button size="lg" variant="primary" className="rounded-full group" onClick={() => scrollTo('#work')}>
-                View My Work
+                See My Impact
                 <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button size="lg" variant="outline" className="rounded-full bg-transparent" onClick={() => scrollTo('#about')}>
-                More About Me
+              <Button size="lg" variant="outline" className="rounded-full bg-transparent" onClick={() => scrollTo('#contact')}>
+                Let's Collaborate
               </Button>
             </motion.div>
 
+            {/* Brand pills */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.45 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
               className="flex flex-wrap gap-3"
             >
+              <span className="text-[10px] font-bold tracking-widest text-muted-foreground/50 uppercase mr-1 self-center">Worked with</span>
               {["Blockwiz", "KuCoin", "Glimpse", "Reneverse", "Gamestar"].map((brand) => (
-                <span key={brand} className="text-xs font-semibold uppercase tracking-widest text-muted-foreground/60 border border-border px-3 py-1.5 rounded-full">
+                <span key={brand} className="text-xs font-semibold text-muted-foreground/60 border border-border px-3 py-1.5 rounded-full hover:border-primary/40 hover:text-foreground transition-colors">
                   {brand}
                 </span>
               ))}
             </motion.div>
           </div>
 
-          {/* Right — line-drawn avatar */}
+          {/* RIGHT — NFT avatar */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative h-[480px] lg:h-[520px] flex items-center justify-center"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="order-1 lg:order-2 flex items-center justify-center py-8 lg:py-0"
           >
-            <AvatarIllustration />
+            <NftAvatar />
           </motion.div>
 
         </div>
@@ -265,16 +348,13 @@ export function Hero() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
+        transition={{ delay: 1.4, duration: 1 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
         onClick={() => scrollTo('#about')}
       >
-        <span className="text-xs uppercase tracking-widest text-muted-foreground font-medium">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-        >
-          <ChevronDown className="w-5 h-5 text-primary" />
+        <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium">Scroll</span>
+        <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}>
+          <ChevronDown className="w-4 h-4 text-primary" />
         </motion.div>
       </motion.div>
     </section>
