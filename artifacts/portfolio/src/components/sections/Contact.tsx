@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Linkedin, Mail, MapPin } from 'lucide-react';
+import { Phone, Mail, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 
@@ -12,12 +12,11 @@ export function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
       toast({
         title: "Message sent!",
-        description: "Thanks for reaching out. I'll get back to you soon.",
+        description: "Thanks for reaching out. Abhishek will get back to you soon.",
       });
       (e.target as HTMLFormElement).reset();
     }, 1500);
@@ -41,30 +40,36 @@ export function Contact() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">
-              Let's create something <span className="text-primary">exceptional.</span>
+              Let's build something <span className="text-primary">remarkable.</span>
             </h2>
             <p className="text-xl text-background/70 mb-12 max-w-lg font-light">
-              Whether you need a brand overhaul, a high-converting digital campaign, or a strategic partner for your next launch.
+              Looking to launch a token, grow a community, or build a content powerhouse? Let's talk strategy.
             </p>
 
             <div className="space-y-6">
-              <a href="#" className="flex items-center gap-4 text-background/80 hover:text-primary transition-colors group w-fit">
+              <a 
+                href="mailto:abhishekkr711@gmail.com" 
+                className="flex items-center gap-4 text-background/80 hover:text-primary transition-colors group w-fit"
+              >
                 <div className="w-12 h-12 rounded-full border border-background/20 flex items-center justify-center group-hover:border-primary transition-colors">
                   <Mail className="w-5 h-5" />
                 </div>
-                <span className="text-lg font-medium">hello@abhishek-portfolio.com</span>
+                <span className="text-lg font-medium">abhishekkr711@gmail.com</span>
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="flex items-center gap-4 text-background/80 hover:text-primary transition-colors group w-fit">
+              <a 
+                href="tel:+918709547249" 
+                className="flex items-center gap-4 text-background/80 hover:text-primary transition-colors group w-fit"
+              >
                 <div className="w-12 h-12 rounded-full border border-background/20 flex items-center justify-center group-hover:border-primary transition-colors">
-                  <Linkedin className="w-5 h-5" />
+                  <Phone className="w-5 h-5" />
                 </div>
-                <span className="text-lg font-medium">linkedin.com/in/abhishek</span>
+                <span className="text-lg font-medium">+91 8709547249</span>
               </a>
               <div className="flex items-center gap-4 text-background/80 w-fit">
                 <div className="w-12 h-12 rounded-full border border-background/20 flex items-center justify-center">
                   <MapPin className="w-5 h-5" />
                 </div>
-                <span className="text-lg font-medium">Global / Remote</span>
+                <span className="text-lg font-medium">Hyderabad, India · Available Remotely</span>
               </div>
             </div>
           </motion.div>
@@ -85,7 +90,7 @@ export function Contact() {
                     required
                     type="text" 
                     className="w-full bg-background/10 border border-background/20 rounded-xl px-4 py-3 text-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                    placeholder="John Doe"
+                    placeholder="Your name"
                   />
                 </div>
                 <div className="space-y-2">
@@ -95,7 +100,7 @@ export function Contact() {
                     required
                     type="email" 
                     className="w-full bg-background/10 border border-background/20 rounded-xl px-4 py-3 text-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                    placeholder="john@example.com"
+                    placeholder="your@email.com"
                   />
                 </div>
               </div>
@@ -106,7 +111,7 @@ export function Contact() {
                   required
                   type="text" 
                   className="w-full bg-background/10 border border-background/20 rounded-xl px-4 py-3 text-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                  placeholder="Project Inquiry"
+                  placeholder="Token launch / Content strategy / IDO..."
                 />
               </div>
               <div className="space-y-2">
@@ -116,7 +121,7 @@ export function Contact() {
                   required
                   rows={4}
                   className="w-full bg-background/10 border border-background/20 rounded-xl px-4 py-3 text-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none"
-                  placeholder="Tell me about your goals..."
+                  placeholder="Tell me about your project and goals..."
                 ></textarea>
               </div>
               <Button 

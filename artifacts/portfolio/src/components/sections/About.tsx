@@ -1,12 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Award, Target, Zap } from 'lucide-react';
+import { Zap, MessageSquare, TrendingUp } from 'lucide-react';
 
 export function About() {
   const stats = [
-    { icon: <Target className="text-primary" />, value: "8+", label: "Years Experience" },
-    { icon: <Zap className="text-primary" />, value: "50+", label: "Campaigns Launched" },
-    { icon: <Award className="text-primary" />, value: "100%", label: "Client Satisfaction" },
+    { icon: <TrendingUp className="text-primary" />, value: "8+", label: "Web3 Projects" },
+    { icon: <Zap className="text-primary" />, value: "300%", label: "Avg. Engagement Lift" },
+    { icon: <MessageSquare className="text-primary" />, value: "28.6%", label: "Newsletter Open Rate" },
   ];
 
   return (
@@ -32,9 +32,9 @@ export function About() {
             
             {/* Decorative element */}
             <div className="absolute -bottom-8 -right-8 w-48 h-48 bg-background border border-border rounded-2xl p-6 shadow-xl flex flex-col justify-center">
-              <span className="font-display font-bold text-4xl text-foreground">Design</span>
-              <span className="text-primary font-medium">& Marketing</span>
-              <p className="text-xs text-muted-foreground mt-2 leading-tight">Bridging the gap between aesthetics and conversion.</p>
+              <span className="font-display font-bold text-4xl text-foreground">Web3</span>
+              <span className="text-primary font-medium">& Content</span>
+              <p className="text-xs text-muted-foreground mt-2 leading-tight">Storytelling that drives measurable on-chain growth.</p>
             </div>
           </motion.div>
 
@@ -44,19 +44,20 @@ export function About() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7, delay: 0.2 }}
           >
+            <span className="text-primary font-medium tracking-wider uppercase text-sm mb-4 block">About Me</span>
             <h2 className="text-3xl md:text-5xl font-display font-bold text-foreground mb-6">
-              A blend of <span className="text-primary">creative vision</span> and analytical rigor.
+              A <span className="text-primary">crafty storyteller</span> and a born leader.
             </h2>
             
             <div className="space-y-6 text-lg text-muted-foreground font-light">
               <p>
-                I believe that the best marketing doesn't feel like marketing. It feels like a solution, a story, or a piece of art that perfectly intersects with a user's need.
+                I'm a web3 content marketer and strategist who has helped budding and established blockchain projects orchestrate successful IDOs and NFT drops. My signature is a laser-sharp, personalized content strategy that builds communities from scratch and keeps them engaged.
               </p>
               <p>
-                With a dual background in brand strategy and digital performance, I help companies not just look premium, but operate efficiently. From orchestrating multi-channel advertising campaigns to refining visual identities, my approach is always holistic.
+                From spearheading a <strong className="text-foreground font-medium">blog strategy that lifted engagement 300% in 3 months</strong> at Blockwiz, to selling out the $GMS token in <strong className="text-foreground font-medium">6 hours</strong> at Gamestar Exchange — I bring a results-obsessed mindset to every project.
               </p>
               <p>
-                Whether it's scaling user acquisition through Meta & Google Ads, or crafting a compelling brand narrative using the Adobe Creative Suite and Figma, I bring ideas to life and measure their impact.
+                A big-time believer in personalized marketing and achieving it with the power of storytelling. Patient listener, avid reader, and relentless about innovation and perfection. Based in <strong className="text-foreground font-medium">Hyderabad, India</strong>.
               </p>
             </div>
 

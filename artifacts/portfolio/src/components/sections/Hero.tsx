@@ -33,7 +33,7 @@ export function Hero() {
             className="flex items-center gap-3 mb-6"
           >
             <span className="h-[1px] w-8 bg-primary"></span>
-            <span className="text-primary font-medium tracking-wide uppercase text-sm">Portfolio 2025</span>
+            <span className="text-primary font-medium tracking-wide uppercase text-sm">Content Strategist · Web3 Marketer</span>
           </motion.div>
 
           <motion.h1 
@@ -42,8 +42,8 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-bold leading-[1.05] text-foreground mb-6"
           >
-            Where <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">Design</span> <br/>
-            Meets Strategy.
+            Where <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">Stories</span> <br/>
+            Drive Growth.
           </motion.h1>
 
           <motion.p 
@@ -52,7 +52,7 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-muted-foreground mb-10 max-w-xl leading-relaxed"
           >
-            Hi, I'm <strong className="text-foreground font-semibold">Abhishek Kumar</strong>. A Digital Marketing Manager & Brand Strategist building brands that move people and drive measurable growth.
+            Hi, I'm <strong className="text-foreground font-semibold">Abhishek Kumar</strong>. A Content Strategist & Web3 Marketer who builds content powerhouses and orchestrates growth through the power of storytelling.
           </motion.p>
 
           <motion.div 
@@ -68,6 +68,19 @@ export function Hero() {
             <Button size="lg" variant="outline" className="rounded-full bg-transparent backdrop-blur-sm" onClick={() => scrollTo('#about')}>
               More About Me
             </Button>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.45 }}
+            className="flex flex-wrap gap-4 mt-10"
+          >
+            {["Blockwiz", "KuCoin", "Glimpse", "Reneverse", "Gamestar"].map((brand) => (
+              <span key={brand} className="text-xs font-semibold uppercase tracking-widest text-muted-foreground/60 border border-border px-3 py-1.5 rounded-full">
+                {brand}
+              </span>
+            ))}
           </motion.div>
         </div>
       </div>
