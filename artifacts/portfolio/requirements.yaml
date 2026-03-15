@@ -1,0 +1,16 @@
+packages:
+  "framer-motion": "For premium smooth scroll animations, revealing elements, and page transitions"
+  "clsx": "Utility for constructing className strings conditionally"
+  "tailwind-merge": "Utility function to efficiently merge Tailwind CSS classes without style conflicts"
+
+images:
+  - path: "artifacts/portfolio/public/images/hero-abstract.png"
+    description: "Abstract minimal geometric 3D shapes in pure white and light grey with a single subtle bright orange sphere accent, soft studio lighting, premium luxury editorial aesthetic, clean background"
+    aspect_ratio: "16:9"
+  - path: "artifacts/portfolio/public/images/about-sculpture.png"
+    description: "Abstract elegant frosted glass and white marble sculpture, soft minimal lighting, white and light grey tones, premium editorial aesthetic, soft drop shadow"
+    aspect_ratio: "3:4"
+
+notes:
+  - This is a static frontend portfolio. No backend API calls are required.
+  - Form submissions are simulated for demonstration purposes.
