@@ -4,76 +4,70 @@ import { motion } from 'framer-motion';
 const FEATURED = [
   {
     project: 'Encapsulate.xyz',
-    type: 'Validator Growth · Ecosystem Content',
+    descriptor: 'Cosmos Validator',
     metric: '10K',
-    metricLabel: 'stakers reached',
     stats: [
       { value: '+26%', label: 'AUM growth' },
       { value: '15', label: 'chains onboarded' },
-      { value: '6mo', label: 'timeline' },
+      { value: '6 mo', label: 'timeline' },
     ],
-    body: 'Led content and social for a Cosmos validator with a trust-first growth strategy — helping drive staker growth from 6,700 to ~10,000, a 26% increase in staked assets under management, and onboarding across 15 new chains in six months.',
-    tags: ['Validator', 'Cosmos', 'Community', 'Growth'],
+    body: 'Led content and social for a Cosmos validator with a trust-first growth strategy — driving staker growth from 6,700 to ~10,000, a 26% increase in assets under management, and onboarding across 15 new chains in six months.',
+    tags: ['Validator', 'Cosmos', 'Community Growth', 'Content'],
   },
   {
     project: 'Reneverse',
-    type: 'Launch Narrative · World-Building · Distribution',
-    metric: 'G-1',
-    metricLabel: 'genesis drop',
+    descriptor: 'Gaming NFT Universe',
+    metric: 'Genesis',
     stats: [
-      { value: 'Full', label: 'content system' },
       { value: '6+', label: 'channels owned' },
-      { value: 'Lore', label: 'world-built' },
+      { value: 'Full', label: 'lore & factions' },
+      { value: 'End-to-end', label: 'content system' },
     ],
-    body: 'Built the genesis-drop content strategy across teasers, X threads, influencer outreach, newsletter partnerships, PR, FAQs, and SEO while also shaping the lore, faction identities, and narrative world-building behind the Reneverse universe.',
-    tags: ['Launch', 'World-Building', 'NFT', 'Content Systems'],
+    body: 'Built the genesis-drop content strategy across teasers, X threads, influencer outreach, newsletter partnerships, PR, FAQs, and SEO — while shaping lore, faction identities, and the entire Reneverse narrative universe.',
+    tags: ['Launch Narrative', 'NFT', 'World-Building', 'Distribution'],
   },
   {
     project: 'Lithium Finance',
-    type: 'Whitepaper · Protocol Narrative · Education',
-    metric: 'WP',
-    metricLabel: 'v1 whitepaper',
+    descriptor: 'DeFi Pricing Oracle',
+    metric: 'WP v1',
     stats: [
       { value: 'v1', label: 'whitepaper authored' },
-      { value: 'DeFi', label: 'protocol translated' },
+      { value: 'DeFi', label: 'protocol simplified' },
       { value: 'Clear', label: 'community narrative' },
     ],
-    body: 'Co-wrote the first iteration of the project whitepaper and translated mathematically dense protocol concepts into clearer narrative and educational content, reducing the gap between technical depth and community comprehension.',
-    tags: ['Whitepaper', 'DeFi', 'Education', 'Narrative'],
+    body: 'Co-wrote the v1 whitepaper and translated mathematically dense protocol mechanics into clear narrative and educational content — closing the gap between technical depth and community comprehension.',
+    tags: ['Whitepaper', 'DeFi', 'Protocol Narrative', 'Education'],
   },
 ];
 
 const SUPPORTING = [
   {
     project: 'Blockwiz',
+    descriptor: 'Web3 Growth Agency',
     metric: '300%',
     metricSub: 'engagement lift',
     body: 'Reworked blog and newsletter strategy into sharper narrative arcs, search-led content clusters, and cleaner project messaging — lifting engagement by nearly 300% in 3 months.',
-    tags: ['Content', 'SEO', 'Newsletter'],
+    tags: ['Content Strategy', 'SEO', 'Newsletter'],
   },
   {
     project: 'Gamestar Exchange',
+    descriptor: 'GameFi Token Exchange',
     metric: '6 hrs',
     metricSub: '$GMS IDO sellout',
-    body: 'Helped engineer the content spine around the $GMS IDO — from hype-building social cadence to sharper sell-through messaging — contributing to a full sellout in under 6 hours.',
-    tags: ['IDO', 'Social', 'Launch'],
+    body: 'Engineered the content spine around the $GMS IDO — from hype-building social cadence to sharper sell-through messaging — contributing to a full sellout in under 6 hours.',
+    tags: ['IDO', 'Launch Narrative', 'Social'],
   },
   {
     project: 'KuCoin',
+    descriptor: 'Global Crypto Exchange',
     metric: '22%',
     metricSub: 'newsletter open rate',
-    body: 'Owned weekly newsletter and editorial planning with exchange-native timing, stronger content packaging, and better click intent — delivering a 22% open rate and 12+ trending articles inside the KuCoin app.',
-    tags: ['Newsletter', 'Editorial', 'Exchange'],
+    body: 'Owned weekly newsletter and editorial planning with exchange-native timing, stronger content packaging, and better click intent — delivering a 22% open rate and 12+ trending articles in-app.',
+    tags: ['Newsletter', 'Editorial', 'Exchange Content'],
   },
 ];
 
-function FeaturedCard({
-  item,
-  index,
-}: {
-  item: (typeof FEATURED)[0];
-  index: number;
-}) {
+function FeaturedCard({ item, index }: { item: (typeof FEATURED)[0]; index: number }) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -84,103 +78,110 @@ function FeaturedCard({
       transition={{ duration: 0.55, delay: index * 0.1 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="relative rounded-2xl overflow-hidden transition-all duration-350"
+      className="relative rounded-2xl overflow-hidden flex flex-col"
       style={{
-        background: hovered ? '#ffffff' : 'hsl(var(--background))',
-        border: `1px solid ${hovered ? 'rgba(249,115,22,0.25)' : 'hsl(var(--border))'}`,
+        background: hovered ? '#fff' : 'hsl(var(--background))',
+        border: `1px solid ${hovered ? 'rgba(249,115,22,0.22)' : 'hsl(var(--border))'}`,
         boxShadow: hovered
-          ? '0 24px 70px rgba(249,115,22,0.07), 0 8px 24px rgba(0,0,0,0.06)'
-          : '0 2px 8px rgba(0,0,0,0.04)',
-        transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
+          ? '0 28px 80px rgba(249,115,22,0.06), 0 8px 28px rgba(0,0,0,0.07)'
+          : '0 2px 10px rgba(0,0,0,0.04)',
+        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
+        transition: 'all 0.32s cubic-bezier(0.22,1,0.36,1)',
       }}
     >
+      {/* Orange left rail */}
       <div
-        className="absolute left-0 top-0 bottom-0 w-[3px] rounded-l-2xl transition-all duration-350"
+        className="absolute left-0 top-0 bottom-0 w-[3px]"
         style={{
           background: hovered
-            ? 'linear-gradient(180deg, #F97316 0%, rgba(249,115,22,0.3) 100%)'
-            : 'linear-gradient(180deg, rgba(249,115,22,0.55) 0%, rgba(249,115,22,0.1) 100%)',
-          boxShadow: hovered ? '2px 0 18px rgba(249,115,22,0.3)' : 'none',
+            ? 'linear-gradient(180deg, #F97316 0%, rgba(249,115,22,0.2) 100%)'
+            : 'linear-gradient(180deg, rgba(249,115,22,0.5) 0%, rgba(249,115,22,0.08) 100%)',
+          boxShadow: hovered ? '2px 0 20px rgba(249,115,22,0.28)' : 'none',
+          transition: 'all 0.32s',
+          borderRadius: '2px 0 0 2px',
         }}
       />
 
+      {/* Featured pill — absolutely top-right, never interferes with name */}
       <span
-        className="absolute top-6 right-7 font-black select-none pointer-events-none font-mono leading-none"
+        className="absolute top-5 right-5 text-[9px] font-bold tracking-[0.18em] uppercase px-2.5 py-1 rounded-full font-mono"
         style={{
-          fontSize: '6.5rem',
-          color: hovered ? 'rgba(249,115,22,0.07)' : 'rgba(0,0,0,0.04)',
-          letterSpacing: '-0.04em',
-          transition: 'color 0.35s',
-          lineHeight: 1,
+          color: '#F97316',
+          background: 'rgba(249,115,22,0.08)',
+          border: '1px solid rgba(249,115,22,0.18)',
+          whiteSpace: 'nowrap',
         }}
       >
-        {item.metric}
+        Featured
       </span>
 
-      <div className="pl-8 pr-8 pt-8 pb-0">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <span
-              className="text-[10px] font-bold tracking-[0.2em] uppercase font-mono mb-3 block"
-              style={{ color: 'rgba(249,115,22,0.55)' }}
-            >
-              {item.type}
-            </span>
-            <h3
-              className="font-display font-black text-foreground leading-tight"
-              style={{ fontSize: 'clamp(1.3rem, 2.2vw, 1.65rem)', letterSpacing: '-0.025em' }}
-            >
-              {item.project}
-            </h3>
-          </div>
-          <span
-            className="flex-none text-[9px] font-bold tracking-[0.18em] uppercase px-2.5 py-1 rounded-full font-mono mt-1"
-            style={{
-              color: '#F97316',
-              background: 'rgba(249,115,22,0.08)',
-              border: '1px solid rgba(249,115,22,0.2)',
-              whiteSpace: 'nowrap',
-            }}
+      {/* Card body */}
+      <div className="flex flex-col flex-1 pl-8 pr-7 pt-7 pb-7">
+
+        {/* ── Header block — fixed height so all names align ── */}
+        <div className="mb-6" style={{ minHeight: 64 }}>
+          <h3
+            className="font-display font-black text-foreground leading-none"
+            style={{ fontSize: 'clamp(1.25rem, 2vw, 1.55rem)', letterSpacing: '-0.028em' }}
           >
-            Featured Impact
-          </span>
+            {item.project}
+          </h3>
+          <p
+            className="mt-1.5 font-mono font-bold uppercase tracking-[0.14em]"
+            style={{ fontSize: '0.68rem', color: 'rgba(249,115,22,0.5)' }}
+          >
+            {item.descriptor}
+          </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-px mt-7 rounded-xl overflow-hidden"
+        {/* ── Stats strip ── */}
+        <div
+          className="flex items-stretch rounded-xl overflow-hidden mb-6"
           style={{ border: '1px solid hsl(var(--border))' }}
         >
           {item.stats.map((s, i) => (
             <div
               key={i}
-              className="flex flex-col items-center py-3 px-2 text-center"
-              style={{ background: 'hsl(var(--card))' }}
+              className="flex-1 flex flex-col items-center justify-center py-3 px-2 text-center"
+              style={{
+                background: hovered ? 'rgba(249,115,22,0.03)' : 'hsl(var(--card))',
+                borderRight: i < item.stats.length - 1 ? '1px solid hsl(var(--border))' : 'none',
+                transition: 'background 0.32s',
+              }}
             >
               <span
-                className="font-display font-black text-foreground"
-                style={{ fontSize: '1.2rem', letterSpacing: '-0.02em' }}
+                className="font-display font-black text-foreground leading-none"
+                style={{ fontSize: '1.1rem', letterSpacing: '-0.02em' }}
               >
                 {s.value}
               </span>
-              <span className="text-[10px] text-muted-foreground font-medium mt-0.5 leading-tight">
+              <span
+                className="text-[9.5px] text-muted-foreground font-medium mt-1 leading-tight"
+              >
                 {s.label}
               </span>
             </div>
           ))}
         </div>
 
-        <p className="text-[13.5px] text-muted-foreground leading-relaxed mt-6">
+        {/* ── Body copy ── */}
+        <p className="text-[13px] text-muted-foreground leading-[1.7] flex-1">
           {item.body}
         </p>
 
-        <div className="flex flex-wrap gap-1.5 mt-5 pb-7">
+        {/* ── Tags ── */}
+        <div
+          className="flex flex-wrap gap-1.5 mt-6 pt-5"
+          style={{ borderTop: '1px solid hsl(var(--border))' }}
+        >
           {item.tags.map(tag => (
             <span
               key={tag}
-              className="text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded font-mono"
+              className="text-[9.5px] font-bold tracking-widest uppercase px-2.5 py-1 rounded font-mono"
               style={{
-                color: 'rgba(249,115,22,0.6)',
-                background: 'rgba(249,115,22,0.06)',
-                border: '1px solid rgba(249,115,22,0.14)',
+                color: 'rgba(249,115,22,0.55)',
+                background: 'rgba(249,115,22,0.05)',
+                border: '1px solid rgba(249,115,22,0.12)',
               }}
             >
               {tag}
@@ -192,13 +193,7 @@ function FeaturedCard({
   );
 }
 
-function SupportingCard({
-  item,
-  index,
-}: {
-  item: (typeof SUPPORTING)[0];
-  index: number;
-}) {
+function SupportingCard({ item, index }: { item: (typeof SUPPORTING)[0]; index: number }) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -206,82 +201,95 @@ function SupportingCard({
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.48, delay: index * 0.08 }}
+      transition={{ duration: 0.48, delay: index * 0.09 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="relative rounded-2xl p-6 flex flex-col gap-4 transition-all duration-300 overflow-hidden"
+      className="relative rounded-2xl overflow-hidden flex flex-col"
       style={{
-        background: hovered ? '#ffffff' : 'hsl(var(--card))',
-        border: `1px solid ${hovered ? 'rgba(249,115,22,0.2)' : 'hsl(var(--border))'}`,
+        background: hovered ? '#fff' : 'hsl(var(--card))',
+        border: `1px solid ${hovered ? 'rgba(249,115,22,0.18)' : 'hsl(var(--border))'}`,
         boxShadow: hovered
-          ? '0 16px 50px rgba(249,115,22,0.06), 0 6px 18px rgba(0,0,0,0.05)'
+          ? '0 18px 55px rgba(249,115,22,0.05), 0 6px 20px rgba(0,0,0,0.06)'
           : '0 1px 4px rgba(0,0,0,0.04)',
-        transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
+        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
+        transition: 'all 0.32s cubic-bezier(0.22,1,0.36,1)',
       }}
     >
+      {/* Faint ghost metric — decorative background */}
       <span
-        className="absolute -bottom-2 -right-1 font-black select-none pointer-events-none font-mono leading-none"
+        className="absolute bottom-0 right-3 font-black select-none pointer-events-none font-mono leading-none"
         style={{
-          fontSize: '5rem',
-          color: hovered ? 'rgba(249,115,22,0.07)' : 'rgba(0,0,0,0.04)',
-          letterSpacing: '-0.04em',
-          transition: 'color 0.35s',
+          fontSize: '4.5rem',
+          color: hovered ? 'rgba(249,115,22,0.07)' : 'rgba(0,0,0,0.035)',
+          letterSpacing: '-0.05em',
+          transition: 'color 0.32s',
+          lineHeight: 1,
         }}
       >
         {item.metric.replace('%', '').replace(' ', '')}
       </span>
 
-      <div>
-        <span
-          className="font-display font-black block"
-          style={{
-            fontSize: '2rem',
-            color: '#F97316',
-            letterSpacing: '-0.03em',
-            lineHeight: 1,
-          }}
-        >
-          {item.metric}
-        </span>
-        <span
-          className="text-[11px] font-bold tracking-[0.15em] uppercase font-mono mt-1 block"
-          style={{ color: 'rgba(249,115,22,0.45)' }}
-        >
-          {item.metricSub}
-        </span>
-      </div>
-
-      <div
-        className="h-px w-full"
-        style={{ background: 'hsl(var(--border))' }}
-      />
-
-      <div>
-        <h4
-          className="font-display font-bold text-foreground mb-2"
-          style={{ fontSize: '0.95rem', letterSpacing: '-0.01em' }}
-        >
-          {item.project}
-        </h4>
-        <p className="text-[12.5px] text-muted-foreground leading-relaxed">
-          {item.body}
-        </p>
-      </div>
-
-      <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
-        {item.tags.map(tag => (
+      <div className="flex flex-col flex-1 p-6">
+        {/* Metric */}
+        <div className="mb-5">
           <span
-            key={tag}
-            className="text-[9px] font-bold tracking-widest uppercase px-2 py-1 rounded font-mono"
+            className="font-display font-black leading-none block"
             style={{
-              color: 'rgba(0,0,0,0.3)',
-              background: 'rgba(0,0,0,0.04)',
-              border: '1px solid rgba(0,0,0,0.07)',
+              fontSize: '2.1rem',
+              color: '#F97316',
+              letterSpacing: '-0.035em',
             }}
           >
-            {tag}
+            {item.metric}
           </span>
-        ))}
+          <span
+            className="text-[10px] font-bold tracking-[0.16em] uppercase font-mono mt-1 block"
+            style={{ color: 'rgba(249,115,22,0.4)' }}
+          >
+            {item.metricSub}
+          </span>
+        </div>
+
+        {/* Divider */}
+        <div className="h-px w-full mb-5" style={{ background: 'hsl(var(--border))' }} />
+
+        {/* Project name + descriptor */}
+        <div className="mb-3">
+          <h4
+            className="font-display font-bold text-foreground leading-none"
+            style={{ fontSize: '0.92rem', letterSpacing: '-0.015em' }}
+          >
+            {item.project}
+          </h4>
+          <p
+            className="font-mono font-bold uppercase tracking-[0.13em] mt-1"
+            style={{ fontSize: '0.62rem', color: 'rgba(0,0,0,0.3)' }}
+          >
+            {item.descriptor}
+          </p>
+        </div>
+
+        {/* Body */}
+        <p className="text-[12.5px] text-muted-foreground leading-[1.7] flex-1">
+          {item.body}
+        </p>
+
+        {/* Tags */}
+        <div className="flex flex-wrap gap-1.5 mt-5 pt-4" style={{ borderTop: '1px solid hsl(var(--border))' }}>
+          {item.tags.map(tag => (
+            <span
+              key={tag}
+              className="text-[9px] font-bold tracking-widest uppercase px-2 py-1 rounded font-mono"
+              style={{
+                color: 'rgba(0,0,0,0.28)',
+                background: 'rgba(0,0,0,0.04)',
+                border: '1px solid rgba(0,0,0,0.07)',
+              }}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
@@ -293,21 +301,25 @@ export function SelectedImpact() {
       id="selected-impact"
       className="relative py-24 md:py-32 bg-card overflow-hidden"
     >
+      {/* Dot-grid background */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: 'radial-gradient(circle, rgba(156,163,175,0.4) 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(circle, rgba(156,163,175,0.38) 1px, transparent 1px)',
           backgroundSize: '22px 22px',
         }}
       />
+      {/* Fade vignette */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse 90% 70% at 50% 0%, hsl(var(--card)) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse 100% 60% at 50% 0%, hsl(var(--card)) 0%, transparent 65%)',
         }}
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
+
+        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -321,7 +333,7 @@ export function SelectedImpact() {
           </span>
         </motion.div>
 
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-14">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -337,33 +349,63 @@ export function SelectedImpact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.45, delay: 0.14 }}
-            className="text-[14px] text-muted-foreground max-w-sm md:text-right leading-relaxed"
+            className="text-[13.5px] text-muted-foreground max-w-xs md:text-right leading-relaxed"
           >
             Across validator trust-building, launch narratives, ecosystem content,
             editorial systems, and community growth.
           </motion.p>
         </div>
 
-        <div className="flex items-center gap-2 mb-8">
-          <span className="text-[10px] font-bold tracking-[0.2em] text-primary/50 uppercase font-mono">
-            Featured
+        {/* Featured tier label */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.4 }}
+          className="flex items-center gap-3 mb-6"
+        >
+          <span
+            className="text-[9px] font-bold tracking-[0.26em] uppercase font-mono"
+            style={{ color: 'rgba(249,115,22,0.55)' }}
+          >
+            Featured Impact
           </span>
-          <span className="h-px flex-1 bg-border" />
-        </div>
+          <span className="h-px flex-1" style={{ background: 'rgba(249,115,22,0.15)' }} />
+          <span
+            className="text-[9px] font-bold tracking-[0.2em] uppercase font-mono"
+            style={{ color: 'rgba(249,115,22,0.35)' }}
+          >
+            03 projects
+          </span>
+        </motion.div>
 
+        {/* Featured grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14">
           {FEATURED.map((item, i) => (
             <FeaturedCard key={item.project} item={item} index={i} />
           ))}
         </div>
 
-        <div className="flex items-center gap-2 mb-8">
-          <span className="text-[10px] font-bold tracking-[0.2em] text-muted-foreground/50 uppercase font-mono">
-            Supporting
+        {/* Supporting tier label */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.4 }}
+          className="flex items-center gap-3 mb-6"
+        >
+          <span
+            className="text-[9px] font-bold tracking-[0.26em] uppercase font-mono text-muted-foreground/50"
+          >
+            Supporting Impact
           </span>
           <span className="h-px flex-1 bg-border" />
-        </div>
+          <span className="text-[9px] font-bold tracking-[0.2em] uppercase font-mono text-muted-foreground/35">
+            03 projects
+          </span>
+        </motion.div>
 
+        {/* Supporting grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {SUPPORTING.map((item, i) => (
             <SupportingCard key={item.project} item={item} index={i} />
