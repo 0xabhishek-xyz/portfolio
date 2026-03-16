@@ -1,235 +1,167 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { ArrowRight, ChevronDown, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-// ─── Typewriter ───────────────────────────────────────────────────────────────
 const ROLES = ['Content Strategist', 'Web3 Marketer', 'Community Builder', 'IDO Specialist', 'Storyteller'];
 
 function TypewriterRole() {
   const [idx, setIdx] = useState(0);
   const [chars, setChars] = useState('');
   const [deleting, setDeleting] = useState(false);
-
   useEffect(() => {
     const word = ROLES[idx];
     let t: ReturnType<typeof setTimeout>;
-    if (!deleting && chars.length < word.length) {
-      t = setTimeout(() => setChars(word.slice(0, chars.length + 1)), 65);
-    } else if (!deleting && chars.length === word.length) {
-      t = setTimeout(() => setDeleting(true), 2200);
-    } else if (deleting && chars.length > 0) {
-      t = setTimeout(() => setChars(chars.slice(0, -1)), 38);
-    } else {
-      setDeleting(false);
-      setIdx((i) => (i + 1) % ROLES.length);
-    }
-    return () => clearTimeout(t);
+    if (!deleting && chars.length < word.length) t = setTimeout(() => setChars(word.slice(0, chars.length + 1)), 65);
+    else if (!deleting && chars.length === word.length) t = setTimeout(() => setDeleting(true), 2200);
+    else if (deleting && chars.length > 0) t = setTimeout(() => setChars(chars.slice(0, -1)), 38);
+    else { setDeleting(false); setIdx(i => (i + 1) % ROLES.length); }
+    return () => clearTimeout(t!);
   }, [chars, deleting, idx]);
-
-  return (
-    <span className="text-primary font-medium">
-      {chars}<span className="animate-pulse opacity-60">|</span>
-    </span>
-  );
+  return <span className="text-primary font-medium">{chars}<span className="animate-pulse opacity-60">|</span></span>;
 }
 
-// ─── Skill data — two passes of 5 ────────────────────────────────────────────
-// connX/connY: where the line touches the avatar (0–1 of image area)
-// side: which side the badge floats on
-// yPct: % of image height when the scanner triggers this badge
-
-const SCAN_DURATION = 3200;
-
-const PASS1: {
-  id: number; label: string; side: 'left' | 'right';
-  connX: number; connY: number; yPct: number;
-}[] = [
-  { id: 0, label: 'Narrative Architecture', side: 'left',  connX: 0.30, connY: 0.13, yPct: 13 },
-  { id: 1, label: 'Protocol Positioning',   side: 'right', connX: 0.68, connY: 0.22, yPct: 22 },
-  { id: 2, label: 'Community Activation',   side: 'left',  connX: 0.28, connY: 0.54, yPct: 54 },
-  { id: 3, label: 'Launch Comms',           side: 'right', connX: 0.60, connY: 0.43, yPct: 43 },
-  { id: 4, label: 'Token Storytelling',     side: 'left',  connX: 0.25, connY: 0.74, yPct: 74 },
-];
-
-const PASS2: {
-  id: number; label: string; side: 'left' | 'right';
-  connX: number; connY: number; yPct: number;
-}[] = [
-  { id: 5, label: 'Onchain Education',   side: 'right', connX: 0.65, connY: 0.16, yPct: 16 },
-  { id: 6, label: 'X-First Content',     side: 'left',  connX: 0.32, connY: 0.37, yPct: 37 },
-  { id: 7, label: 'Ecosystem Growth',    side: 'right', connX: 0.70, connY: 0.58, yPct: 58 },
-  { id: 8, label: 'KOL Strategy',        side: 'left',  connX: 0.20, connY: 0.66, yPct: 66 },
-  { id: 9, label: 'Listing Momentum',    side: 'right', connX: 0.72, connY: 0.82, yPct: 82 },
-];
-
-// Card layout constants
+// ─── Layout constants ─────────────────────────────────────────────────────────
 const CARD_W   = 280;
-const HEADER_H = 44;
-const IMG_H    = 360;
-const TRAITS_H = 56;
+const HEADER_H = 42;
+const IMG_H    = 370;
+const TRAITS_H = 52;
 const CARD_H   = HEADER_H + IMG_H + TRAITS_H;
-const SIDE_PAD = 148; // px each side for badges
+const SIDE_PAD = 155;
 const CTR_W    = CARD_W + SIDE_PAD * 2;
+const SCAN_DURATION = 3400;
 
-// ─── Anatomy SVG overlay (X-ray effect) ──────────────────────────────────────
+// ─── Skill data ───────────────────────────────────────────────────────────────
+type Skill = { id: number; label: string; side: 'left'|'right'; connX: number; connY: number };
+
+const PASS1: Skill[] = [
+  { id: 0, label: 'Narrative Architecture', side: 'left',  connX: 0.42, connY: 0.11 },
+  { id: 1, label: 'Protocol Positioning',   side: 'right', connX: 0.62, connY: 0.20 },
+  { id: 2, label: 'Community Activation',   side: 'left',  connX: 0.35, connY: 0.52 },
+  { id: 3, label: 'Launch Comms',           side: 'right', connX: 0.58, connY: 0.40 },
+  { id: 4, label: 'Token Storytelling',     side: 'left',  connX: 0.30, connY: 0.72 },
+];
+
+const PASS2: Skill[] = [
+  { id: 5, label: 'Onchain Education',   side: 'right', connX: 0.55, connY: 0.14 },
+  { id: 6, label: 'X-First Content',     side: 'left',  connX: 0.38, connY: 0.32 },
+  { id: 7, label: 'Ecosystem Growth',    side: 'right', connX: 0.65, connY: 0.58 },
+  { id: 8, label: 'KOL Strategy',        side: 'left',  connX: 0.28, connY: 0.46 },
+  { id: 9, label: 'Listing Momentum',    side: 'right', connX: 0.68, connY: 0.78 },
+];
+
+// ─── Anatomy SVG ──────────────────────────────────────────────────────────────
 function AnatomySvg({ svgRef }: { svgRef: React.Ref<SVGSVGElement> }) {
   return (
-    <svg
-      ref={svgRef}
-      width={CARD_W}
-      height={IMG_H}
-      viewBox={`0 0 ${CARD_W} ${IMG_H}`}
-      className="absolute inset-0 pointer-events-none z-10"
-      style={{ clipPath: 'inset(0px 0px 360px 0px)' }} // hidden by default
-    >
+    <svg ref={svgRef} width={CARD_W} height={IMG_H} viewBox={`0 0 ${CARD_W} ${IMG_H}`}
+      className="absolute inset-0 pointer-events-none" style={{ zIndex: 12, clipPath: 'inset(0 0 100% 0)' }}>
       <defs>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="2.5" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <filter id="glow-strong">
-          <feGaussianBlur stdDeviation="4" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
+        <filter id="g1"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="g2"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="g3"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       </defs>
 
-      {/* ── Brain region (head ~y 0–130) ── */}
-      {/* Skull outline */}
-      <ellipse cx="140" cy="62" rx="58" ry="50" fill="none" stroke="#F97316" strokeWidth="1.2" opacity="0.75" filter="url(#glow)"/>
-      {/* Hemisphere split */}
-      <path d="M 140 12 Q 137 42 140 62 Q 143 82 140 112" stroke="#F97316" strokeWidth="0.9" fill="none" opacity="0.65"/>
-      {/* Left hemisphere folds */}
-      <path d="M 90 55 Q 105 44 118 58" stroke="#F97316" strokeWidth="0.9" fill="none" opacity="0.55"/>
-      <path d="M 87 72 Q 104 62 115 76" stroke="#F97316" strokeWidth="0.9" fill="none" opacity="0.45"/>
-      <path d="M 92 88 Q 108 80 116 94" stroke="#F97316" strokeWidth="0.9" fill="none" opacity="0.4"/>
-      {/* Right hemisphere folds */}
-      <path d="M 190 55 Q 175 44 162 58" stroke="#F97316" strokeWidth="0.9" fill="none" opacity="0.55"/>
-      <path d="M 193 72 Q 176 62 165 76" stroke="#F97316" strokeWidth="0.9" fill="none" opacity="0.45"/>
-      <path d="M 188 88 Q 172 80 164 94" stroke="#F97316" strokeWidth="0.9" fill="none" opacity="0.4"/>
-      {/* Circuit nodes on brain */}
-      <circle cx="108" cy="52" r="3.5" fill="#F97316" opacity="0.9" filter="url(#glow)"/>
-      <circle cx="172" cy="52" r="3.5" fill="#F97316" opacity="0.9" filter="url(#glow)"/>
-      <circle cx="140" cy="38" r="3"   fill="#F97316" opacity="0.95" filter="url(#glow-strong)"/>
-      <circle cx="120" cy="80" r="2.5" fill="#F97316" opacity="0.7"/>
-      <circle cx="160" cy="80" r="2.5" fill="#F97316" opacity="0.7"/>
-      <circle cx="140" cy="100" r="2"  fill="#F97316" opacity="0.6"/>
-      {/* Connecting circuit lines */}
-      <path d="M 108 52 L 140 38 L 172 52" stroke="#F97316" strokeWidth="0.7" fill="none" opacity="0.5" strokeDasharray="3 2"/>
-      <path d="M 120 80 L 140 100 L 160 80" stroke="#F97316" strokeWidth="0.7" fill="none" opacity="0.4" strokeDasharray="3 2"/>
+      <rect x="0" y="0" width={CARD_W} height={IMG_H} fill="rgba(3,3,12,0.78)"/>
 
-      {/* ── Eye level (y ~110–145) ── */}
-      {/* Eye socket glows */}
-      <ellipse cx="103" cy="124" rx="18" ry="10" fill="none" stroke="#F97316" strokeWidth="0.8" opacity="0.5"/>
-      <ellipse cx="177" cy="124" rx="18" ry="10" fill="none" stroke="#F97316" strokeWidth="0.8" opacity="0.5"/>
-      <circle cx="103" cy="124" r="5" fill="#F97316" opacity="0.4" filter="url(#glow)"/>
-      <circle cx="177" cy="124" r="5" fill="#F97316" opacity="0.4" filter="url(#glow)"/>
-      {/* Scan lines through eye region */}
-      <path d="M 60 128 L 220 128" stroke="#F97316" strokeWidth="0.5" opacity="0.25" strokeDasharray="6 4"/>
+      <rect x="6" y="6" width={CARD_W - 12} height={IMG_H - 12} rx="4" fill="none" stroke="rgba(249,115,22,0.15)" strokeWidth="0.5"/>
+      <text x="14" y="20" fill="#F97316" opacity="0.4" style={{ fontSize: 7, fontFamily: 'monospace' }}>SCAN::ACTIVE</text>
+      <text x={CARD_W - 14} y="20" fill="#F97316" opacity="0.35" style={{ fontSize: 7, fontFamily: 'monospace', textAnchor: 'end' }}>0xAB12...7F</text>
+      <text x="14" y={IMG_H - 10} fill="#F97316" opacity="0.3" style={{ fontSize: 6, fontFamily: 'monospace' }}>NEURAL_MAP v2.1</text>
 
-      {/* ── Spine / neck (y ~150–210) ── */}
-      <path d="M 140 135 L 140 210" stroke="#F97316" strokeWidth="1" opacity="0.45" strokeDasharray="4 3"/>
-      {/* Neck vertebrae */}
-      {[150, 163, 176, 189, 202].map((y, i) => (
-        <rect key={i} x="133" y={y - 4} width="14" height="7" rx="2" fill="none" stroke="#F97316" strokeWidth="0.8" opacity="0.4"/>
+      {Array.from({ length: 12 }).map((_, i) => (
+        <line key={`hg${i}`} x1="0" y1={i * 32} x2={CARD_W} y2={i * 32} stroke="#F97316" strokeWidth="0.3" opacity="0.08"/>
+      ))}
+      {Array.from({ length: 9 }).map((_, i) => (
+        <line key={`vg${i}`} x1={i * 32 + 12} y1="0" x2={i * 32 + 12} y2={IMG_H} stroke="#F97316" strokeWidth="0.3" opacity="0.08"/>
       ))}
 
-      {/* ── Heart (chest ~y 215–265) ── */}
-      {/* Rib cage */}
-      <path d="M 120 218 Q 78 228 76 248" stroke="#F97316" strokeWidth="0.9" fill="none" opacity="0.38"/>
-      <path d="M 115 238 Q 74 250 72 270" stroke="#F97316" strokeWidth="0.9" fill="none" opacity="0.32"/>
-      <path d="M 113 258 Q 72 272 71 292" stroke="#F97316" strokeWidth="0.9" fill="none" opacity="0.25"/>
-      <path d="M 160 218 Q 202 228 204 248" stroke="#F97316" strokeWidth="0.9" fill="none" opacity="0.38"/>
-      <path d="M 165 238 Q 206 250 208 270" stroke="#F97316" strokeWidth="0.9" fill="none" opacity="0.32"/>
-      <path d="M 167 258 Q 208 272 209 292" stroke="#F97316" strokeWidth="0.9" fill="none" opacity="0.25"/>
-      {/* Sternum */}
-      <path d="M 140 215 L 140 300" stroke="#F97316" strokeWidth="0.9" opacity="0.4" strokeDasharray="5 3"/>
-      {/* Heart shape */}
-      <path d="M 140 250 C 140 250 112 232 112 218 C 112 207 124 204 132 212 C 135 215 138 218 140 221 C 142 218 145 215 148 212 C 156 204 168 207 168 218 C 168 232 140 250 140 250 Z"
-        fill="none" stroke="#F97316" strokeWidth="1.4" opacity="0.82" filter="url(#glow)"/>
-      {/* Heart circuit lines */}
-      <path d="M 112 218 L 82 208 M 168 218 L 198 208" stroke="#F97316" strokeWidth="0.7" opacity="0.45" strokeDasharray="3 3"/>
-      <circle cx="82" cy="208" r="2.5" fill="#F97316" opacity="0.7"/>
-      <circle cx="198" cy="208" r="2.5" fill="#F97316" opacity="0.7"/>
-      <circle cx="140" cy="236" r="3" fill="#F97316" opacity="0.8" filter="url(#glow)"/>
+      <ellipse cx="140" cy="60" rx="56" ry="48" fill="none" stroke="#F97316" strokeWidth="1.2" opacity="0.6" filter="url(#g1)"/>
+      <ellipse cx="140" cy="60" rx="56" ry="48" fill="none" stroke="#F97316" strokeWidth="0.5" opacity="0.3" strokeDasharray="3 5"/>
+      <path d="M140 12 C138 35 140 55 140 60 C140 65 142 85 140 108" stroke="#F97316" strokeWidth="1" fill="none" opacity="0.55"/>
+      <path d="M92 48 Q108 38 122 52 Q115 60 98 56" stroke="#F97316" strokeWidth="0.8" fill="none" opacity="0.45" filter="url(#g1)"/>
+      <path d="M88 68 Q106 56 118 72 Q110 78 94 73" stroke="#F97316" strokeWidth="0.8" fill="none" opacity="0.38"/>
+      <path d="M92 86 Q110 76 120 90 Q112 96 97 92" stroke="#F97316" strokeWidth="0.7" fill="none" opacity="0.3"/>
+      <path d="M188 48 Q172 38 158 52 Q165 60 182 56" stroke="#F97316" strokeWidth="0.8" fill="none" opacity="0.45" filter="url(#g1)"/>
+      <path d="M192 68 Q174 56 162 72 Q170 78 186 73" stroke="#F97316" strokeWidth="0.8" fill="none" opacity="0.38"/>
+      <path d="M188 86 Q170 76 160 90 Q168 96 183 92" stroke="#F97316" strokeWidth="0.7" fill="none" opacity="0.3"/>
 
-      {/* ── Network nodes (lower body ~y 290–360) ── */}
+      <circle cx="110" cy="48" r="4" fill="#F97316" opacity="0.85" filter="url(#g2)"/>
+      <circle cx="170" cy="48" r="4" fill="#F97316" opacity="0.85" filter="url(#g2)"/>
+      <circle cx="140" cy="32" r="3.5" fill="white" opacity="0.7" filter="url(#g3)"/>
+      <circle cx="122" cy="74" r="2.5" fill="#F97316" opacity="0.6"/>
+      <circle cx="158" cy="74" r="2.5" fill="#F97316" opacity="0.6"/>
+      <circle cx="140" cy="96" r="2" fill="#F97316" opacity="0.5"/>
+      <path d="M110 48 L140 32 L170 48" stroke="#F97316" strokeWidth="0.8" fill="none" opacity="0.5" strokeDasharray="4 3"/>
+      <path d="M122 74 L140 96 L158 74" stroke="#F97316" strokeWidth="0.6" fill="none" opacity="0.35" strokeDasharray="3 3"/>
+      <text x="140" y="108" fill="#F97316" opacity="0.3" style={{ fontSize: 6, fontFamily: 'monospace', textAnchor: 'middle' }}>CORTEX</text>
+
+      <ellipse cx="106" cy="120" rx="16" ry="9" fill="none" stroke="#F97316" strokeWidth="0.8" opacity="0.45"/>
+      <ellipse cx="174" cy="120" rx="16" ry="9" fill="none" stroke="#F97316" strokeWidth="0.8" opacity="0.45"/>
+      <circle cx="106" cy="120" r="4" fill="#F97316" opacity="0.35" filter="url(#g1)"/>
+      <circle cx="174" cy="120" r="4" fill="#F97316" opacity="0.35" filter="url(#g1)"/>
+      <line x1="86" y1="120" x2="68" y2="120" stroke="#F97316" strokeWidth="0.5" opacity="0.3"/>
+      <line x1="194" y1="120" x2="212" y2="120" stroke="#F97316" strokeWidth="0.5" opacity="0.3"/>
+
+      <path d="M140 130 L140 205" stroke="#F97316" strokeWidth="0.8" opacity="0.4" strokeDasharray="4 3"/>
+      {[142, 154, 166, 178, 190].map((y, i) => (
+        <rect key={i} x="134" y={y - 3} width="12" height="6" rx="1.5" fill="none" stroke="#F97316" strokeWidth="0.7" opacity={0.45 - i * 0.04}/>
+      ))}
+
       {[
-        [90, 310], [110, 295], [140, 315], [170, 295], [190, 310],
-        [80, 340], [130, 335], [150, 345], [200, 338],
-      ].map(([cx, cy], i) => (
-        <circle key={i} cx={cx} cy={cy} r="2.5" fill="#F97316" opacity="0.45"/>
+        [124, 215, 82, 226, 78, 245],
+        [120, 235, 76, 248, 74, 268],
+        [118, 252, 74, 267, 72, 287],
+        [116, 270, 72, 285, 71, 306],
+      ].map((d, i) => (
+        <path key={`lr${i}`} d={`M${d[0]} ${d[1]} Q${d[2]} ${d[3]} ${d[4]} ${d[5]}`} stroke="#F97316" strokeWidth="0.8" fill="none" opacity={0.38 - i * 0.06}/>
       ))}
-      <path d="M 90 310 L 110 295 L 140 315 L 170 295 L 190 310" stroke="#F97316" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="3 3"/>
-      <path d="M 80 340 L 130 335 L 150 345 L 200 338" stroke="#F97316" strokeWidth="0.6" fill="none" opacity="0.28" strokeDasharray="3 3"/>
-      <path d="M 90 310 L 80 340 M 140 315 L 130 335 L 150 345 M 190 310 L 200 338" stroke="#F97316" strokeWidth="0.5" fill="none" opacity="0.25"/>
+      {[
+        [156, 215, 198, 226, 202, 245],
+        [160, 235, 204, 248, 206, 268],
+        [162, 252, 206, 267, 208, 287],
+        [164, 270, 208, 285, 209, 306],
+      ].map((d, i) => (
+        <path key={`rr${i}`} d={`M${d[0]} ${d[1]} Q${d[2]} ${d[3]} ${d[4]} ${d[5]}`} stroke="#F97316" strokeWidth="0.8" fill="none" opacity={0.38 - i * 0.06}/>
+      ))}
+      <path d="M140 210 L140 310" stroke="#F97316" strokeWidth="0.7" opacity="0.35" strokeDasharray="5 3"/>
 
-      {/* Overall scan tint */}
-      <rect x="0" y="0" width={CARD_W} height={IMG_H} fill="rgba(249,115,22,0.04)" />
-    </svg>
-  );
-}
+      <path d="M140 248 C140 248 116 233 116 220 C116 210 125 207 132 214 C135 217 138 220 140 222 C142 220 145 217 148 214 C155 207 164 210 164 220 C164 233 140 248 140 248Z"
+        fill="rgba(249,115,22,0.1)" stroke="#F97316" strokeWidth="1.4" opacity="0.8" filter="url(#g2)"/>
+      <path d="M116 220 L88 210" stroke="#F97316" strokeWidth="0.6" opacity="0.4" strokeDasharray="3 3"/>
+      <path d="M164 220 L192 210" stroke="#F97316" strokeWidth="0.6" opacity="0.4" strokeDasharray="3 3"/>
+      <circle cx="88" cy="210" r="2.5" fill="#F97316" opacity="0.6" filter="url(#g1)"/>
+      <circle cx="192" cy="210" r="2.5" fill="#F97316" opacity="0.6" filter="url(#g1)"/>
+      <circle cx="140" cy="234" r="3" fill="white" opacity="0.55" filter="url(#g3)"/>
+      <text x="140" y="260" fill="#F97316" opacity="0.3" style={{ fontSize: 6, fontFamily: 'monospace', textAnchor: 'middle' }}>CARDIAC</text>
 
-// ─── Connector Lines SVG ──────────────────────────────────────────────────────
-function ConnectorLines({ visiblePass1, visiblePass2 }: { visiblePass1: Set<number>; visiblePass2: Set<number> }) {
-  const allSkills = [...PASS1, ...PASS2];
-  const visible = new Set([...visiblePass1, ...visiblePass2]);
-
-  return (
-    <svg
-      width={CTR_W}
-      height={CARD_H}
-      viewBox={`0 0 ${CTR_W} ${CARD_H}`}
-      className="absolute inset-0 pointer-events-none"
-      style={{ left: -SIDE_PAD, top: 0, zIndex: 20, overflow: 'visible' }}
-    >
-      {allSkills.map((skill) => {
-        if (!visible.has(skill.id)) return null;
-        const connPx  = SIDE_PAD + skill.connX * CARD_W;
-        const connPy  = HEADER_H + skill.connY * IMG_H;
-        const badgeCy = HEADER_H + skill.connY * IMG_H;
-        const badgeCx = skill.side === 'left' ? SIDE_PAD - 8 : SIDE_PAD + CARD_W + 8;
-
-        return (
-          <motion.g key={skill.id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4 }}>
-            {/* Dashed line from badge to connection point */}
-            <line
-              x1={badgeCx} y1={badgeCy}
-              x2={connPx}  y2={connPy}
-              stroke="rgba(249,115,22,0.45)"
-              strokeWidth="1"
-              strokeDasharray="4 3"
-            />
-            {/* Connection dot on avatar */}
-            <circle cx={connPx} cy={connPy} r="3.5" fill="#F97316" opacity="0.9"/>
-            <circle cx={connPx} cy={connPy} r="6"   fill="transparent" stroke="#F97316" strokeWidth="0.8" opacity="0.5"/>
-          </motion.g>
-        );
-      })}
+      {[
+        [95, 310], [115, 296], [140, 318], [165, 296], [185, 310],
+        [82, 340], [120, 336], [140, 348], [160, 336], [198, 340],
+      ].map(([cx, cy], i) => (
+        <circle key={`n${i}`} cx={cx} cy={cy} r={2 + (i % 3) * 0.5} fill="#F97316" opacity={0.5 - i * 0.02} filter="url(#g1)"/>
+      ))}
+      <path d="M95 310 L115 296 L140 318 L165 296 L185 310" stroke="#F97316" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="3 3"/>
+      <path d="M82 340 L120 336 L140 348 L160 336 L198 340" stroke="#F97316" strokeWidth="0.5" fill="none" opacity="0.25" strokeDasharray="3 3"/>
+      <path d="M95 310 L82 340 M115 296 L120 336 M140 318 L140 348 M165 296 L160 336 M185 310 L198 340" stroke="#F97316" strokeWidth="0.4" fill="none" opacity="0.2"/>
     </svg>
   );
 }
 
 // ─── NFT Scanner Card ─────────────────────────────────────────────────────────
 function NftScannerCard() {
-  const outerRef    = useRef<HTMLDivElement>(null);
-  const scanLineEl  = useRef<HTMLDivElement>(null);
-  const anatomyRef  = useRef<SVGSVGElement>(null);
-  const rafRef      = useRef<number>(0);
-  const [visibleP1, setVisibleP1] = useState<Set<number>>(new Set());
-  const [visibleP2, setVisibleP2] = useState<Set<number>>(new Set());
+  const outerRef   = useRef<HTMLDivElement>(null);
+  const scanLineEl = useRef<HTMLDivElement>(null);
+  const anatomyRef = useRef<SVGSVGElement>(null);
+  const rafRef     = useRef(0);
+  const [activeSkills, setActiveSkills] = useState<Skill[]>([]);
 
-  // Mouse parallax
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const sp = { damping: 24, stiffness: 150, mass: 0.5 };
-  const rx = useSpring(useTransform(mouseY, [-1, 1], [5, -5]), sp);
-  const ry = useSpring(useTransform(mouseX, [-1, 1], [-5, 5]), sp);
+  const sp = { damping: 20, stiffness: 120, mass: 0.6 };
+  const rx = useSpring(useTransform(mouseY, [-1, 1], [8, -8]), sp);
+  const ry = useSpring(useTransform(mouseX, [-1, 1], [-8, 8]), sp);
 
-  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const onMouseMove = (e: React.MouseEvent) => {
     const r = outerRef.current?.getBoundingClientRect();
     if (!r) return;
     mouseX.set((e.clientX - r.left - r.width / 2) / (r.width / 2));
@@ -237,99 +169,64 @@ function NftScannerCard() {
   };
   const onMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
 
-  // Scanner + anatomy reveal engine
   useEffect(() => {
-    const allT: ReturnType<typeof setTimeout>[] = [];
-    const WINDOW = 80; // anatomy reveal window half-height in px
+    const timers: ReturnType<typeof setTimeout>[] = [];
 
     function setClip(yPx: number) {
       if (!anatomyRef.current) return;
-      const top    = Math.max(0, yPx - WINDOW);
-      const bottom = Math.max(0, IMG_H - yPx - WINDOW);
-      anatomyRef.current.style.clipPath = `inset(${top}px 0px ${bottom}px 0px)`;
+      const W = 85;
+      const top = Math.max(0, yPx - W);
+      const bottom = Math.max(0, IMG_H - yPx - W);
+      anatomyRef.current.style.clipPath = `inset(${top}px 0 ${bottom}px 0)`;
     }
 
-    function runPass(pass: 1 | 2, onDone: () => void) {
-      const skills = pass === 1 ? PASS1 : PASS2;
-      const setVisible = pass === 1 ? setVisibleP1 : setVisibleP2;
-
-      // Reset visible for this pass
-      setVisible(new Set());
-
-      // Animate scan line top from 0 to IMG_H
+    function scan(skills: Skill[], onDone: () => void) {
+      setActiveSkills([]);
       const el = scanLineEl.current;
-      if (el) {
-        el.style.transition = 'none';
-        el.style.top = '0px';
-        el.style.opacity = '1';
-      }
+      if (el) { el.style.transition = 'none'; el.style.top = '0px'; el.style.opacity = '1'; }
 
-      let startTime: number | null = null;
-      function animFrame(now: number) {
-        if (!startTime) startTime = now;
-        const elapsed  = now - startTime;
-        const progress = Math.min(elapsed / SCAN_DURATION, 1);
-        const yPx      = progress * IMG_H;
+      let start: number | null = null;
+      const revealed = new Set<number>();
 
-        // Move scan line
+      function frame(now: number) {
+        if (!start) start = now;
+        const p = Math.min((now - start) / SCAN_DURATION, 1);
+        const yPx = p * IMG_H;
         if (el) el.style.top = `${yPx}px`;
-
-        // Reveal anatomy
         setClip(yPx);
 
-        rafRef.current = requestAnimationFrame(animFrame);
+        skills.forEach(s => {
+          if (!revealed.has(s.id) && p >= s.connY - 0.02) {
+            revealed.add(s.id);
+            setActiveSkills(prev => [...prev, s]);
+          }
+        });
 
-        if (progress >= 1) {
-          cancelAnimationFrame(rafRef.current);
+        if (p < 1) { rafRef.current = requestAnimationFrame(frame); }
+        else {
           if (el) el.style.opacity = '0';
-          setClip(-WINDOW); // hide anatomy
+          setClip(-200);
           onDone();
         }
       }
-
-      // Schedule skill reveals based on yPct thresholds
-      skills.forEach((skill) => {
-        const delay = Math.round((skill.yPct / 100) * SCAN_DURATION);
-        const t = setTimeout(() => {
-          setVisible((prev) => {
-            const next = new Set(prev);
-            next.add(skill.id);
-            return next;
-          });
-        }, delay + 160);
-        allT.push(t);
-      });
-
-      rafRef.current = requestAnimationFrame(animFrame);
+      rafRef.current = requestAnimationFrame(frame);
     }
 
-    function startCycle() {
-      // Pass 1
-      runPass(1, () => {
-        // Brief pause, then Pass 2
-        const t = setTimeout(() => {
-          runPass(2, () => {
-            // Long pause, then reset & repeat
-            const t2 = setTimeout(() => {
-              setVisibleP1(new Set());
-              setVisibleP2(new Set());
-              const t3 = setTimeout(startCycle, 400);
-              allT.push(t3);
-            }, 2800);
-            allT.push(t2);
+    function cycle() {
+      scan(PASS1, () => {
+        const t1 = setTimeout(() => {
+          scan(PASS2, () => {
+            const t2 = setTimeout(cycle, 2200);
+            timers.push(t2);
           });
-        }, 600);
-        allT.push(t);
+        }, 1200);
+        timers.push(t1);
       });
     }
 
-    const initT = setTimeout(startCycle, 900);
-    allT.push(initT);
-
-    return () => {
-      allT.forEach(clearTimeout);
-      cancelAnimationFrame(rafRef.current);
-    };
+    const init = setTimeout(cycle, 1000);
+    timers.push(init);
+    return () => { timers.forEach(clearTimeout); cancelAnimationFrame(rafRef.current); };
   }, []);
 
   return (
@@ -337,149 +234,52 @@ function NftScannerCard() {
       ref={outerRef}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
-      className="relative"
-      style={{ width: CTR_W, height: CARD_H }}
+      className="relative select-none"
+      style={{ width: CTR_W, height: CARD_H, perspective: 900 }}
     >
-      {/* Connector lines SVG spans full container */}
-      <div style={{ position: 'absolute', left: 0, top: 0, width: CTR_W, height: CARD_H }}>
-        <ConnectorLines visiblePass1={visibleP1} visiblePass2={visibleP2} />
-      </div>
-
-      {/* Skill badges — Pass 1 */}
-      {PASS1.map((skill) => {
-        const isLeft  = skill.side === 'left';
-        const topPx   = HEADER_H + skill.connY * IMG_H;
-        return (
-          <motion.div
-            key={skill.id}
-            initial={{ opacity: 0, x: isLeft ? -10 : 10 }}
-            animate={visibleP1.has(skill.id) ? { opacity: 1, x: 0 } : { opacity: 0, x: isLeft ? -10 : 10 }}
-            transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute flex items-center"
-            style={{
-              top: topPx,
-              [isLeft ? 'left' : 'right']: 0,
-              transform: 'translateY(-50%)',
-              flexDirection: isLeft ? 'row' : 'row-reverse',
-              zIndex: 30,
-            }}
-          >
-            <div
-              className="text-primary text-[9px] font-bold tracking-wider uppercase px-2 py-1.5 rounded-md whitespace-nowrap"
-              style={{
-                background: 'rgba(10,10,20,0.96)',
-                border: '1px solid rgba(249,115,22,0.5)',
-                boxShadow: '0 0 10px rgba(249,115,22,0.2)',
-              }}
-            >
-              {skill.label}
-            </div>
-          </motion.div>
-        );
-      })}
-
-      {/* Skill badges — Pass 2 */}
-      {PASS2.map((skill) => {
-        const isLeft  = skill.side === 'left';
-        const topPx   = HEADER_H + skill.connY * IMG_H;
-        return (
-          <motion.div
-            key={skill.id}
-            initial={{ opacity: 0, x: isLeft ? -10 : 10 }}
-            animate={visibleP2.has(skill.id) ? { opacity: 1, x: 0 } : { opacity: 0, x: isLeft ? -10 : 10 }}
-            transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute flex items-center"
-            style={{
-              top: topPx,
-              [isLeft ? 'left' : 'right']: 0,
-              transform: 'translateY(-50%)',
-              flexDirection: isLeft ? 'row' : 'row-reverse',
-              zIndex: 30,
-            }}
-          >
-            <div
-              className="text-primary text-[9px] font-bold tracking-wider uppercase px-2 py-1.5 rounded-md whitespace-nowrap"
-              style={{
-                background: 'rgba(10,10,20,0.96)',
-                border: '1px solid rgba(249,115,22,0.5)',
-                boxShadow: '0 0 10px rgba(249,115,22,0.2)',
-              }}
-            >
-              {skill.label}
-            </div>
-          </motion.div>
-        );
-      })}
-
-      {/* Card — centered within CTR_W container */}
+      {/* Card with hover tilt */}
       <motion.div
         style={{
           rotateX: rx, rotateY: ry,
+          position: 'absolute', left: SIDE_PAD, top: 0,
           width: CARD_W, height: CARD_H,
-          position: 'absolute',
-          left: SIDE_PAD, top: 0,
+          transformStyle: 'preserve-3d',
         }}
-        className="overflow-visible rounded-2xl"
-        transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+        className="rounded-2xl"
       >
-        {/* Card interior (clips inside) */}
-        <div
-          className="absolute inset-0 rounded-2xl overflow-hidden"
-          style={{ boxShadow: '0 24px 70px rgba(0,0,0,0.5), 0 0 0 1px rgba(249,115,22,0.28)' }}
-        >
-          {/* Dark bg */}
-          <div className="absolute inset-0 bg-[#0D0D1A]" />
-
-          {/* Header bar */}
-          <div
-            className="relative z-10 flex items-center justify-between px-4"
-            style={{ height: HEADER_H }}
-          >
+        <div className="absolute inset-0 rounded-2xl overflow-hidden"
+          style={{ boxShadow: '0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(249,115,22,0.3)' }}>
+          <div className="absolute inset-0 bg-[#0D0D1A]"/>
+          <div className="relative z-10 flex items-center justify-between px-4" style={{ height: HEADER_H }}>
             <div className="flex items-center gap-1.5">
-              <div className="w-1.5 h-1.5 rounded-full bg-primary" style={{ animation: 'pulse 2s ease-in-out infinite' }} />
+              <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"/>
               <span className="text-primary font-bold tracking-[0.18em] uppercase" style={{ fontSize: 9 }}>Abhishek.eth</span>
             </div>
             <span className="font-bold tracking-widest text-white/25 uppercase" style={{ fontSize: 8 }}>NFT · #001</span>
           </div>
 
-          {/* Avatar + anatomy reveal */}
           <div className="relative overflow-hidden" style={{ height: IMG_H }}>
-            {/* Avatar image */}
             <img
               src={`${import.meta.env.BASE_URL}images/nft-avatar.png`}
               alt="Abhishek Kumar"
               className="absolute inset-0 w-full h-full object-cover object-top"
               style={{ zIndex: 1 }}
             />
-
-            {/* Anatomy SVG — clipped to reveal window */}
-            <AnatomySvg svgRef={anatomyRef} />
-
-            {/* Scanner line — travels via direct DOM update */}
-            <div
-              ref={scanLineEl}
-              className="absolute inset-x-0 pointer-events-none"
-              style={{ top: 0, height: 56, opacity: 0, zIndex: 15 }}
-            >
-              <div className="absolute inset-x-0 bottom-1/2 h-10"
-                style={{ background: 'linear-gradient(to top, rgba(249,115,22,0.22), transparent)' }} />
+            <AnatomySvg svgRef={anatomyRef}/>
+            <div ref={scanLineEl} className="absolute inset-x-0 pointer-events-none"
+              style={{ top: 0, height: 64, opacity: 0, zIndex: 15 }}>
+              <div className="absolute inset-x-0 bottom-1/2 h-12"
+                style={{ background: 'linear-gradient(to top, rgba(249,115,22,0.25), transparent)' }}/>
               <div className="absolute inset-x-0 top-1/2 -translate-y-1/2"
-                style={{ height: 2, background: 'linear-gradient(90deg, transparent 0%, rgba(249,115,22,0.8) 25%, white 50%, rgba(249,115,22,0.8) 75%, transparent 100%)', boxShadow: '0 0 16px 3px rgba(249,115,22,0.65)' }} />
-              <div className="absolute inset-x-0 top-1/2 h-10"
-                style={{ background: 'linear-gradient(to bottom, rgba(249,115,22,0.22), transparent)' }} />
+                style={{ height: 2, background: 'linear-gradient(90deg, transparent 0%, rgba(249,115,22,0.85) 20%, white 50%, rgba(249,115,22,0.85) 80%, transparent 100%)', boxShadow: '0 0 18px 4px rgba(249,115,22,0.7)' }}/>
+              <div className="absolute inset-x-0 top-1/2 h-12"
+                style={{ background: 'linear-gradient(to bottom, rgba(249,115,22,0.25), transparent)' }}/>
             </div>
           </div>
 
-          {/* Traits strip */}
-          <div
-            className="relative z-10 flex items-center px-4 gap-4"
-            style={{ height: TRAITS_H, background: 'rgba(8,8,16,0.97)', borderTop: '1px solid rgba(249,115,22,0.15)' }}
-          >
-            {[
-              { k: 'ROLE', v: 'Web3 Marketer' },
-              { k: 'BASE', v: 'Hyderabad' },
-              { k: 'EDITION', v: '#001' },
-            ].map((t) => (
+          <div className="relative z-10 flex items-center px-4 gap-4"
+            style={{ height: TRAITS_H, background: 'rgba(6,6,14,0.97)', borderTop: '1px solid rgba(249,115,22,0.15)' }}>
+            {[{ k: 'ROLE', v: 'Web3 Marketer' }, { k: 'BASE', v: 'Hyderabad' }, { k: 'EDITION', v: '#001' }].map(t => (
               <div key={t.k} className="flex flex-col">
                 <span className="font-bold tracking-widest text-primary/40 uppercase" style={{ fontSize: 7 }}>{t.k}</span>
                 <span className="font-semibold text-white/75" style={{ fontSize: 10 }}>{t.v}</span>
@@ -489,120 +289,126 @@ function NftScannerCard() {
         </div>
       </motion.div>
 
-      {/* Ambient glow */}
-      <div
-        className="absolute pointer-events-none rounded-3xl"
-        style={{
-          inset: 0,
-          left: SIDE_PAD - 20,
-          right: SIDE_PAD - 20,
-          boxShadow: '0 0 100px 15px rgba(249,115,22,0.07)',
-        }}
-      />
+      {/* Connector lines + target dots + skill badges — all in outer container coords */}
+      <svg width={CTR_W} height={CARD_H} className="absolute inset-0 pointer-events-none" style={{ zIndex: 25, overflow: 'visible' }}>
+        {activeSkills.map(s => {
+          const tx = SIDE_PAD + s.connX * CARD_W;
+          const ty = HEADER_H + s.connY * IMG_H;
+          const edgeX = s.side === 'left' ? SIDE_PAD : SIDE_PAD + CARD_W;
+          const badgeX = s.side === 'left' ? SIDE_PAD - 12 : SIDE_PAD + CARD_W + 12;
+
+          return (
+            <g key={s.id} className="skill-connector" style={{ animation: 'fadeIn 0.35s ease-out forwards' }}>
+              <line x1={badgeX} y1={ty} x2={edgeX} y2={ty} stroke="rgba(249,115,22,0.5)" strokeWidth="1" strokeDasharray="4 3"/>
+              <line x1={edgeX} y1={ty} x2={tx} y2={ty} stroke="rgba(249,115,22,0.6)" strokeWidth="1" strokeDasharray="3 2"/>
+              <circle cx={tx} cy={ty} r="5" fill="none" stroke="#F97316" strokeWidth="1" opacity="0.5">
+                <animate attributeName="r" values="5;8;5" dur="1.5s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.5;0.2;0.5" dur="1.5s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx={tx} cy={ty} r="3" fill="#F97316" opacity="0.9" filter="url(#g1)"/>
+            </g>
+          );
+        })}
+      </svg>
+
+      {/* Skill badges */}
+      {activeSkills.map(s => {
+        const ty = HEADER_H + s.connY * IMG_H;
+        const isLeft = s.side === 'left';
+        return (
+          <motion.div
+            key={s.id}
+            initial={{ opacity: 0, x: isLeft ? -14 : 14, scale: 0.92 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute"
+            style={{
+              top: ty,
+              [isLeft ? 'left' : 'right']: 0,
+              transform: 'translateY(-50%)',
+              zIndex: 30,
+            }}
+          >
+            <div
+              className="text-[9px] font-bold tracking-wider uppercase px-2.5 py-1.5 rounded-md whitespace-nowrap"
+              style={{
+                color: '#F97316',
+                background: 'rgba(8,8,18,0.96)',
+                border: '1px solid rgba(249,115,22,0.5)',
+                boxShadow: '0 0 12px rgba(249,115,22,0.25), inset 0 0 8px rgba(249,115,22,0.08)',
+              }}
+            >
+              {s.label}
+            </div>
+          </motion.div>
+        );
+      })}
+
+      <div className="absolute pointer-events-none" style={{
+        left: SIDE_PAD - 20, right: SIDE_PAD - 20, top: -10, bottom: -10,
+        boxShadow: '0 0 100px 15px rgba(249,115,22,0.06)', borderRadius: 24,
+      }}/>
     </div>
   );
 }
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 export function Hero() {
-  const scrollTo = (href: string) => document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+  const scrollTo = (h: string) => document.querySelector(h)?.scrollIntoView({ behavior: 'smooth' });
 
   return (
     <section id="home" className="relative min-h-[100svh] flex flex-col justify-center pt-20 overflow-hidden bg-background">
-
-      {/* Dot background */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: 'radial-gradient(circle, rgba(156,163,175,0.55) 1px, transparent 1px)',
-          backgroundSize: '22px 22px',
-        }}
-      />
-      {/* Vignette to fade dots at edges */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 75% 75% at 50% 50%, transparent 35%, hsl(var(--background)) 100%)' }}
-      />
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ backgroundImage: 'radial-gradient(circle, rgba(156,163,175,0.5) 1px, transparent 1px)', backgroundSize: '22px 22px' }}/>
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 70% 70% at 50% 50%, transparent 30%, hsl(var(--background)) 100%)' }}/>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-14">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-4 min-h-[84vh] py-12 lg:py-0">
 
-          {/* ── LEFT: Text ── */}
           <div className="flex-1 max-w-[520px] w-full">
-
-            {/* Eyebrow */}
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45 }}
-              className="flex items-center gap-3 mb-5"
-            >
-              <span className="h-px w-7 bg-primary flex-shrink-0" />
+            <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}
+              className="flex items-center gap-3 mb-5">
+              <span className="h-px w-7 bg-primary flex-shrink-0"/>
               <span className="text-[11px] font-bold tracking-[0.2em] text-muted-foreground uppercase">
                 Content, Narrative &amp; Growth | Web3
               </span>
             </motion.div>
 
-            {/* Headline */}
             <motion.h1
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.08 }}
               className="font-display font-black leading-[1.06] text-foreground mb-5"
-              style={{ fontSize: 'clamp(2.1rem, 4vw, 3.5rem)' }}
-            >
+              style={{ fontSize: 'clamp(2.1rem, 4vw, 3.5rem)' }}>
               I turn protocol complexity into{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
-                narratives
-              </span>{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">narratives</span>{' '}
               communities can rally around.
             </motion.h1>
 
-            {/* Subheadline */}
-            <motion.p
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
+            <motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.18 }}
-              className="text-[15px] text-muted-foreground leading-relaxed mb-9 max-w-[440px]"
-            >
-              From launch messaging and X-first content to ecosystem education and community activation, I help Web3 projects earn attention, build trust, and convert hype into sustained participation.
+              className="text-[15px] text-muted-foreground leading-relaxed mb-9 max-w-[440px]">
+              From launch messaging and X-first content to ecosystem education and community activation,
+              I help Web3 projects earn attention, build trust, and convert hype into sustained participation.
             </motion.p>
 
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
+            <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.28 }}
-              className="flex flex-wrap items-center gap-3 mb-9"
-            >
-              <Button
-                size="lg"
-                variant="primary"
-                className="rounded-full group"
-                onClick={() => scrollTo('#work')}
-              >
-                View Case Studies
-                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              className="flex flex-wrap items-center gap-3 mb-9">
+              <Button size="lg" variant="primary" className="rounded-full group" onClick={() => scrollTo('#work')}>
+                View Case Studies <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"/>
               </Button>
-              <a
-                href="/resume.pdf"
-                download
-                className="inline-flex items-center gap-2 text-sm font-semibold border border-border px-5 py-2.5 rounded-full hover:border-primary/50 hover:text-primary transition-colors"
-              >
-                <Download className="w-4 h-4" />
-                Download Resume
+              <a href="/resume.pdf" download
+                className="inline-flex items-center gap-2 text-sm font-semibold border border-border px-5 py-2.5 rounded-full hover:border-primary/50 hover:text-primary transition-colors">
+                <Download className="w-4 h-4"/> Download Resume
               </a>
             </motion.div>
 
-            {/* Brand pills */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="flex flex-wrap gap-2 items-center"
-            >
+              className="flex flex-wrap gap-2 items-center">
               <span className="text-[9px] font-bold tracking-widest text-muted-foreground/40 uppercase mr-1">Worked with</span>
-              {['Blockwiz', 'KuCoin', 'Glimpse', 'Reneverse', 'Gamestar'].map((b) => (
+              {['Blockwiz', 'KuCoin', 'Glimpse', 'Reneverse', 'Gamestar'].map(b => (
                 <span key={b} className="text-[10px] font-semibold text-muted-foreground/50 border border-border px-2.5 py-1 rounded-full hover:border-primary/40 hover:text-foreground transition-colors cursor-default">
                   {b}
                 </span>
@@ -610,32 +416,29 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* ── RIGHT: NFT Scanner Card ── */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="flex-shrink-0 flex items-center justify-center"
-          >
-            <NftScannerCard />
+            className="flex-shrink-0">
+            <NftScannerCard/>
           </motion.div>
-
         </div>
       </div>
 
-      {/* Scroll cue */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.8, duration: 1 }}
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.8, duration: 1 }}
         className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 cursor-pointer"
-        onClick={() => scrollTo('#about')}
-      >
+        onClick={() => scrollTo('#about')}>
         <span className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground/40 font-medium">Scroll</span>
         <motion.div animate={{ y: [0, 6, 0] }} transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}>
-          <ChevronDown className="w-4 h-4 text-primary/50" />
+          <ChevronDown className="w-4 h-4 text-primary/50"/>
         </motion.div>
       </motion.div>
+
+      <style>{`
+        @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+        .skill-connector { opacity: 0; animation: fadeIn 0.35s ease-out forwards; }
+      `}</style>
     </section>
   );
 }
