@@ -255,7 +255,7 @@ function NftScannerCard() {
           <div className="relative z-10 flex items-center justify-between px-4" style={{ height: HEADER_H }}>
             <div className="flex items-center gap-1.5">
               <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"/>
-              <span className="text-primary font-bold tracking-[0.18em] uppercase" style={{ fontSize: 9 }}>Abhishek.eth</span>
+              <span className="text-primary font-bold tracking-[0.18em] uppercase" style={{ fontSize: 9 }}>iamabhishek.crypto</span>
             </div>
             <span className="font-bold tracking-widest text-white/25 uppercase" style={{ fontSize: 8 }}>NFT · #001</span>
           </div>
@@ -310,7 +310,7 @@ function NftScannerCard() {
 
           <div className="relative z-10 flex items-center px-4 gap-4"
             style={{ height: TRAITS_H, background: 'rgba(6,6,14,0.97)', borderTop: '1px solid rgba(249,115,22,0.15)' }}>
-            {[{ k: 'ROLE', v: 'Web3 Marketer' }, { k: 'BASE', v: 'Hyderabad' }, { k: 'EDITION', v: '#001' }].map(t => (
+            {[{ k: 'ROLE', v: 'Web3 Narrative Strategist' }, { k: 'BASE', v: 'Hyderabad' }, { k: 'EDITION', v: '#001' }].map(t => (
               <div key={t.k} className="flex flex-col">
                 <span className="font-bold tracking-widest text-primary/40 uppercase" style={{ fontSize: 7 }}>{t.k}</span>
                 <span className="font-semibold text-white/75" style={{ fontSize: 10 }}>{t.v}</span>
