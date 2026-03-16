@@ -16,7 +16,7 @@ const FEATURED = [
   },
   {
     project: 'Reneverse',
-    descriptor: 'Gaming NFT Universe',
+    descriptor: 'Web3 Gaming Protocol',
     metric: 'Genesis',
     stats: [
       { value: '6+', label: 'channels owned' },
@@ -51,7 +51,7 @@ const SUPPORTING = [
   },
   {
     project: 'Gamestar Exchange',
-    descriptor: 'GameFi Token Exchange',
+    descriptor: 'P2P Crypto Exchange',
     metric: '6 hrs',
     metricSub: '$GMS IDO sellout',
     body: 'Engineered the content spine around the $GMS IDO — from hype-building social cadence to sharper sell-through messaging — contributing to a full sellout in under 6 hours.',
