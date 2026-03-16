@@ -329,7 +329,7 @@ export function SelectedImpact() {
         >
           <span className="h-px w-6 bg-primary flex-shrink-0" />
           <span className="text-[11px] font-bold tracking-[0.22em] text-primary/60 uppercase font-mono">
-            Selected Impact
+            Operator-led outcomes
           </span>
         </motion.div>
 
@@ -342,7 +342,7 @@ export function SelectedImpact() {
             className="font-display font-black text-foreground leading-tight"
             style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.025em' }}
           >
-            Operator-led outcomes.
+            Selected Impact.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
