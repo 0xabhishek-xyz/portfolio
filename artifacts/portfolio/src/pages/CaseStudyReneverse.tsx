@@ -24,7 +24,7 @@ const FACTIONS = [
     attributes: [
       { key: 'ROLE', value: 'Combatant' },
       { key: 'ENERGY', value: 'Extreme' },
-      { key: 'SUPPLY', value: '333 / 999' },
+      { key: 'TIER', value: 'Epic' },
     ],
     color: '#EF4444',
     glow: 'rgba(239,68,68,0.2)',
@@ -56,7 +56,7 @@ const FACTIONS = [
     attributes: [
       { key: 'ROLE', value: 'Diplomat' },
       { key: 'ENERGY', value: 'Balanced' },
-      { key: 'SUPPLY', value: '333 / 999' },
+      { key: 'TIER', value: 'Rare' },
     ],
     color: '#06B6D4',
     glow: 'rgba(6,182,212,0.2)',
@@ -92,7 +92,7 @@ const FACTIONS = [
     attributes: [
       { key: 'ROLE', value: 'Sovereign' },
       { key: 'ENERGY', value: 'Mythic' },
-      { key: 'SUPPLY', value: '333 / 999' },
+      { key: 'TIER', value: 'Common' },
     ],
     color: '#A855F7',
     glow: 'rgba(168,85,247,0.2)',
@@ -458,12 +458,12 @@ export default function CaseStudyReneverse() {
                   {/* ── Footer rarity bar ── */}
                   <div className="px-5 pb-4 pt-1">
                     <div className="h-[3px] rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                      <div className="h-full rounded-full" style={{ width: i === 0 ? '72%' : i === 1 ? '58%' : '88%', background: `linear-gradient(90deg, ${faction.color}90, ${faction.color})` }} />
+                      <div className="h-full rounded-full" style={{ width: i === 0 ? '92%' : i === 1 ? '68%' : '34%', background: `linear-gradient(90deg, ${faction.color}90, ${faction.color})` }} />
                     </div>
                     <div className="flex items-center justify-between mt-1.5">
                       <span className="text-[8px] font-bold tracking-[0.2em] uppercase font-mono" style={{ color: 'rgba(255,255,255,0.2)' }}>RARITY SCORE</span>
                       <span className="text-[8px] font-bold font-mono" style={{ color: faction.color, opacity: 0.5 }}>
-                        {i === 0 ? '72' : i === 1 ? '58' : '88'} / 100
+                        {i === 0 ? '92' : i === 1 ? '68' : '34'} / 100
                       </span>
                     </div>
                   </div>
