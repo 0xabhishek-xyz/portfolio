@@ -611,14 +611,12 @@ export default function CaseStudyEncapsulate() {
               ))}
             </div>
 
-            <div
-              className="flex items-center gap-2 text-sm font-medium cursor-not-allowed"
-              style={{ color: 'rgba(0,0,0,0.2)' }}
-              title="Coming soon"
-            >
-              Reneverse
-              <ArrowRight size={14} />
-            </div>
+            <Link href="/case-studies/reneverse">
+              <a className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group">
+                Reneverse
+                <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+              </a>
+            </Link>
           </div>
         </section>
 
