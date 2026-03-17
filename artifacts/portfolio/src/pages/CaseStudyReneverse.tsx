@@ -18,30 +18,111 @@ function scrollFade(delay = 0) {
 const FACTIONS = [
   {
     name: 'Darkrage',
-    archetype: 'Aggression · Resistance · War',
-    description: 'The combative faction — those who choose to fight the incursion with force. Darkrage holders occupy the most battle-hardened, high-stakes position in the Reneverse universe.',
-    traits: ['Aggression', 'Resistance', 'Combat'],
+    id: '#001',
+    title: 'The Warriors',
+    description: 'Those who chose to fight the incursion with force. The most battle-hardened, high-stakes position in the Reneverse universe.',
+    attributes: [
+      { key: 'ROLE', value: 'Combatant' },
+      { key: 'ENERGY', value: 'Extreme' },
+      { key: 'SUPPLY', value: '333 / 999' },
+    ],
     color: '#EF4444',
-    glow: 'rgba(239,68,68,0.15)',
-    border: 'rgba(239,68,68,0.35)',
+    glow: 'rgba(239,68,68,0.2)',
+    border: 'rgba(239,68,68,0.4)',
+    art: (c: string) => (
+      <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+        <defs>
+          <radialGradient id="dg1" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stopColor={c} stopOpacity="0.18" />
+            <stop offset="100%" stopColor={c} stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <rect width="200" height="160" fill="url(#dg1)" />
+        <polygon points="30,150 90,30 115,90 75,85" fill="none" stroke={c} strokeWidth="1" strokeOpacity="0.35" />
+        <polygon points="95,155 165,45 185,105 148,95" fill="none" stroke={c} strokeWidth="0.8" strokeOpacity="0.2" />
+        <polyline points="20,160 60,95 90,130 120,55 150,110 180,60" fill="none" stroke={c} strokeWidth="1.5" strokeOpacity="0.5" strokeLinejoin="round" />
+        <circle cx="100" cy="82" r="3.5" fill={c} opacity="0.9" />
+        <circle cx="100" cy="82" r="10" fill={c} opacity="0.1" />
+        <line x1="30" y1="20" x2="170" y2="20" stroke={c} strokeWidth="0.5" strokeOpacity="0.15" />
+        <line x1="30" y1="140" x2="170" y2="140" stroke={c} strokeWidth="0.5" strokeOpacity="0.15" />
+      </svg>
+    ),
   },
   {
     name: 'Frostshield',
-    archetype: 'Diplomacy · Peace · Balance',
-    description: 'The peacekeeper faction — those who seek negotiated coexistence over conflict. Frostshield holders represent the bridge between factions and ecosystems.',
-    traits: ['Diplomacy', 'Balance', 'Alliance'],
+    id: '#002',
+    title: 'The Peacekeepers',
+    description: 'Those who sought negotiated coexistence over conflict. The bridge between factions and ecosystems in the Reneverse world.',
+    attributes: [
+      { key: 'ROLE', value: 'Diplomat' },
+      { key: 'ENERGY', value: 'Balanced' },
+      { key: 'SUPPLY', value: '333 / 999' },
+    ],
     color: '#06B6D4',
-    glow: 'rgba(6,182,212,0.15)',
-    border: 'rgba(6,182,212,0.35)',
+    glow: 'rgba(6,182,212,0.2)',
+    border: 'rgba(6,182,212,0.4)',
+    art: (c: string) => (
+      <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+        <defs>
+          <radialGradient id="fg1" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stopColor={c} stopOpacity="0.14" />
+            <stop offset="100%" stopColor={c} stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <rect width="200" height="160" fill="url(#fg1)" />
+        <polygon points="100,18 132,48 132,112 100,142 68,112 68,48" fill="none" stroke={c} strokeWidth="1" strokeOpacity="0.35" />
+        <polygon points="100,38 118,55 118,105 100,122 82,105 82,55" fill="none" stroke={c} strokeWidth="0.8" strokeOpacity="0.2" />
+        <polygon points="100,58 111,68 111,92 100,102 89,92 89,68" fill={c} fillOpacity="0.08" stroke={c} strokeWidth="1" strokeOpacity="0.4" />
+        <line x1="100" y1="8" x2="100" y2="18" stroke={c} strokeWidth="1.5" strokeOpacity="0.6" />
+        <line x1="100" y1="142" x2="100" y2="152" stroke={c} strokeWidth="1.5" strokeOpacity="0.6" />
+        <line x1="28" y1="48" x2="36" y2="52" stroke={c} strokeWidth="1.5" strokeOpacity="0.4" />
+        <line x1="164" y1="48" x2="172" y2="52" stroke={c} strokeWidth="1.5" strokeOpacity="0.4" />
+        <circle cx="100" cy="80" r="4" fill={c} opacity="0.85" />
+        <circle cx="100" cy="80" r="12" fill={c} opacity="0.07" />
+        <circle cx="40" cy="35" r="1.5" fill={c} opacity="0.5" />
+        <circle cx="160" cy="130" r="1.5" fill={c} opacity="0.4" />
+      </svg>
+    ),
   },
   {
     name: 'The Noble',
-    archetype: 'Magic · Hope · Majority path',
-    description: 'The largest and most aspirational faction — those who carry the mythological and spiritual weight of the Reneverse world. The Noble represents possibility.',
-    traits: ['Magic', 'Hope', 'Legacy'],
+    id: '#003',
+    title: 'The Chosen',
+    description: 'The majority path — carrying the mythological and spiritual weight of the Reneverse world. The Noble represents possibility itself.',
+    attributes: [
+      { key: 'ROLE', value: 'Sovereign' },
+      { key: 'ENERGY', value: 'Mythic' },
+      { key: 'SUPPLY', value: '333 / 999' },
+    ],
     color: '#A855F7',
-    glow: 'rgba(168,85,247,0.15)',
-    border: 'rgba(168,85,247,0.35)',
+    glow: 'rgba(168,85,247,0.2)',
+    border: 'rgba(168,85,247,0.4)',
+    art: (c: string) => (
+      <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+        <defs>
+          <radialGradient id="ng1" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stopColor={c} stopOpacity="0.16" />
+            <stop offset="100%" stopColor={c} stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <rect width="200" height="160" fill="url(#ng1)" />
+        <circle cx="100" cy="80" r="55" fill="none" stroke={c} strokeWidth="0.7" strokeOpacity="0.2" strokeDasharray="4 4" />
+        <circle cx="100" cy="80" r="38" fill="none" stroke={c} strokeWidth="0.8" strokeOpacity="0.28" />
+        <circle cx="100" cy="80" r="22" fill={c} fillOpacity="0.06" stroke={c} strokeWidth="1" strokeOpacity="0.4" />
+        <circle cx="100" cy="80" r="5" fill={c} opacity="0.9" />
+        <circle cx="100" cy="80" r="13" fill={c} opacity="0.08" />
+        <circle cx="100" cy="42" r="2.5" fill={c} opacity="0.7" />
+        <circle cx="132" cy="100" r="2" fill={c} opacity="0.55" />
+        <circle cx="68" cy="100" r="2" fill={c} opacity="0.55" />
+        <circle cx="50" cy="30" r="1.5" fill={c} opacity="0.4" />
+        <circle cx="155" cy="40" r="1.5" fill={c} opacity="0.35" />
+        <circle cx="160" cy="125" r="1.5" fill={c} opacity="0.4" />
+        <circle cx="45" cy="120" r="1" fill={c} opacity="0.3" />
+        <line x1="100" y1="42" x2="100" y2="58" stroke={c} strokeWidth="0.8" strokeOpacity="0.4" />
+        <line x1="132" y1="100" x2="122" y2="94" stroke={c} strokeWidth="0.8" strokeOpacity="0.35" />
+        <line x1="68" y1="100" x2="78" y2="94" stroke={c} strokeWidth="0.8" strokeOpacity="0.35" />
+      </svg>
+    ),
   },
 ];
 
@@ -307,46 +388,84 @@ export default function CaseStudyReneverse() {
               The strongest NFT launches don't just market images — they market <em className="text-white/65">belonging, myth, and future participation</em>. So the first move was to make the drop feel like an entry point into a living universe. The Reneverse story established a 2150 setting, a technologically dominant human race, one coveted virtual land under threat — and three distinct ways to respond to that threat.
             </motion.p>
 
-            {/* Faction cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {/* NFT Faction cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {FACTIONS.map((faction, i) => (
                 <motion.div
                   key={faction.name}
                   {...scrollFade(i * 0.1)}
-                  className="rounded-2xl p-7 flex flex-col gap-5 relative overflow-hidden"
+                  className="rounded-2xl flex flex-col overflow-hidden relative"
                   style={{
-                    background: 'rgba(255,255,255,0.03)',
+                    background: 'rgba(12,12,22,0.9)',
                     border: `1px solid ${faction.border}`,
-                    boxShadow: `0 0 40px ${faction.glow}`,
+                    boxShadow: `0 0 50px ${faction.glow}, 0 0 0 1px rgba(255,255,255,0.03) inset`,
                   }}
                 >
-                  {/* Ghost faction name */}
-                  <span className="absolute -bottom-2 -right-2 font-black select-none pointer-events-none font-display leading-none" style={{ fontSize: '5.5rem', color: faction.color, opacity: 0.06, letterSpacing: '-0.04em' }}>
-                    {faction.name.split(' ')[0]}
-                  </span>
-
-                  {/* Color dot */}
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full" style={{ background: faction.color, boxShadow: `0 0 8px ${faction.color}` }} />
-                    <span className="text-[9.5px] font-bold tracking-[0.22em] uppercase font-mono" style={{ color: faction.color, opacity: 0.7 }}>
-                      {faction.archetype}
+                  {/* ── Card header bar ── */}
+                  <div className="flex items-center justify-between px-4 py-2.5" style={{ borderBottom: `1px solid ${faction.border}`, background: `${faction.color}08` }}>
+                    <span className="text-[8.5px] font-black tracking-[0.28em] uppercase font-mono" style={{ color: faction.color, opacity: 0.7 }}>
+                      RENEVERSE // GENESIS
+                    </span>
+                    <span className="text-[9px] font-bold font-mono" style={{ color: faction.color, opacity: 0.5 }}>
+                      {faction.id}
                     </span>
                   </div>
 
-                  <h3 className="font-display font-black text-white leading-none" style={{ fontSize: '1.5rem', letterSpacing: '-0.025em' }}>
-                    {faction.name}
-                  </h3>
+                  {/* ── Art zone ── */}
+                  <div className="relative overflow-hidden" style={{ height: 160, background: `${faction.color}05` }}>
+                    {/* scanline overlay */}
+                    <div className="absolute inset-0 pointer-events-none z-10" style={{
+                      backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px)',
+                    }} />
+                    {faction.art(faction.color)}
+                  </div>
 
-                  <p className="text-[13px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.45)' }}>
-                    {faction.description}
-                  </p>
+                  {/* ── Name + title ── */}
+                  <div className="px-5 pt-4 pb-3" style={{ borderBottom: `1px solid ${faction.border}` }}>
+                    <h3 className="font-display font-black text-white leading-tight" style={{ fontSize: '1.35rem', letterSpacing: '-0.025em' }}>
+                      {faction.name}
+                    </h3>
+                    <p className="text-[10.5px] font-bold tracking-widest uppercase font-mono mt-0.5" style={{ color: faction.color, opacity: 0.6 }}>
+                      {faction.title}
+                    </p>
+                  </div>
 
-                  <div className="flex flex-wrap gap-1.5 pt-4" style={{ borderTop: `1px solid ${faction.border}` }}>
-                    {faction.traits.map(t => (
-                      <span key={t} className="text-[9px] font-bold tracking-widest uppercase px-2 py-1 rounded font-mono" style={{ color: faction.color, background: `${faction.color}10`, border: `1px solid ${faction.color}30` }}>
-                        {t}
-                      </span>
+                  {/* ── Description ── */}
+                  <div className="px-5 py-3" style={{ borderBottom: `1px solid ${faction.border}` }}>
+                    <p className="text-[12.5px] leading-[1.65]" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                      {faction.description}
+                    </p>
+                  </div>
+
+                  {/* ── NFT attribute table ── */}
+                  <div className="px-5 py-3 flex flex-col gap-0">
+                    {faction.attributes.map((attr, ai) => (
+                      <div
+                        key={attr.key}
+                        className="flex items-center justify-between py-1.5"
+                        style={{ borderBottom: ai < faction.attributes.length - 1 ? `1px solid ${faction.border}` : 'none', opacity: ai === 0 ? 0.8 : ai === 1 ? 0.65 : 0.45 }}
+                      >
+                        <span className="text-[9px] font-black tracking-[0.22em] uppercase font-mono" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                          {attr.key}
+                        </span>
+                        <span className="text-[10.5px] font-bold font-mono" style={{ color: faction.color }}>
+                          {attr.value}
+                        </span>
+                      </div>
                     ))}
+                  </div>
+
+                  {/* ── Footer rarity bar ── */}
+                  <div className="px-5 pb-4 pt-1">
+                    <div className="h-[3px] rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                      <div className="h-full rounded-full" style={{ width: i === 0 ? '72%' : i === 1 ? '58%' : '88%', background: `linear-gradient(90deg, ${faction.color}90, ${faction.color})` }} />
+                    </div>
+                    <div className="flex items-center justify-between mt-1.5">
+                      <span className="text-[8px] font-bold tracking-[0.2em] uppercase font-mono" style={{ color: 'rgba(255,255,255,0.2)' }}>RARITY SCORE</span>
+                      <span className="text-[8px] font-bold font-mono" style={{ color: faction.color, opacity: 0.5 }}>
+                        {i === 0 ? '72' : i === 1 ? '58' : '88'} / 100
+                      </span>
+                    </div>
                   </div>
                 </motion.div>
               ))}
