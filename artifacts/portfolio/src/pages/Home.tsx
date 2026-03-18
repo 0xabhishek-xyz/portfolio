@@ -4,6 +4,7 @@ import { Hero } from '@/components/sections/Hero';
 import { NarrativeImpactGrid } from '@/components/sections/NarrativeImpactGrid';
 import { SelectedImpact } from '@/components/sections/SelectedImpact';
 import { CaseStudies } from '@/components/sections/CaseStudies';
+import { Writing } from '@/components/sections/Writing';
 import { About } from '@/components/sections/About';
 import { Experience } from '@/components/sections/Experience';
 import { Skills } from '@/components/sections/Skills';
@@ -21,6 +22,7 @@ export default function Home() {
         <NarrativeImpactGrid />
         <SelectedImpact />
         <CaseStudies />
+        <Writing />
         <About />
         <Experience />
         <Skills />
