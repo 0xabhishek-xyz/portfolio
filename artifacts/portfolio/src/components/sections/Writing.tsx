@@ -224,7 +224,7 @@ export function Writing() {
   const [hero, ...secondary] = PIECES;
 
   return (
-    <section id="writing" className="py-20 md:py-28 bg-background">
+    <section id="writing" className="pt-20 pb-12 md:pt-28 md:pb-14 bg-background">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
 
         {/* Section header */}
@@ -265,22 +265,6 @@ export function Writing() {
           ))}
         </div>
 
-        {/* Footer note */}
-        <motion.div {...fadeIn(0.25)} className="mt-10 flex items-center gap-4">
-          <span className="h-px flex-1 bg-border max-w-xs" />
-          <p className="text-[11px] text-muted-foreground/40 font-mono">
-            All pieces published on{' '}
-            <a
-              href="https://encapsulate.xyz/blog"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary/50 hover:text-primary/80 transition-colors underline underline-offset-2"
-            >
-              encapsulate.xyz
-            </a>
-            {' '}· Links open in new tab
-          </p>
-        </motion.div>
 
       </div>
     </section>
