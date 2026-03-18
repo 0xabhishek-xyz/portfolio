@@ -1,142 +1,223 @@
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Phone, Mail, MapPin } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
+import { ArrowUpRight, Mail, Linkedin, Calendar } from 'lucide-react';
+
+function fadeUp(delay = 0) {
+  return {
+    initial: { opacity: 0, y: 28 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: '-40px' },
+    transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] },
+  };
+}
 
 export function Contact() {
-  const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast({
-        title: "Message sent!",
-        description: "Thanks for reaching out. Abhishek will get back to you soon.",
-      });
-      (e.target as HTMLFormElement).reset();
-    }, 1500);
-  };
-
   return (
-    <section id="contact" className="py-24 md:py-32 bg-foreground text-background relative overflow-hidden">
-      
-      {/* Decorative large text background */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none opacity-5">
-        <span className="text-[15vw] font-display font-bold whitespace-nowrap leading-none">CONNECT</span>
+    <section
+      id="contact"
+      className="relative overflow-hidden"
+      style={{ background: '#030609' }}
+    >
+      {/* Ghost word — backdrop */}
+      <div
+        className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
+        aria-hidden="true"
+      >
+        <span
+          className="font-display font-black whitespace-nowrap"
+          style={{
+            fontSize: 'clamp(12rem, 28vw, 26rem)',
+            letterSpacing: '-0.06em',
+            lineHeight: 1,
+            color: 'rgba(249,115,22,0.028)',
+          }}
+        >
+          TALK
+        </span>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+      {/* Subtle radial glow behind CTA area */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(ellipse 60% 50% at 50% 60%, rgba(249,115,22,0.055) 0%, transparent 70%)',
+        }}
+      />
+
+      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12 py-28 md:py-40">
+
+        {/* Availability signal */}
+        <motion.div {...fadeUp()} className="flex items-center gap-2.5 mb-12">
+          <span className="relative flex h-2.5 w-2.5">
+            <span
+              className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-60"
+              style={{ background: '#22C55E' }}
+            />
+            <span
+              className="relative inline-flex rounded-full h-2.5 w-2.5"
+              style={{ background: '#22C55E' }}
+            />
+          </span>
+          <span
+            className="font-mono text-[11.5px] tracking-[0.14em] uppercase"
+            style={{ color: 'rgba(255,255,255,0.35)' }}
           >
-            <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">
-              Let's build something <span className="text-primary">remarkable.</span>
-            </h2>
-            <p className="text-xl text-background/70 mb-12 max-w-lg font-light">
-              Looking to launch a token, grow a community, or build a content powerhouse? Let's talk strategy.
-            </p>
+            Available for new projects · Remote-first
+          </span>
+        </motion.div>
 
-            <div className="space-y-6">
-              <a 
-                href="mailto:abhishekkr711@gmail.com" 
-                className="flex items-center gap-4 text-background/80 hover:text-primary transition-colors group w-fit"
-              >
-                <div className="w-12 h-12 rounded-full border border-background/20 flex items-center justify-center group-hover:border-primary transition-colors">
-                  <Mail className="w-5 h-5" />
-                </div>
-                <span className="text-lg font-medium">abhishekkr711@gmail.com</span>
-              </a>
-              <a 
-                href="tel:+918709547249" 
-                className="flex items-center gap-4 text-background/80 hover:text-primary transition-colors group w-fit"
-              >
-                <div className="w-12 h-12 rounded-full border border-background/20 flex items-center justify-center group-hover:border-primary transition-colors">
-                  <Phone className="w-5 h-5" />
-                </div>
-                <span className="text-lg font-medium">+91 8709547249</span>
-              </a>
-              <div className="flex items-center gap-4 text-background/80 w-fit">
-                <div className="w-12 h-12 rounded-full border border-background/20 flex items-center justify-center">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <span className="text-lg font-medium">Hyderabad, India · Available Remotely</span>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-background/5 p-8 md:p-10 rounded-3xl border border-background/10 backdrop-blur-sm"
+        {/* Headline */}
+        <motion.div {...fadeUp(0.08)} className="mb-8">
+          <h2
+            className="font-display font-black leading-[1.04]"
+            style={{
+              fontSize: 'clamp(3rem, 7vw, 6rem)',
+              letterSpacing: '-0.04em',
+              color: 'rgba(255,255,255,0.92)',
+            }}
           >
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium text-background/80">Name</label>
-                  <input 
-                    id="name"
-                    required
-                    type="text" 
-                    className="w-full bg-background/10 border border-background/20 rounded-xl px-4 py-3 text-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                    placeholder="Your name"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium text-background/80">Email</label>
-                  <input 
-                    id="email"
-                    required
-                    type="email" 
-                    className="w-full bg-background/10 border border-background/20 rounded-xl px-4 py-3 text-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                    placeholder="your@email.com"
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="subject" className="text-sm font-medium text-background/80">Subject</label>
-                <input 
-                  id="subject"
-                  required
-                  type="text" 
-                  className="w-full bg-background/10 border border-background/20 rounded-xl px-4 py-3 text-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                  placeholder="Token launch / Content strategy / IDO..."
-                />
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="message" className="text-sm font-medium text-background/80">Message</label>
-                <textarea 
-                  id="message"
-                  required
-                  rows={4}
-                  className="w-full bg-background/10 border border-background/20 rounded-xl px-4 py-3 text-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none"
-                  placeholder="Tell me about your project and goals..."
-                ></textarea>
-              </div>
-              <Button 
-                type="submit" 
-                variant="primary" 
-                size="lg" 
-                className="w-full"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Sending...' : 'Send Message'}
-              </Button>
-            </form>
-          </motion.div>
+            You{`'`}ve read
+            <br />
+            <span style={{ color: '#F97316' }}>the work.</span>
+          </h2>
+        </motion.div>
 
-        </div>
+        {/* Body copy */}
+        <motion.div {...fadeUp(0.15)} className="mb-14 max-w-2xl">
+          <p
+            className="leading-[1.75]"
+            style={{
+              fontSize: 'clamp(1.05rem, 1.8vw, 1.2rem)',
+              color: 'rgba(255,255,255,0.42)',
+            }}
+          >
+            If your project is hard to explain, trust is hard to earn, and
+            you need someone who works at the layer that makes everything
+            else land —{' '}
+            <span style={{ color: 'rgba(255,255,255,0.72)' }}>
+              that{`'`}s the conversation.
+            </span>
+          </p>
+          <p
+            className="mt-4 leading-[1.75]"
+            style={{
+              fontSize: 'clamp(1.05rem, 1.8vw, 1.2rem)',
+              color: 'rgba(255,255,255,0.42)',
+            }}
+          >
+            Book 30 minutes. Let{`'`}s find out.
+          </p>
+        </motion.div>
+
+        {/* Primary CTA — Calendly */}
+        <motion.div {...fadeUp(0.22)} className="mb-14">
+          <a
+            href="https://calendly.com/abhishekkr711/30min"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-4 font-display font-bold rounded-2xl transition-all duration-200 hover:scale-[1.02] hover:shadow-2xl active:scale-[0.99]"
+            style={{
+              background: '#F97316',
+              color: '#fff',
+              padding: '1.1rem 2.2rem',
+              fontSize: 'clamp(1rem, 1.6vw, 1.2rem)',
+              letterSpacing: '-0.015em',
+              boxShadow: '0 0 0 0 rgba(249,115,22,0)',
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.boxShadow =
+                '0 8px 40px rgba(249,115,22,0.35)';
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.boxShadow =
+                '0 0 0 0 rgba(249,115,22,0)';
+            }}
+          >
+            <Calendar size={18} className="flex-shrink-0" />
+            Book a 30-minute call
+            <ArrowUpRight
+              size={18}
+              className="flex-shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+          </a>
+        </motion.div>
+
+        {/* Secondary contact strip */}
+        <motion.div
+          {...fadeUp(0.3)}
+          className="flex flex-wrap items-center gap-x-6 gap-y-4"
+        >
+          <a
+            href="mailto:abhishekkr711@gmail.com"
+            className="group flex items-center gap-2.5 transition-colors duration-150"
+            style={{ color: 'rgba(255,255,255,0.32)' }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.color = 'rgba(249,115,22,0.75)';
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.32)';
+            }}
+          >
+            <Mail size={13} />
+            <span className="font-mono text-[12px]">abhishekkr711@gmail.com</span>
+          </a>
+
+          <span style={{ color: 'rgba(255,255,255,0.1)' }}>·</span>
+
+          <a
+            href="https://www.linkedin.com/in/abhishek-akoo7/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-2.5 transition-colors duration-150"
+            style={{ color: 'rgba(255,255,255,0.32)' }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.color = 'rgba(249,115,22,0.75)';
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.32)';
+            }}
+          >
+            <Linkedin size={13} />
+            <span className="font-mono text-[12px]">LinkedIn</span>
+            <ArrowUpRight size={10} className="opacity-50" />
+          </a>
+
+          <span style={{ color: 'rgba(255,255,255,0.1)' }}>·</span>
+
+          <span
+            className="font-mono text-[12px]"
+            style={{ color: 'rgba(255,255,255,0.2)' }}
+          >
+            Hyderabad, India
+          </span>
+        </motion.div>
+
+        {/* Bottom signature line */}
+        <motion.div
+          {...fadeUp(0.38)}
+          className="mt-24 pt-8 border-t flex items-center justify-between flex-wrap gap-4"
+          style={{ borderColor: 'rgba(255,255,255,0.05)' }}
+        >
+          <div className="flex items-center gap-2">
+            <span
+              className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"
+              style={{ opacity: 0.6 }}
+            />
+            <span
+              className="font-display font-bold"
+              style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.35)', letterSpacing: '-0.01em' }}
+            >
+              Abhishek Kumar
+            </span>
+          </div>
+          <span
+            className="font-mono text-[10.5px]"
+            style={{ color: 'rgba(255,255,255,0.15)' }}
+          >
+            Content Strategist &amp; Web3 Marketer · Hyderabad, India
+          </span>
+        </motion.div>
+
       </div>
     </section>
   );

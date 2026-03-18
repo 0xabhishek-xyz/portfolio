@@ -6,10 +6,6 @@ import { SelectedImpact } from '@/components/sections/SelectedImpact';
 import { CaseStudies } from '@/components/sections/CaseStudies';
 import { Writing } from '@/components/sections/Writing';
 import { About } from '@/components/sections/About';
-import { Experience } from '@/components/sections/Experience';
-import { Skills } from '@/components/sections/Skills';
-import { Work } from '@/components/sections/Work';
-import { Education } from '@/components/sections/Education';
 import { Contact } from '@/components/sections/Contact';
 import { Footer } from '@/components/layout/Footer';
 
@@ -24,10 +20,6 @@ export default function Home() {
         <CaseStudies />
         <Writing />
         <About />
-        <Experience />
-        <Skills />
-        <Work />
-        <Education />
         <Contact />
       </main>
       <Footer />
