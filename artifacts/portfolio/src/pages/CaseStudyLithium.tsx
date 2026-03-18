@@ -1,97 +1,104 @@
 import { useEffect } from 'react';
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
-import {
-  ArrowLeft, Database, Lock, Users, FileText,
-  Globe, TrendingUp, Award, Layers, Shield,
-  ChevronRight, BookOpen, Zap,
-} from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
-function scrollFade(delay = 0) {
+function fadeIn(delay = 0) {
   return {
-    initial: { opacity: 0, y: 24 },
+    initial: { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, margin: '-60px' },
-    transition: { duration: 0.55, delay },
+    viewport: { once: true, margin: '-40px' },
+    transition: { duration: 0.52, delay },
   };
 }
 
-const MANDATE_LAYERS = [
-  { icon: FileText, num: '01', label: 'Whitepaper Co-authorship', sub: 'First iteration of the protocol document' },
-  { icon: Database, num: '02', label: 'Protocol Explanation', sub: 'Mechanism → market-legible narrative' },
-  { icon: Layers, num: '03', label: 'Narrative Framing', sub: 'Category definition before promotion' },
-  { icon: BookOpen, num: '04', label: 'Educational Translation', sub: 'Complexity compressed without distortion' },
-  { icon: Shield, num: '05', label: 'Market-Facing Positioning', sub: 'Trust-first, not hype-first' },
-  { icon: Globe, num: '06', label: 'Vernacular Explainers', sub: 'Hindi, English, regional formats' },
+const TICKER_ITEMS = [
+  { asset: 'BTC // USD', price: '$67,420.00', feed: 'Chainlink', status: 'LIVE', live: true },
+  { asset: 'ETH // USD', price: '$3,540.12', feed: 'Chainlink', status: 'LIVE', live: true },
+  { asset: 'Series B Pre-IPO', price: '———', feed: 'NO FEED', status: 'UNPRICED', live: false },
+  { asset: 'SOL // USD', price: '$178.44', feed: 'Pyth', status: 'LIVE', live: true },
+  { asset: 'Private Credit Fund', price: '———', feed: 'NO FEED', status: 'UNPRICED', live: false },
+  { asset: 'MATIC // USD', price: '$0.89', feed: 'Band', status: 'LIVE', live: true },
+  { asset: 'PE Portfolio Interest', price: '———', feed: 'NO FEED', status: 'UNPRICED', live: false },
+  { asset: 'Pre-Revenue Startup', price: '———', feed: 'NO FEED', status: 'UNPRICED', live: false },
+  { asset: 'BNB // USD', price: '$412.77', feed: 'Chainlink', status: 'LIVE', live: true },
+  { asset: 'Illiquid PE Note', price: '———', feed: 'NO FEED', status: 'UNPRICED', live: false },
 ];
 
-const FRICTION_CARDS = [
-  {
-    heading: 'Opaque underlying markets',
-    body: "The protocol's pricing inputs came from participants with insight into assets that weren't transparently traded — hidden, fragmented, and socially guarded by nature.",
-    icon: Lock,
-  },
-  {
-    heading: 'No obvious mental shortcut',
-    body: "People had a working model for liquid-asset oracles. A collective-intelligence oracle for illiquid assets was an unfamiliar category — the content had to explain and define at the same time.",
-    icon: Database,
-  },
-  {
-    heading: 'Two-sided ecosystem to convince',
-    body: 'Seekers needed to trust the output. Experts needed to trust the mechanism. Both sides had to be convinced simultaneously, with completely different messages.',
-    icon: Users,
-  },
-  {
-    heading: 'Privacy was part of the product story',
-    body: 'Because submissions involved price-sensitive information, confidentiality was not a side feature — it was a core trust mechanism that had to be woven into the narrative.',
-    icon: Shield,
-  },
+const TABLE_ASSETS = [
+  { name: 'BTC / USD', category: 'Liquid · Crypto', price: '$67,420', feed: 'Chainlink ✓', status: 'LIVE', live: true },
+  { name: 'ETH / USD', category: 'Liquid · Crypto', price: '$3,540', feed: 'Chainlink ✓', status: 'LIVE', live: true },
+  { name: 'SOL / USD', category: 'Liquid · Crypto', price: '$178', feed: 'Pyth ✓', status: 'LIVE', live: true },
+  null,
+  { name: 'Series B Pre-IPO', category: 'Private · Equity', price: '———', feed: '✕ NO FEED', status: 'UNPRICED', live: false },
+  { name: 'Private Credit Fund', category: 'Illiquid · Debt', price: '———', feed: '✕ NO FEED', status: 'UNPRICED', live: false },
+  { name: 'PE Portfolio Interest', category: 'Illiquid · Equity', price: '———', feed: '✕ NO FEED', status: 'UNPRICED', live: false },
+  { name: 'Pre-Revenue Startup', category: 'Private · Early Stage', price: '———', feed: '✕ NO FEED', status: 'UNPRICED', live: false },
 ];
 
-const WHY_WORKED = [
+const MANDATE = [
   {
-    label: 'Category first',
-    body: 'The content defined the problem before promoting the product — making the gap Lithium filled feel real before asking anyone to believe in the solution.',
+    num: '01',
+    label: 'Whitepaper Co-authorship',
+    strategic: 'The whitepaper was not treated as documentation. It was treated as the primary trust-building artifact. For a product this conceptually dense, the quality of the explanation was indistinguishable from the quality of the product in the market\'s perception. A weak whitepaper would have made the protocol look weak — not just the writing.',
   },
   {
-    label: 'Mechanism clarity',
-    body: 'The whitepaper and explainer layer made the protocol design legible without dumbing it down — readers could follow the logic, not just the pitch.',
+    num: '02',
+    label: 'Protocol Explanation',
+    strategic: 'The goal here was not simplification. It was making the mechanism legible without losing the precision that gave it credibility. Oversimplifying the Seeker-Expert dynamic or the reputation clearing mechanism would have stripped the very logic that made the protocol defensible. The challenge was compression without distortion.',
   },
   {
-    label: 'Bridge credibility',
-    body: "The narrative made the move from TradFi opacity to DeFi composability feel strategically inevitable — not experimental, not speculative.",
+    num: '03',
+    label: 'Narrative Framing',
+    strategic: 'The category had to exist before the product could be evaluated. Leading with mechanism before establishing the problem space — why illiquid assets are structurally unpriceable in DeFi — would have lost the audience before they understood why any of this mattered. Category definition came first, always.',
+  },
+  {
+    num: '04',
+    label: 'Educational Translation',
+    strategic: 'The protocol had multiple conceptual layers, each requiring its own entry point. The design challenge was building an education system where each layer reinforced the one before it — so a reader moving from a short explainer to the full whitepaper never felt they had jumped categories.',
+  },
+  {
+    num: '05',
+    label: 'Market-Facing Positioning',
+    strategic: 'Over-marketing Lithium would have backfired. The protocol\'s value came from the rigor of its mechanism, and the market would sense immediately if the communication style was softer than the product deserved. The positioning lane was intellectual credibility — not loudness. The content had to earn belief, not announce it.',
+  },
+  {
+    num: '06',
+    label: 'Vernacular Explainers',
+    strategic: 'Moving into Hindi and regional formats was not a distribution tactic. It was a strategic recognition that comprehension friction is the hardest friction to fix once a product has already launched. If only English-first crypto insiders understood Lithium, the market would stay small by design — not by accident.',
   },
 ];
 
 export default function CaseStudyLithium() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  useEffect(() => { window.scrollTo(0, 0); }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen" style={{ background: '#060C16' }}>
+      <style>{`
+        @keyframes ticker-move {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+        .lith-ticker {
+          animation: ticker-move 45s linear infinite;
+          display: flex;
+          width: max-content;
+        }
+        .lith-ticker:hover { animation-play-state: paused; }
+      `}</style>
 
-      {/* ── Sticky nav ── */}
-      <header
-        className="fixed top-0 left-0 right-0 z-50 border-b border-border"
-        style={{ height: 56, background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(16px)' }}
-      >
+      {/* ── Sticky Nav ── */}
+      <header className="fixed top-0 left-0 right-0 z-50 border-b" style={{ height: 56, background: 'rgba(6,12,22,0.92)', backdropFilter: 'blur(16px)', borderColor: 'rgba(255,255,255,0.07)' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-12 h-full flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group"
-          >
+          <Link href="/" className="flex items-center gap-2 text-sm font-medium transition-colors group" style={{ color: 'rgba(255,255,255,0.4)' }}>
             <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
             Back to work
           </Link>
-          <Link
-            href="/"
-            className="font-display font-bold text-base tracking-tight text-foreground flex items-center gap-1.5"
-          >
+          <Link href="/" className="font-display font-bold text-base tracking-tight flex items-center gap-1.5" style={{ color: 'rgba(255,255,255,0.8)' }}>
             <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
             Abhishek.
           </Link>
-          <span className="text-[10px] font-bold tracking-[0.2em] uppercase font-mono text-primary/55 hidden md:block">
+          <span className="text-[10px] font-bold tracking-[0.2em] uppercase font-mono hidden md:block" style={{ color: 'rgba(249,115,22,0.5)' }}>
             Case Study · 03 / 03
           </span>
         </div>
@@ -99,610 +106,609 @@ export default function CaseStudyLithium() {
 
       <main style={{ paddingTop: 56 }}>
 
-        {/* ══════════════════════════════════
-             HERO — white, analytical, data-grid
-        ══════════════════════════════════ */}
-        <section className="relative pt-20 pb-16 md:pt-28 md:pb-24 overflow-hidden bg-background">
-          {/* Graph-paper grid texture */}
-          <div className="absolute inset-0 pointer-events-none" style={{
-            backgroundImage: 'linear-gradient(rgba(249,115,22,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(249,115,22,0.04) 1px, transparent 1px)',
-            backgroundSize: '40px 40px',
-          }} />
-          {/* Faint large text watermark */}
-          <span className="absolute right-0 top-8 font-black select-none pointer-events-none font-mono text-foreground/[0.022] leading-none" style={{ fontSize: 'clamp(6rem, 18vw, 15rem)', letterSpacing: '-0.06em' }}>
-            ORACLE
-          </span>
-          {/* Bottom fade */}
-          <div className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none" style={{ background: 'linear-gradient(to bottom, transparent, hsl(var(--background)))' }} />
+        {/* ════════════════════════════════════
+            HERO — dark, terminal, oracle feel
+        ════════════════════════════════════ */}
+        <section className="relative overflow-hidden pt-20 pb-0" style={{ background: '#060C16' }}>
+          <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 75% 55% at 35% 65%, rgba(249,115,22,0.05) 0%, transparent 65%)' }} />
 
-          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
-            <motion.div {...scrollFade(0)} className="flex items-center gap-3 mb-8">
+          {/* UNPRICED ghost watermark */}
+          <span
+            className="absolute font-black font-mono select-none pointer-events-none"
+            style={{ bottom: '8%', right: '-2%', fontSize: 'clamp(5rem, 22vw, 20rem)', letterSpacing: '-0.06em', lineHeight: 1, color: 'rgba(255,255,255,0.02)' }}
+          >UNPRICED</span>
+
+          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pb-16">
+            <motion.div {...fadeIn()} className="flex items-center gap-3 mb-8">
               <span className="h-px w-6 bg-primary flex-shrink-0" />
-              <span className="text-[11px] font-bold tracking-[0.22em] text-primary/60 uppercase font-mono">
+              <span className="text-[11px] font-bold tracking-[0.22em] uppercase font-mono" style={{ color: 'rgba(249,115,22,0.55)' }}>
                 Case Study · DeFi Pricing Oracle
               </span>
             </motion.div>
 
             <motion.h1
-              {...scrollFade(0.06)}
-              className="font-display font-black text-foreground leading-[1.02]"
-              style={{ fontSize: 'clamp(2.2rem, 5.5vw, 4.2rem)', letterSpacing: '-0.032em', maxWidth: 860 }}
+              {...fadeIn(0.06)}
+              className="font-display font-black text-white leading-[1.02]"
+              style={{ fontSize: 'clamp(2.4rem, 6.5vw, 5.2rem)', letterSpacing: '-0.038em', maxWidth: 960 }}
             >
               Making one of DeFi's hardest ideas{' '}
-              <span className="text-primary">legible.</span>
+              <span className="text-primary italic" style={{ fontStyle: 'normal' }}>legible.</span>
             </motion.h1>
 
             <motion.p
-              {...scrollFade(0.12)}
-              className="mt-6 text-[1.05rem] leading-relaxed text-muted-foreground max-w-2xl"
+              {...fadeIn(0.12)}
+              className="mt-6 leading-[1.8] max-w-xl"
+              style={{ color: 'rgba(255,255,255,0.42)', fontSize: '1.02rem' }}
             >
-              A collective-intelligence pricing oracle for private and illiquid assets — the kind of DeFi product where communication isn't a wrapper around the tech, it's the bridge that makes the tech trustworthy.
+              A pricing oracle for private and illiquid assets — the kind of DeFi product where the communication layer is not a wrapper around the tech. It is the mechanism that makes the tech trustworthy.
             </motion.p>
 
-            {/* Stat cards */}
-            <motion.div {...scrollFade(0.18)} className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-12">
+            {/* Inline stats row */}
+            <motion.div {...fadeIn(0.18)} className="flex flex-wrap items-center gap-x-8 gap-y-3 mt-10">
               {[
-                { value: 'WP', label: 'Whitepaper co-authored', sub: 'First protocol iteration' },
-                { value: '6', label: 'Mandate layers', sub: 'Strategy to vernacular' },
-                { value: '3', label: 'Languages', sub: 'Hindi · English · Regional' },
-                { value: '7', label: 'Content pillars', sub: 'Mechanism to use case' },
-              ].map((o, i) => (
-                <div key={i} className="rounded-xl px-5 py-4 flex flex-col gap-1 border border-border bg-card">
-                  <span className="font-display font-black leading-none text-primary" style={{ fontSize: '1.9rem', letterSpacing: '-0.03em' }}>{o.value}</span>
-                  <span className="text-[12px] font-bold text-foreground/70">{o.label}</span>
-                  <span className="text-[11px] text-muted-foreground">{o.sub}</span>
+                ['WP', 'Whitepaper co-authored'],
+                ['6', 'Mandate layers'],
+                ['3', 'Languages'],
+                ['7', 'Content pillars'],
+              ].map(([val, lab], i) => (
+                <div key={i} className="flex items-baseline gap-2.5">
+                  {i > 0 && <span className="w-px h-5 bg-white/8 self-center" />}
+                  <span className="font-display font-black text-primary" style={{ fontSize: '1.45rem', letterSpacing: '-0.03em' }}>{val}</span>
+                  <span className="text-[12px]" style={{ color: 'rgba(255,255,255,0.28)' }}>{lab}</span>
                 </div>
               ))}
             </motion.div>
           </div>
-        </section>
 
-        {/* ══════════════════════════════════
-             PROJECT SNAPSHOT
-        ══════════════════════════════════ */}
-        <section className="py-16 md:py-20 bg-card border-y border-border">
-          <div className="max-w-7xl mx-auto px-6 md:px-12">
-            {/* Metadata strip */}
-            <motion.div
-              {...scrollFade()}
-              className="flex flex-wrap items-center gap-x-8 gap-y-3 mb-10 pb-10 border-b border-border"
-            >
-              {[
-                { label: 'Role', value: 'Content & Whitepaper Lead' },
-                { label: 'Protocol Type', value: 'Pricing Oracle' },
-                { label: 'Category', value: 'DeFi · Private Markets' },
-                { label: 'Scope', value: 'Whitepaper · Content · Education' },
-              ].map(m => (
-                <div key={m.label} className="flex flex-col gap-0.5">
-                  <span className="text-[9.5px] font-bold tracking-[0.2em] uppercase font-mono text-muted-foreground/50">{m.label}</span>
-                  <span className="text-[13.5px] font-semibold text-foreground">{m.value}</span>
+          {/* Ticker band */}
+          <div className="relative overflow-hidden border-t" style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.018)', height: 46 }}>
+            <div className="lith-ticker h-full items-center">
+              {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
+                <div key={i} className="flex items-center h-full px-6 gap-3 flex-shrink-0" style={{ borderRight: '1px solid rgba(255,255,255,0.05)' }}>
+                  <span className="font-mono text-[11px] font-bold" style={{ color: 'rgba(255,255,255,0.38)', letterSpacing: '0.04em' }}>{item.asset}</span>
+                  <span className="font-mono text-[11px]" style={{ color: item.live ? 'rgba(34,197,94,0.75)' : 'rgba(255,255,255,0.18)' }}>{item.price}</span>
+                  <span className="text-[9px] font-bold font-mono px-2 py-0.5 rounded-full" style={{
+                    background: item.live ? 'rgba(34,197,94,0.1)' : 'rgba(249,115,22,0.1)',
+                    color: item.live ? 'rgba(34,197,94,0.7)' : 'rgba(249,115,22,0.65)',
+                    letterSpacing: '0.12em',
+                  }}>{item.status}</span>
                 </div>
               ))}
-              <div className="ml-auto text-[10px] font-bold tracking-widest uppercase font-mono px-3 py-1.5 rounded-full text-primary border border-primary/20 bg-primary/5">
-                Featured Impact
-              </div>
-            </motion.div>
+            </div>
+          </div>
+        </section>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-              <motion.div {...scrollFade()}>
-                <h2 className="font-display font-black text-foreground mb-4 leading-tight" style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.9rem)', letterSpacing: '-0.02em' }}>
-                  Project Snapshot
+        {/* ════════════════════════════════════
+            THE STRUCTURAL PROBLEM
+            Bloomberg-style terminal table
+        ════════════════════════════════════ */}
+        <section className="py-20 md:py-28 bg-background">
+          <div className="max-w-7xl mx-auto px-6 md:px-12">
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start mb-16">
+              <motion.div {...fadeIn()}>
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="h-px w-6 bg-primary flex-shrink-0" />
+                  <span className="text-[11px] font-bold tracking-[0.22em] text-primary/60 uppercase font-mono">The Structural Problem</span>
+                </div>
+                <h2 className="font-display font-black text-foreground leading-tight" style={{ fontSize: 'clamp(1.7rem, 3.2vw, 2.5rem)', letterSpacing: '-0.028em' }}>
+                  The market problem was structural, not just complicated.
                 </h2>
-                <p className="text-[15px] text-muted-foreground leading-[1.75] mb-4">
-                  Lithium Finance was building a{' '}
-                  <strong className="text-foreground font-semibold">collective-intelligence pricing oracle</strong>{' '}
-                  for private and illiquid assets — the kind without clean, continuous, public price feeds. Pre-IPO stocks, private equity, hard-to-value instruments. The protocol combined machine learning, cryptoeconomic incentives, and expert market input to price what traditional oracle design couldn't handle.
+              </motion.div>
+              <motion.div {...fadeIn(0.08)} className="pt-1">
+                <p className="text-[14.5px] text-muted-foreground leading-[1.82] mb-4">
+                  The first strategic call was understanding what kind of problem this actually was. Most DeFi marketing is solving a positioning problem — how to differentiate within a familiar category. Lithium was solving a{' '}
+                  <strong className="text-foreground font-semibold">category problem</strong>. The gap it was filling did not have a name yet.
                 </p>
-                <p className="text-[15px] text-muted-foreground leading-[1.75]">
-                  My role was to build the communication layer around that complexity — starting with co-authoring the first whitepaper iteration and extending into narrative, education, and vernacular explainers.
+                <p className="text-[14.5px] text-muted-foreground leading-[1.82]">
+                  That meant the first job was not to promote the product. It was to make the gap itself visible. For liquid assets, price discovery is continuous and public. For private assets — pre-IPO equity, credit instruments, illiquid PE interests — there is no oracle infrastructure. That is a structural absence, not a gap a better API could fix.
                 </p>
               </motion.div>
-
-              {/* Protocol actors */}
-              <motion.div {...scrollFade(0.1)}>
-                <p className="text-[10px] font-bold tracking-[0.2em] uppercase font-mono text-muted-foreground/50 mb-5">Protocol actors</p>
-                <div className="flex flex-col gap-3">
-                  {[
-                    { label: 'Price Seekers', desc: 'Protocols and institutions requesting asset valuations', icon: Database },
-                    { label: 'Wisdom Nodes', desc: 'Expert contributors with market intelligence on illiquid assets', icon: Users },
-                    { label: '$LITH + Reputation Points', desc: 'Dual-incentive system shaping honest participation', icon: Zap },
-                    { label: 'Privacy Layer', desc: 'Protected submission logic for price-sensitive inputs', icon: Lock },
-                  ].map((actor, i) => {
-                    const Icon = actor.icon;
-                    return (
-                      <div key={i} className="flex items-start gap-3 rounded-xl p-4 border border-border bg-background">
-                        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 bg-primary/8 border border-primary/14">
-                          <Icon size={13} className="text-primary" />
-                        </div>
-                        <div>
-                          <span className="text-[13px] font-bold text-foreground block">{actor.label}</span>
-                          <span className="text-[12px] text-muted-foreground">{actor.desc}</span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════
-             THE STRATEGIC PROBLEM — 3 cards
-        ══════════════════════════════════ */}
-        <section className="py-16 md:py-24 bg-background">
-          <div className="max-w-7xl mx-auto px-6 md:px-12">
-            <motion.div {...scrollFade()} className="flex items-center gap-3 mb-4">
-              <Database size={16} className="text-primary" />
-              <span className="text-[11px] font-bold tracking-[0.22em] text-primary/60 uppercase font-mono">The Strategic Problem</span>
-            </motion.div>
-            <motion.h2 {...scrollFade(0.06)} className="font-display font-black text-foreground leading-tight mb-10" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.3rem)', letterSpacing: '-0.025em', maxWidth: 680 }}>
-              Selling a concept that was difficult on three levels at once.
-            </motion.h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {[
-                {
-                  num: '01',
-                  heading: 'The market problem was abstract',
-                  body: "Most DeFi users understand liquid-asset price feeds intuitively. Far fewer grasp why private and illiquid assets are a structurally different category — data is scarce, appraisal is expensive, and existing oracle infrastructure simply isn't built for it.",
-                  icon: Database,
-                },
-                {
-                  num: '02',
-                  heading: 'The product was mechanism-heavy',
-                  body: 'Price Seekers, Wisdom Nodes, $LITH, Reputation Points, Reputation Clearing Mechanism, two-way pricing, privacy-preserving submission logic — that is a lot of conceptual surface area to compress without losing the logic of the system.',
-                  icon: Layers,
-                },
-                {
-                  num: '03',
-                  heading: 'The protocol had a cold-start trust problem',
-                  body: 'Lithium was asking the market to believe that incentivized expert intelligence could produce usable price discovery for opaque assets — requiring explanation, credibility, and a narrative bridging TradFi opacity, DeFi composability, and market psychology.',
-                  icon: Shield,
-                },
-              ].map((item, i) => {
-                const Icon = item.icon;
-                return (
-                  <motion.div key={i} {...scrollFade(i * 0.09)} className="rounded-2xl p-7 relative overflow-hidden bg-card border border-border">
-                    <span className="absolute top-5 right-5 font-black font-mono select-none text-primary/[0.07]" style={{ fontSize: '4rem', letterSpacing: '-0.05em', lineHeight: 1 }}>{item.num}</span>
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-5 bg-primary/8 border border-primary/15">
-                      <Icon size={15} className="text-primary" />
-                    </div>
-                    <div className="w-5 h-[2px] bg-primary rounded mb-4" />
-                    <h3 className="font-display font-bold text-foreground leading-snug mb-3 text-[0.95rem]" style={{ letterSpacing: '-0.01em' }}>{item.heading}</h3>
-                    <p className="text-[13px] text-muted-foreground leading-[1.7]">{item.body}</p>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════
-             WHAT MADE THIS ESPECIALLY HARD
-        ══════════════════════════════════ */}
-        <section className="py-16 md:py-20 bg-card border-y border-border">
-          <div className="max-w-7xl mx-auto px-6 md:px-12">
-            <motion.div {...scrollFade()} className="flex items-center gap-3 mb-4">
-              <Lock size={16} className="text-primary" />
-              <span className="text-[11px] font-bold tracking-[0.22em] text-primary/60 uppercase font-mono">Layers of Friction</span>
-            </motion.div>
-            <motion.h2 {...scrollFade(0.06)} className="font-display font-black text-foreground leading-tight mb-10" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.3rem)', letterSpacing: '-0.025em', maxWidth: 680 }}>
-              This wasn't "how do we get attention?" It was "how do we stop this from sounding implausible?"
-            </motion.h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {FRICTION_CARDS.map((f, i) => {
-                const Icon = f.icon;
-                return (
-                  <motion.div key={i} {...scrollFade(i * 0.08)} className="rounded-2xl p-7 flex gap-5 bg-background border border-border">
-                    <div className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center bg-primary/8 border border-primary/15 mt-0.5">
-                      <Icon size={14} className="text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-display font-bold text-foreground mb-2 text-[0.95rem]" style={{ letterSpacing: '-0.01em' }}>{f.heading}</h3>
-                      <p className="text-[13px] text-muted-foreground leading-[1.7]">{f.body}</p>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════
-             THE MANDATE — 6 layers
-        ══════════════════════════════════ */}
-        <section className="py-16 md:py-24 bg-background">
-          <div className="max-w-7xl mx-auto px-6 md:px-12">
-            <motion.div {...scrollFade()} className="flex items-center gap-3 mb-4">
-              <FileText size={16} className="text-primary" />
-              <span className="text-[11px] font-bold tracking-[0.22em] text-primary/60 uppercase font-mono">The Mandate</span>
-            </motion.div>
-            <motion.h2 {...scrollFade(0.06)} className="font-display font-black text-foreground leading-tight mb-3" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.3rem)', letterSpacing: '-0.025em' }}>
-              Build the communication layer around the complexity. Don't flatten it.
-            </motion.h2>
-            <motion.p {...scrollFade(0.1)} className="text-[14px] text-muted-foreground mb-12 max-w-xl leading-relaxed">
-              The real job was not writing "content." It was reducing the gap between what Lithium actually did and what the market could understand quickly enough to care about.
-            </motion.p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {MANDATE_LAYERS.map((m, i) => {
-                const Icon = m.icon;
-                return (
-                  <motion.div key={i} {...scrollFade(i * 0.07)} className="rounded-2xl p-6 border border-border bg-card flex flex-col gap-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-primary/8 border border-primary/14">
-                        <Icon size={13} className="text-primary" />
-                      </div>
-                      <span className="text-[9px] font-black tracking-[0.22em] uppercase font-mono text-primary/40">{m.num}</span>
-                    </div>
-                    <div>
-                      <span className="font-display font-bold text-foreground text-[0.9rem] block leading-snug" style={{ letterSpacing: '-0.01em' }}>{m.label}</span>
-                      <span className="text-[12px] text-muted-foreground mt-1 block">{m.sub}</span>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════
-             THE MECHANISM — signature section
-             Dark navy-slate, Seeker ↔ Expert
-        ══════════════════════════════════ */}
-        <section className="relative py-20 md:py-28 overflow-hidden" style={{ background: '#080E1A' }}>
-          {/* Grid texture */}
-          <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
-          {/* Orange bloom */}
-          <div className="absolute top-0 right-1/3 w-72 h-72 rounded-full pointer-events-none" style={{ background: 'rgba(249,115,22,0.05)', filter: 'blur(80px)' }} />
-          {/* Blue bloom */}
-          <div className="absolute bottom-0 left-1/3 w-72 h-72 rounded-full pointer-events-none" style={{ background: 'rgba(59,130,246,0.05)', filter: 'blur(80px)' }} />
-
-          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
-            <motion.div {...scrollFade()} className="flex items-center gap-3 mb-6">
-              <Database size={16} className="text-primary" />
-              <span className="text-[11px] font-bold tracking-[0.22em] font-mono uppercase" style={{ color: 'rgba(249,115,22,0.6)' }}>The Mechanism</span>
-            </motion.div>
-            <motion.h2 {...scrollFade(0.06)} className="font-display font-black text-white leading-tight mb-4" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.3rem)', letterSpacing: '-0.025em' }}>
-              Seeker meets Expert. Protocol bridges both.
-            </motion.h2>
-            <motion.p {...scrollFade(0.1)} className="text-[14px] leading-[1.75] mb-14 max-w-2xl" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              Lithium's structural idea — a two-sided information market — was powerful only if both roles were easy to understand. The communication work had to make each side legible, and then show why the protocol made trust between them possible.
-            </motion.p>
-
-            {/* Mechanism diagram */}
-            <motion.div {...scrollFade(0.12)} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
-
-              {/* Left — Seeker */}
-              <div className="rounded-2xl flex flex-col p-6" style={{ background: 'rgba(249,115,22,0.06)', border: '1px solid rgba(249,115,22,0.2)' }}>
-                <div className="flex items-center gap-2 mb-5">
-                  <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(249,115,22,0.12)', border: '1px solid rgba(249,115,22,0.25)' }}>
-                    <Database size={12} className="text-primary" />
-                  </div>
-                  <span className="text-[9.5px] font-black tracking-[0.22em] uppercase font-mono text-primary/60">Price Seeker</span>
-                </div>
-                <h3 className="font-display font-bold text-white text-[1rem] mb-3" style={{ letterSpacing: '-0.015em' }}>Requests valuation</h3>
-                <div className="flex flex-col gap-2 mb-6">
-                  {['Submits asset for pricing', 'Pays in $LITH', 'Receives aggregated estimate', 'Gets confidence-weighted output'].map(l => (
-                    <div key={l} className="flex items-start gap-2">
-                      <ChevronRight size={10} className="text-primary mt-0.5 flex-shrink-0" style={{ opacity: 0.6 }} />
-                      <span className="text-[12.5px]" style={{ color: 'rgba(255,255,255,0.5)' }}>{l}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-auto rounded-xl px-3 py-2.5" style={{ background: 'rgba(249,115,22,0.08)', border: '1px solid rgba(249,115,22,0.15)' }}>
-                  <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.4)' }}>
-                    <span className="text-primary font-bold">Use cases:</span> Pre-IPO stocks · Private equity · Illiquid instruments
-                  </p>
-                </div>
-              </div>
-
-              {/* Center — Protocol Core */}
-              <div className="rounded-2xl flex flex-col p-6 relative" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                <div className="text-center mb-5">
-                  <span className="text-[9.5px] font-black tracking-[0.22em] uppercase font-mono" style={{ color: 'rgba(255,255,255,0.3)' }}>Protocol Core</span>
-                </div>
-                {/* Mechanism components as stacked data rows */}
-                <div className="flex flex-col gap-2 flex-1">
-                  {[
-                    { label: '$LITH', desc: 'Incentive token' },
-                    { label: 'Reputation Points', desc: 'Performance weight' },
-                    { label: 'DMI Aggregation', desc: 'Truth discovery mechanism' },
-                    { label: 'Privacy Layer', desc: 'Protected submission logic' },
-                    { label: 'Slashing / Rewards', desc: 'Honest participation logic' },
-                  ].map((c, ci) => (
-                    <div key={ci} className="flex items-center justify-between rounded-lg px-3 py-2" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                      <span className="text-[11.5px] font-bold text-white/70">{c.label}</span>
-                      <span className="text-[10px] text-white/30 font-mono">{c.desc}</span>
-                    </div>
-                  ))}
-                </div>
-                {/* Output arrow */}
-                <div className="mt-5 rounded-xl px-3 py-2.5 text-center" style={{ background: 'rgba(249,115,22,0.08)', border: '1px solid rgba(249,115,22,0.2)' }}>
-                  <span className="text-[10px] font-bold text-primary/70 font-mono uppercase tracking-widest">Price output → DeFi</span>
-                </div>
-              </div>
-
-              {/* Right — Wisdom Node */}
-              <div className="rounded-2xl flex flex-col p-6" style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.2)' }}>
-                <div className="flex items-center gap-2 mb-5">
-                  <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.12)', border: '1px solid rgba(59,130,246,0.25)' }}>
-                    <Users size={12} style={{ color: '#3B82F6' }} />
-                  </div>
-                  <span className="text-[9.5px] font-black tracking-[0.22em] uppercase font-mono" style={{ color: 'rgba(59,130,246,0.65)' }}>Wisdom Node</span>
-                </div>
-                <h3 className="font-display font-bold text-white text-[1rem] mb-3" style={{ letterSpacing: '-0.015em' }}>Contributes expertise</h3>
-                <div className="flex flex-col gap-2 mb-6">
-                  {['Has pricing insight on illiquid assets', 'Submits privately (protected)', 'Earns $LITH + Reputation Points', 'Slashed for dishonest estimates'].map(l => (
-                    <div key={l} className="flex items-start gap-2">
-                      <ChevronRight size={10} style={{ color: '#3B82F6', opacity: 0.6 }} className="mt-0.5 flex-shrink-0" />
-                      <span className="text-[12.5px]" style={{ color: 'rgba(255,255,255,0.5)' }}>{l}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-auto rounded-xl px-3 py-2.5" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.15)' }}>
-                  <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.4)' }}>
-                    <span className="font-bold" style={{ color: '#3B82F6' }}>Profile:</span> Private equity insiders · TradFi analysts · Market specialists
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Insight callout */}
-            <motion.div {...scrollFade(0.2)} className="mt-8 rounded-2xl p-7" style={{ background: 'rgba(249,115,22,0.05)', border: '1px solid rgba(249,115,22,0.15)' }}>
-              <p className="text-[13.5px] leading-[1.75]" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                Without clear role comprehension, the protocol looked complicated. With it, it started to look like a functioning{' '}
-                <span className="text-white/75 font-medium">information market</span> — one where Seekers paid for insight and Experts were{' '}
-                <span className="text-primary font-medium">cryptoeconomically incentivised to be honest</span>.
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════
-             THE BRIDGE: TradFi → DeFi
-        ══════════════════════════════════ */}
-        <section className="py-16 md:py-24 bg-background">
-          <div className="max-w-7xl mx-auto px-6 md:px-12">
-            <motion.div {...scrollFade()} className="flex items-center gap-3 mb-4">
-              <Layers size={16} className="text-primary" />
-              <span className="text-[11px] font-bold tracking-[0.22em] text-primary/60 uppercase font-mono">The Bridge</span>
-            </motion.div>
-            <motion.h2 {...scrollFade(0.06)} className="font-display font-black text-foreground leading-tight mb-3" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.3rem)', letterSpacing: '-0.025em' }}>
-              Lithium sat between two very different worlds.
-            </motion.h2>
-            <motion.p {...scrollFade(0.1)} className="text-[14px] text-muted-foreground mb-12 max-w-xl leading-relaxed">
-              The narrative had to make the move from private-market opacity to DeFi composability feel strategically inevitable — not experimental, not speculative.
-            </motion.p>
-
-            <motion.div {...scrollFade(0.12)} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
-              {/* TradFi */}
-              <div className="rounded-2xl p-7 border border-border bg-card">
-                <p className="text-[9.5px] font-black tracking-[0.22em] uppercase font-mono text-muted-foreground/50 mb-4">Traditional Finance</p>
-                <h3 className="font-display font-bold text-foreground text-[1.05rem] mb-4 leading-snug" style={{ letterSpacing: '-0.015em' }}>Gated. Relationship-driven. Opaque.</h3>
-                <div className="flex flex-col gap-2">
-                  {['Information is privileged', 'Pricing requires expensive appraisals', 'No public, continuous price feeds', 'Access is relationship-dependent'].map(l => (
-                    <div key={l} className="flex items-start gap-2">
-                      <div className="w-1 h-1 rounded-full bg-muted-foreground/40 flex-shrink-0 mt-1.5" />
-                      <span className="text-[12.5px] text-muted-foreground">{l}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Center — Lithium */}
-              <div className="rounded-2xl p-7 flex flex-col items-center justify-center text-center relative overflow-hidden" style={{ background: 'hsl(var(--background))', border: '2px solid hsl(var(--primary) / 0.3)' }}>
-                <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at center, rgba(249,115,22,0.05) 0%, transparent 70%)' }} />
-                <div className="relative z-10">
-                  <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/25 flex items-center justify-center mx-auto mb-4">
-                    <Database size={18} className="text-primary" />
-                  </div>
-                  <h3 className="font-display font-black text-primary text-[1.1rem] mb-2" style={{ letterSpacing: '-0.02em' }}>Lithium Finance</h3>
-                  <p className="text-[12px] text-muted-foreground leading-[1.6]">Collective-intelligence oracle bridging expert knowledge and onchain price discovery</p>
-                  <div className="flex items-center justify-center gap-2 mt-4">
-                    <div className="h-px w-8 bg-primary/30" />
-                    <span className="text-[9px] font-bold tracking-widest text-primary/50 font-mono uppercase">The Bridge</span>
-                    <div className="h-px w-8 bg-primary/30" />
-                  </div>
-                </div>
-              </div>
-
-              {/* DeFi */}
-              <div className="rounded-2xl p-7 border border-border bg-card">
-                <p className="text-[9.5px] font-black tracking-[0.22em] uppercase font-mono text-muted-foreground/50 mb-4">Decentralised Finance</p>
-                <h3 className="font-display font-bold text-foreground text-[1.05rem] mb-4 leading-snug" style={{ letterSpacing: '-0.015em' }}>Open. Composable. Programmable.</h3>
-                <div className="flex flex-col gap-2">
-                  {['Needs usable onchain price feeds', 'Composability requires trusted primitives', 'Private assets cannot flow in without pricing', 'Credible oracles unlock new DeFi categories'].map(l => (
-                    <div key={l} className="flex items-start gap-2">
-                      <div className="w-1 h-1 rounded-full bg-primary/40 flex-shrink-0 mt-1.5" />
-                      <span className="text-[12.5px] text-muted-foreground">{l}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════
-             VERNACULAR REACH
-        ══════════════════════════════════ */}
-        <section className="py-16 md:py-20 bg-card border-y border-border">
-          <div className="max-w-7xl mx-auto px-6 md:px-12">
-            <motion.div {...scrollFade()} className="flex items-center gap-3 mb-4">
-              <Globe size={16} className="text-primary" />
-              <span className="text-[11px] font-bold tracking-[0.22em] text-primary/60 uppercase font-mono">Vernacular Reach</span>
-            </motion.div>
-            <motion.h2 {...scrollFade(0.06)} className="font-display font-black text-foreground leading-tight mb-3" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.3rem)', letterSpacing: '-0.025em' }}>
-              The comprehension gap was as much a language problem as a jargon problem.
-            </motion.h2>
-            <motion.p {...scrollFade(0.1)} className="text-[14px] text-muted-foreground mb-12 max-w-2xl leading-relaxed">
-              Lithium was already difficult to explain to English-speaking crypto users. Broader market comprehension required a different approach — lighter formats, regional languages, and education-first content that reduced friction without stripping depth.
-            </motion.p>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {[
-                {
-                  lang: 'English',
-                  script: 'EN',
-                  type: 'Primary market layer',
-                  formats: ['Whitepaper', 'Protocol explainers', 'Long-form content', 'Technical deep-dives'],
-                  note: 'The core narrative and whitepaper layer — mechanism-level depth for crypto-native readers.',
-                },
-                {
-                  lang: 'Hindi',
-                  script: 'हि',
-                  type: 'Vernacular education layer',
-                  formats: ['Explainer videos', 'Shorter format content', 'Accessibility-first framing', 'Conceptual primers'],
-                  note: 'Light-format video and text to make the protocol idea accessible to a broader South Asian Web3 market.',
-                },
-                {
-                  lang: 'Regional',
-                  script: 'Rg',
-                  type: 'Multilingual access layer',
-                  formats: ['Regional language formats', 'Market-specific framing', 'Education-led approach', 'Comprehension-first content'],
-                  note: 'Extended market coverage across language contexts — reducing the comprehension barrier at the entry level.',
-                },
-              ].map((l, i) => (
-                <motion.div key={i} {...scrollFade(i * 0.09)} className="rounded-2xl overflow-hidden border border-border bg-background">
-                  <div className="px-6 py-4 flex items-center gap-3 border-b border-border" style={{ background: 'rgba(249,115,22,0.04)' }}>
-                    <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
-                      <span className="font-black text-primary" style={{ fontSize: '0.75rem', fontFamily: 'monospace' }}>{l.script}</span>
-                    </div>
-                    <div>
-                      <span className="font-display font-bold text-foreground text-[0.9rem] block" style={{ letterSpacing: '-0.01em' }}>{l.lang}</span>
-                      <span className="text-[10px] text-primary/60 font-mono font-bold uppercase tracking-widest">{l.type}</span>
-                    </div>
-                  </div>
-                  <div className="px-6 py-5 flex flex-col gap-4">
-                    <div className="flex flex-col gap-1.5">
-                      {l.formats.map(f => (
-                        <div key={f} className="flex items-center gap-2">
-                          <div className="w-1 h-1 rounded-full bg-primary/40 flex-shrink-0" />
-                          <span className="text-[12.5px] text-muted-foreground">{f}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="rounded-xl px-4 py-3 bg-primary/5 border border-primary/10">
-                      <p className="text-[12px] text-muted-foreground leading-[1.6]">{l.note}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════
-             WHY IT WORKED — 3 criteria
-        ══════════════════════════════════ */}
-        <section className="py-16 md:py-20 bg-background">
-          <div className="max-w-7xl mx-auto px-6 md:px-12">
-            <motion.div {...scrollFade()} className="flex items-center gap-3 mb-4">
-              <Zap size={16} className="text-primary" />
-              <span className="text-[11px] font-bold tracking-[0.22em] text-primary/60 uppercase font-mono">Why It Worked</span>
-            </motion.div>
-            <motion.h2 {...scrollFade(0.06)} className="font-display font-black text-foreground leading-tight mb-12" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.3rem)', letterSpacing: '-0.025em' }}>
-              The category demanded explanation before promotion.
-            </motion.h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {WHY_WORKED.map((w, i) => (
-                <motion.div key={i} {...scrollFade(i * 0.09)} className="rounded-2xl p-7 border border-border bg-card">
-                  <div className="w-8 h-[3px] bg-primary rounded mb-5" />
-                  <h3 className="font-display font-black text-primary mb-3" style={{ fontSize: '1.05rem', letterSpacing: '-0.015em' }}>{w.label}</h3>
-                  <p className="text-[13px] text-muted-foreground leading-[1.7]">{w.body}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════
-             OUTCOME — dark section
-        ══════════════════════════════════ */}
-        <section className="py-16 md:py-24 relative overflow-hidden" style={{ background: '#080E1A' }}>
-          <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(249,115,22,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(249,115,22,0.03) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-          <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 50%, transparent 30%, #080E1A 100%)' }} />
-
-          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
-            <motion.div {...scrollFade()} className="flex items-center gap-3 mb-4">
-              <TrendingUp size={16} className="text-primary" />
-              <span className="text-[11px] font-bold tracking-[0.22em] font-mono uppercase" style={{ color: 'rgba(249,115,22,0.6)' }}>Outcome</span>
-            </motion.div>
-            <motion.h2 {...scrollFade(0.06)} className="font-display font-black text-white leading-tight mb-14" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.3rem)', letterSpacing: '-0.025em' }}>
-              A sharper first-layer explanation for one of DeFi's hardest categories.
-            </motion.h2>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-              {[
-                { value: 'WP', label: 'Whitepaper', sub: 'Co-authored, first iteration' },
-                { value: '4', label: 'Framing layers', sub: 'Problem · Mechanism · Trust · Use case' },
-                { value: '3', label: 'Languages', sub: 'Hindi · English · Regional' },
-                { value: '6+', label: 'Content pillars', sub: 'Strategy to vernacular' },
-              ].map((s, i) => (
-                <motion.div key={i} {...scrollFade(i * 0.08)} className="rounded-2xl p-6 flex flex-col gap-1" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                  <span className="font-display font-black leading-none text-primary" style={{ fontSize: 'clamp(1.9rem, 3.5vw, 2.6rem)', letterSpacing: '-0.035em' }}>{s.value}</span>
-                  <span className="text-[12px] font-bold mt-1" style={{ color: 'rgba(255,255,255,0.65)' }}>{s.label}</span>
-                  <span className="text-[11px]" style={{ color: 'rgba(255,255,255,0.28)' }}>{s.sub}</span>
-                </motion.div>
-              ))}
             </div>
 
-            <motion.div {...scrollFade(0.16)} className="rounded-2xl p-8" style={{ background: 'rgba(249,115,22,0.05)', border: '1px solid rgba(249,115,22,0.15)' }}>
-              <p className="text-[14.5px] leading-[1.8]" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                The content and whitepaper layer helped make the protocol more legible across problem framing, mechanism framing, trust framing, and use-case framing. The communication layer became more inclusive and more portable through vernacular explainers and multilingual video formats — extending the protocol narrative beyond English-first crypto readers and into a more{' '}
-                <strong className="text-white/80 font-semibold">education-led market approach</strong>.
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════
-             KEY TAKEAWAY
-        ══════════════════════════════════ */}
-        <section className="py-16 md:py-24 bg-background">
-          <div className="max-w-7xl mx-auto px-6 md:px-12">
-            <motion.div {...scrollFade()} className="flex items-center gap-3 mb-10">
-              <Award size={16} className="text-primary" />
-              <span className="text-[11px] font-bold tracking-[0.22em] text-primary/60 uppercase font-mono">Key Takeaway</span>
-            </motion.div>
-            <motion.blockquote {...scrollFade(0.08)} className="relative pl-10 py-2" style={{ borderLeft: '4px solid #F97316' }}>
-              <p className="font-display font-black text-foreground leading-[1.25]" style={{ fontSize: 'clamp(1.25rem, 2.8vw, 1.9rem)', letterSpacing: '-0.02em', maxWidth: 900 }}>
-                At Lithium, the real job was not writing about DeFi. It was making a highly technical oracle for illiquid assets feel{' '}
-                <span className="text-primary italic">coherent enough to trust</span>,{' '}
-                clear enough to repeat, and accessible enough to explain across both crypto-native and vernacular market contexts.
-              </p>
-              <footer className="mt-6 flex items-center gap-4">
-                <span className="text-[11px] font-bold tracking-[0.2em] uppercase font-mono text-muted-foreground/50">
-                  Lithium Finance · Content & Whitepaper Lead
+            {/* Bloomberg terminal table */}
+            <motion.div {...fadeIn(0.1)} className="rounded-2xl overflow-hidden" style={{ background: '#090F1B', border: '1px solid rgba(255,255,255,0.07)' }}>
+              {/* Terminal chrome */}
+              <div className="flex items-center gap-3 px-5 py-3 border-b" style={{ background: '#060C16', borderColor: 'rgba(255,255,255,0.06)' }}>
+                <div className="flex gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/40" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-green-500/40" />
+                </div>
+                <span className="font-mono text-[10px] ml-3" style={{ color: 'rgba(255,255,255,0.18)', letterSpacing: '0.08em' }}>
+                  ASSET_ORACLE_FEED_STATUS // LITHIUM_TERMINAL_v1
                 </span>
-                <span className="h-px flex-1 bg-border max-w-xs" />
-              </footer>
-            </motion.blockquote>
+              </div>
+
+              {/* Column headers */}
+              <div className="grid px-6 py-3 border-b" style={{ gridTemplateColumns: '2fr 1fr 1.6fr 1fr', borderColor: 'rgba(255,255,255,0.06)' }}>
+                {['ASSET', 'PRICE', 'ORACLE FEED', 'STATUS'].map(h => (
+                  <span key={h} className="font-mono text-[9px] font-bold tracking-[0.2em]" style={{ color: 'rgba(255,255,255,0.18)' }}>{h}</span>
+                ))}
+              </div>
+
+              {/* Data rows */}
+              {TABLE_ASSETS.map((row, i) => {
+                if (!row) return (
+                  <div key={`sep-${i}`} className="px-6 pt-3 pb-2">
+                    <div className="border-t border-dashed" style={{ borderColor: 'rgba(255,255,255,0.07)' }} />
+                    <p className="font-mono text-[9px] mt-2" style={{ color: 'rgba(249,115,22,0.3)', letterSpacing: '0.08em' }}>
+                      {'// PRIVATE & ILLIQUID ASSETS — NO CONTINUOUS PUBLIC PRICE FEED AVAILABLE'}
+                    </p>
+                  </div>
+                );
+                return (
+                  <div
+                    key={i}
+                    className="grid px-6 py-3.5 border-b"
+                    style={{ gridTemplateColumns: '2fr 1fr 1.6fr 1fr', borderColor: 'rgba(255,255,255,0.04)', background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.01)' }}
+                  >
+                    <div>
+                      <span className="font-mono text-[12.5px] font-bold" style={{ color: row.live ? 'rgba(255,255,255,0.72)' : 'rgba(255,255,255,0.3)' }}>{row.name}</span>
+                      <span className="block font-mono text-[9.5px] mt-0.5" style={{ color: 'rgba(255,255,255,0.18)' }}>{row.category}</span>
+                    </div>
+                    <span className="font-mono text-[12.5px] self-center" style={{ color: row.live ? 'rgba(34,197,94,0.8)' : 'rgba(255,255,255,0.14)' }}>{row.price}</span>
+                    <span className="font-mono text-[11px] self-center" style={{ color: row.live ? 'rgba(34,197,94,0.6)' : 'rgba(249,115,22,0.5)' }}>{row.feed}</span>
+                    <span
+                      className="font-mono text-[9px] font-bold self-center rounded px-2 py-1"
+                      style={{
+                        background: row.live ? 'rgba(34,197,94,0.1)' : 'rgba(249,115,22,0.08)',
+                        color: row.live ? 'rgba(34,197,94,0.7)' : 'rgba(249,115,22,0.6)',
+                        letterSpacing: '0.1em',
+                        width: 'fit-content',
+                      }}
+                    >{row.status}</span>
+                  </div>
+                );
+              })}
+
+              {/* Footer comment */}
+              <div className="px-6 py-4">
+                <p className="font-mono text-[10px]" style={{ color: 'rgba(255,255,255,0.18)' }}>
+                  {'// Without a credible pricing layer, private assets cannot flow into DeFi. That is the gap Lithium was built to close.'}
+                </p>
+              </div>
+            </motion.div>
           </div>
         </section>
 
-        {/* ══════════════════════════════════
-             BOTTOM NAVIGATION
-        ══════════════════════════════════ */}
-        <section className="py-12 border-t border-border bg-card">
+        {/* ════════════════════════════════════
+            THE MANDATE — vertical spine
+        ════════════════════════════════════ */}
+        <section className="py-16 md:py-24 border-y border-border bg-card">
+          <div className="max-w-7xl mx-auto px-6 md:px-12">
+            <motion.div {...fadeIn()} className="mb-12">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="h-px w-6 bg-primary flex-shrink-0" />
+                <span className="text-[11px] font-bold tracking-[0.22em] text-primary/60 uppercase font-mono">The Mandate</span>
+              </div>
+              <h2 className="font-display font-black text-foreground leading-tight mb-4" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.3rem)', letterSpacing: '-0.025em', maxWidth: 700 }}>
+                Build the communication layer around the complexity. Don't flatten it.
+              </h2>
+              <p className="text-[14.5px] text-muted-foreground leading-[1.82] max-w-2xl">
+                The real job was not writing content. It was reducing the gap between what Lithium actually did and what the market could understand quickly enough to care about. Each of the six layers below was a deliberate strategic decision — not a task list.
+              </p>
+            </motion.div>
+
+            {/* Spine timeline */}
+            <div className="relative ml-3 md:ml-6">
+              {/* Vertical spine */}
+              <div className="absolute top-0 bottom-0 w-px left-0" style={{ background: 'linear-gradient(to bottom, rgba(249,115,22,0.35) 0%, rgba(249,115,22,0.04) 100%)' }} />
+
+              <div className="flex flex-col">
+                {MANDATE.map((m, i) => (
+                  <motion.div key={i} {...fadeIn(i * 0.06)} className="flex gap-8 py-8 border-b border-border last:border-b-0 relative pl-8">
+                    {/* Spine dot */}
+                    <div className="absolute left-0 top-[2.15rem] w-4 h-4 rounded-full flex items-center justify-center" style={{ background: 'hsl(var(--card))', border: '2px solid rgba(249,115,22,0.45)', transform: 'translateX(-7.5px)' }}>
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                    </div>
+
+                    <div className="flex-1 grid grid-cols-1 md:grid-cols-[180px_1fr] gap-4 md:gap-10">
+                      <div className="flex flex-col gap-1">
+                        <span className="font-mono text-[9px] font-black text-primary/40 tracking-widest">{m.num}</span>
+                        <h3 className="font-display font-bold text-foreground" style={{ fontSize: '0.98rem', letterSpacing: '-0.012em', lineHeight: 1.3 }}>{m.label}</h3>
+                      </div>
+                      <p className="text-[13.5px] text-muted-foreground leading-[1.78]">{m.strategic}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ════════════════════════════════════
+            THE MECHANISM — oracle diagram
+            Dark section · signature visual
+        ════════════════════════════════════ */}
+        <section className="relative py-20 md:py-28 overflow-hidden" style={{ background: '#080E1A' }}>
+          <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+
+          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
+            <motion.div {...fadeIn()} className="mb-4">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="h-px w-6 bg-primary flex-shrink-0" />
+                <span className="text-[11px] font-bold tracking-[0.22em] uppercase font-mono" style={{ color: 'rgba(249,115,22,0.55)' }}>The Mechanism</span>
+              </div>
+              <h2 className="font-display font-black text-white leading-tight mb-4" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.3rem)', letterSpacing: '-0.025em' }}>
+                Seeker meets Expert. Protocol makes trust possible.
+              </h2>
+            </motion.div>
+
+            <motion.div {...fadeIn(0.07)} className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
+              <p className="text-[14.5px] leading-[1.82]" style={{ color: 'rgba(255,255,255,0.44)' }}>
+                The two-sided design was Lithium's strongest structural idea. The communication decision was to make the Seeker/Expert dynamic the central organising frame for everything else — because once a reader understood this relationship, the token model, the reputation system, and the privacy design all fell into place as supporting architecture rather than isolated technical features requiring separate explanations.
+              </p>
+              <p className="text-[14.5px] leading-[1.82]" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                Without clear role comprehension, the protocol looked like a complex black box. With it, the protocol looked like a functioning information market — one where Seekers paid for pricing insight they could not source themselves, and Experts were cryptoeconomically incentivised to be honest rather than approximate.
+              </p>
+            </motion.div>
+
+            {/* SVG Oracle Flow Diagram */}
+            <motion.div {...fadeIn(0.12)} className="w-full overflow-x-auto">
+              <div style={{ minWidth: 580 }}>
+                <svg viewBox="0 0 900 370" style={{ width: '100%', height: 'auto' }} xmlns="http://www.w3.org/2000/svg">
+
+                  {/* ── Connection lines (behind boxes) ── */}
+
+                  {/* Seeker → Protocol Core */}
+                  <line x1="222" y1="178" x2="382" y2="178" stroke="rgba(249,115,22,0.3)" strokeWidth="1.5" strokeDasharray="5 4" />
+                  <polygon points="382,173 394,178 382,183" fill="rgba(249,115,22,0.3)" />
+
+                  {/* Wisdom Nodes → Protocol Core */}
+                  <line x1="652" y1="75" x2="518" y2="163" stroke="rgba(59,130,246,0.22)" strokeWidth="1.5" strokeDasharray="5 4" />
+                  <line x1="652" y1="178" x2="518" y2="178" stroke="rgba(59,130,246,0.22)" strokeWidth="1.5" strokeDasharray="5 4" />
+                  <line x1="652" y1="281" x2="518" y2="193" stroke="rgba(59,130,246,0.22)" strokeWidth="1.5" strokeDasharray="5 4" />
+
+                  {/* Protocol Core → Price Output */}
+                  <line x1="450" y1="240" x2="450" y2="305" stroke="rgba(249,115,22,0.22)" strokeWidth="1.5" />
+                  <polygon points="445,305 450,318 455,305" fill="rgba(249,115,22,0.22)" />
+
+                  {/* Privacy layer enclosure */}
+                  <rect x="516" y="22" width="148" height="316" rx="7" fill="rgba(255,255,255,0.014)" stroke="rgba(255,255,255,0.055)" strokeWidth="1" strokeDasharray="4 4" />
+                  <text x="590" y="355" textAnchor="middle" fill="rgba(255,255,255,0.18)" fontSize="8" fontFamily="monospace" letterSpacing="3">PRIVACY LAYER</text>
+
+                  {/* ── SEEKER BOX ── */}
+                  <rect x="18" y="128" width="204" height="100" rx="10" fill="rgba(249,115,22,0.07)" stroke="rgba(249,115,22,0.2)" strokeWidth="1" />
+                  <text x="120" y="158" textAnchor="middle" fill="rgba(249,115,22,0.62)" fontSize="8.5" fontFamily="monospace" fontWeight="700" letterSpacing="3">PRICE SEEKER</text>
+                  <text x="120" y="177" textAnchor="middle" fill="rgba(255,255,255,0.52)" fontSize="11" fontFamily="system-ui, sans-serif">Requests valuation</text>
+                  <text x="120" y="195" textAnchor="middle" fill="rgba(255,255,255,0.24)" fontSize="10" fontFamily="monospace">Pays in $LITH</text>
+                  <text x="120" y="211" textAnchor="middle" fill="rgba(255,255,255,0.17)" fontSize="9" fontFamily="monospace">Gets confidence-weighted output</text>
+
+                  {/* ── PROTOCOL CORE (diamond) ── */}
+                  <polygon points="450,112 522,178 450,244 378,178" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+                  <text x="450" y="162" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="8.5" fontFamily="monospace" fontWeight="700" letterSpacing="2">PROTOCOL</text>
+                  <text x="450" y="177" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="8.5" fontFamily="monospace" fontWeight="700" letterSpacing="2">CORE</text>
+                  <text x="450" y="194" textAnchor="middle" fill="rgba(255,255,255,0.22)" fontSize="8" fontFamily="monospace">$LITH · DMI · Rep</text>
+                  <text x="450" y="208" textAnchor="middle" fill="rgba(255,255,255,0.14)" fontSize="7.5" fontFamily="monospace">Slashing · Privacy</text>
+
+                  {/* ── WISDOM NODE 1 ── */}
+                  <circle cx="700" cy="75" r="44" fill="rgba(59,130,246,0.07)" stroke="rgba(59,130,246,0.2)" strokeWidth="1" />
+                  <text x="700" y="69" textAnchor="middle" fill="rgba(59,130,246,0.62)" fontSize="8.5" fontFamily="monospace" fontWeight="700" letterSpacing="2">WISDOM</text>
+                  <text x="700" y="83" textAnchor="middle" fill="rgba(59,130,246,0.62)" fontSize="8.5" fontFamily="monospace" fontWeight="700" letterSpacing="2">NODE</text>
+                  <text x="700" y="97" textAnchor="middle" fill="rgba(255,255,255,0.18)" fontSize="8" fontFamily="monospace">Expert A</text>
+
+                  {/* ── WISDOM NODE 2 ── */}
+                  <circle cx="700" cy="178" r="44" fill="rgba(59,130,246,0.07)" stroke="rgba(59,130,246,0.2)" strokeWidth="1" />
+                  <text x="700" y="172" textAnchor="middle" fill="rgba(59,130,246,0.62)" fontSize="8.5" fontFamily="monospace" fontWeight="700" letterSpacing="2">WISDOM</text>
+                  <text x="700" y="186" textAnchor="middle" fill="rgba(59,130,246,0.62)" fontSize="8.5" fontFamily="monospace" fontWeight="700" letterSpacing="2">NODE</text>
+                  <text x="700" y="200" textAnchor="middle" fill="rgba(255,255,255,0.18)" fontSize="8" fontFamily="monospace">Expert B</text>
+
+                  {/* ── WISDOM NODE 3 ── */}
+                  <circle cx="700" cy="281" r="44" fill="rgba(59,130,246,0.07)" stroke="rgba(59,130,246,0.2)" strokeWidth="1" />
+                  <text x="700" y="275" textAnchor="middle" fill="rgba(59,130,246,0.62)" fontSize="8.5" fontFamily="monospace" fontWeight="700" letterSpacing="2">WISDOM</text>
+                  <text x="700" y="289" textAnchor="middle" fill="rgba(59,130,246,0.62)" fontSize="8.5" fontFamily="monospace" fontWeight="700" letterSpacing="2">NODE</text>
+                  <text x="700" y="303" textAnchor="middle" fill="rgba(255,255,255,0.18)" fontSize="8" fontFamily="monospace">Expert C</text>
+
+                  {/* ── PRICE OUTPUT ── */}
+                  <rect x="348" y="318" width="204" height="44" rx="8" fill="rgba(249,115,22,0.07)" stroke="rgba(249,115,22,0.2)" strokeWidth="1" />
+                  <text x="450" y="337" textAnchor="middle" fill="rgba(249,115,22,0.65)" fontSize="9.5" fontFamily="monospace" fontWeight="700" letterSpacing="2">PRICE OUTPUT</text>
+                  <text x="450" y="353" textAnchor="middle" fill="rgba(255,255,255,0.28)" fontSize="9" fontFamily="monospace">→ DeFi Ecosystem</text>
+                </svg>
+              </div>
+            </motion.div>
+
+            {/* Strategic callouts below diagram */}
+            <motion.div {...fadeIn(0.18)} className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+              <div className="rounded-xl p-5" style={{ background: 'rgba(59,130,246,0.05)', border: '1px solid rgba(59,130,246,0.12)' }}>
+                <span className="text-[9px] font-bold font-mono tracking-[0.2em] uppercase block mb-3" style={{ color: 'rgba(59,130,246,0.5)' }}>Privacy Layer — The Strategic Reason</span>
+                <p className="text-[13px] leading-[1.75]" style={{ color: 'rgba(255,255,255,0.38)' }}>
+                  Wisdom Nodes were responding to price-sensitive questions about assets they had privileged, often non-public access to. Privacy was not a side feature — it was the reason informed participants would contribute at all. The communication had to carry confidentiality as a core trust signal, not a technical footnote, or the entire expert contribution model would look implausible.
+                </p>
+              </div>
+              <div className="rounded-xl p-5" style={{ background: 'rgba(249,115,22,0.05)', border: '1px solid rgba(249,115,22,0.12)' }}>
+                <span className="text-[9px] font-bold font-mono tracking-[0.2em] uppercase block mb-3" style={{ color: 'rgba(249,115,22,0.5)' }}>Slashing + Rewards — The Strategic Reason</span>
+                <p className="text-[13px] leading-[1.75]" style={{ color: 'rgba(255,255,255,0.38)' }}>
+                  The slashing mechanism was the proof that this was not naive crowdsourcing. It was the design element that made the protocol's price outputs defensible — the difference between an information market and an opinion poll. Making this legible to the market was critical. Without it, the entire credibility argument collapsed into a different kind of oracle with the same old problems.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ════════════════════════════════════
+            THE BRIDGE — asymmetric split
+            TradFi ← LITHIUM → DeFi
+        ════════════════════════════════════ */}
+        <section className="py-20 md:py-28 bg-background">
+          <div className="max-w-7xl mx-auto px-6 md:px-12">
+            <motion.div {...fadeIn()} className="mb-14">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="h-px w-6 bg-primary flex-shrink-0" />
+                <span className="text-[11px] font-bold tracking-[0.22em] text-primary/60 uppercase font-mono">The Bridge</span>
+              </div>
+              <h2 className="font-display font-black text-foreground leading-tight mb-4" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.3rem)', letterSpacing: '-0.025em', maxWidth: 760 }}>
+                The content had to work in two directions simultaneously.
+              </h2>
+              <p className="text-[14.5px] text-muted-foreground leading-[1.82] max-w-2xl">
+                DeFi-native readers needed to understand why private markets were worth bringing onchain. TradFi readers needed to trust that decentralised price discovery was not naive crowdsourcing. The narrative had to make the bridge feel strategically inevitable — not experimental, not speculative, not still-being-figured-out.
+              </p>
+            </motion.div>
+
+            {/* Asymmetric split panel */}
+            <motion.div {...fadeIn(0.1)} className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-stretch rounded-2xl overflow-hidden border border-border">
+
+              {/* TradFi — dark */}
+              <div className="p-8 md:p-10 flex flex-col" style={{ background: '#0C1422' }}>
+                <span className="text-[9px] font-bold font-mono tracking-[0.25em] uppercase mb-4" style={{ color: 'rgba(255,255,255,0.18)' }}>Traditional Finance</span>
+                <h3 className="font-display font-black text-white mb-6" style={{ fontSize: '1.3rem', letterSpacing: '-0.02em' }}>Gated. Expensive. Opaque.</h3>
+                <div className="flex flex-col gap-3.5 flex-1">
+                  {[
+                    ['Information', 'Privileged, relationship-guarded'],
+                    ['Price discovery', 'Manual, expensive, infrequent'],
+                    ['Data access', 'Not public, not continuous'],
+                    ['Liquidity', 'Low — exits are events, not flows'],
+                    ['DeFi compatibility', 'Structurally absent'],
+                  ].map(([k, v]) => (
+                    <div key={k} className="flex items-start gap-3">
+                      <span className="text-[11px] font-bold flex-shrink-0 mt-0.5" style={{ color: 'rgba(255,255,255,0.25)', width: 108 }}>{k}</span>
+                      <span className="text-[12px]" style={{ color: 'rgba(255,255,255,0.22)' }}>{v}</span>
+                    </div>
+                  ))}
+                </div>
+                <blockquote className="mt-8 pt-5 border-t" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
+                  <p className="text-[12px] leading-[1.7] italic" style={{ color: 'rgba(255,255,255,0.2)' }}>
+                    "The raw material behind the oracle was itself hidden, fragmented, and socially guarded by nature."
+                  </p>
+                </blockquote>
+              </div>
+
+              {/* Divider with LITHIUM vertical text */}
+              <div className="relative flex items-center justify-center min-w-[52px] py-8" style={{ background: 'linear-gradient(to bottom, #0C1422, hsl(var(--background)))' }}>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-px h-full" style={{ background: 'linear-gradient(to bottom, rgba(249,115,22,0.18), rgba(249,115,22,0.04))' }} />
+                </div>
+                <div className="relative z-10 flex flex-col items-center gap-[3px] px-2 py-4 rounded-lg" style={{ background: 'hsl(var(--background))', border: '1px solid rgba(249,115,22,0.22)' }}>
+                  {['L','I','T','H','I','U','M'].map((ch, i) => (
+                    <span key={i} className="font-black text-primary font-mono" style={{ fontSize: '8px', lineHeight: '1.5', letterSpacing: '0.05em' }}>{ch}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* DeFi — light */}
+              <div className="p-8 md:p-10 flex flex-col bg-background">
+                <span className="text-[9px] font-bold font-mono tracking-[0.25em] uppercase mb-4 text-muted-foreground/40">Decentralised Finance</span>
+                <h3 className="font-display font-black text-foreground mb-6" style={{ fontSize: '1.3rem', letterSpacing: '-0.02em' }}>Open. Composable. Programmable.</h3>
+                <div className="flex flex-col gap-3.5 flex-1">
+                  {[
+                    ['Price feeds', 'Continuous, public, onchain'],
+                    ['Oracle design', 'Built for liquid, not private'],
+                    ['Composability', 'Any protocol reads any price'],
+                    ['New categories', 'Blocked by missing primitives'],
+                    ['Lithium role', 'The missing pricing primitive'],
+                  ].map(([k, v]) => (
+                    <div key={k} className="flex items-start gap-3">
+                      <span className="text-[11px] font-bold text-muted-foreground/40 flex-shrink-0 mt-0.5" style={{ width: 108 }}>{k}</span>
+                      <span className="text-[12px] text-muted-foreground">{v}</span>
+                    </div>
+                  ))}
+                </div>
+                <blockquote className="mt-8 pt-5 border-t border-border">
+                  <p className="text-[12px] leading-[1.7] italic text-muted-foreground/50">
+                    "DeFi cannot meaningfully financialise private assets if those assets cannot be priced credibly."
+                  </p>
+                </blockquote>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ════════════════════════════════════
+            VERNACULAR REACH — script-forward
+            Dark, three language blocks
+        ════════════════════════════════════ */}
+        <section className="relative py-20 md:py-28 overflow-hidden" style={{ background: '#080E1A' }}>
+          <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(249,115,22,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(249,115,22,0.02) 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
+
+          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
+            <motion.div {...fadeIn()} className="mb-6">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="h-px w-6 bg-primary flex-shrink-0" />
+                <span className="text-[11px] font-bold tracking-[0.22em] uppercase font-mono" style={{ color: 'rgba(249,115,22,0.55)' }}>Vernacular Reach</span>
+              </div>
+              <h2 className="font-display font-black text-white leading-tight mb-4" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.3rem)', letterSpacing: '-0.025em' }}>
+                The comprehension gap was as much a language problem as a jargon problem.
+              </h2>
+            </motion.div>
+
+            <motion.div {...fadeIn(0.07)} className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-14">
+              <p className="text-[14.5px] leading-[1.82]" style={{ color: 'rgba(255,255,255,0.44)' }}>
+                Moving into Hindi and regional formats was not a distribution tactic. It was a strategic recognition that comprehension friction is the hardest friction to fix after a product has launched. If the only people who truly understood Lithium were English-first crypto insiders, the protocol's market would stay small by design — not by accident.
+              </p>
+              <p className="text-[14.5px] leading-[1.82]" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                The goal was a layered comprehension system — not a simplified version of the content. Someone entering through a Hindi explainer video should be able to follow the thread all the way to the whitepaper without feeling they had crossed a language wall. The depth stayed consistent. The entry points multiplied.
+              </p>
+            </motion.div>
+
+            {/* Script-forward language blocks */}
+            <motion.div {...fadeIn(0.12)} className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.07)' }}>
+
+              {/* English */}
+              <div className="px-8 md:px-12 py-8 md:py-10 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-[9px] font-bold font-mono tracking-[0.25em] uppercase" style={{ color: 'rgba(255,255,255,0.2)' }}>English · Primary market layer</span>
+                  <div className="flex flex-wrap gap-2">
+                    {['Whitepaper', 'Protocol explainers', 'Long-form', 'Technical deep-dives'].map(f => (
+                      <span key={f} className="text-[9.5px] font-mono px-2 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.25)' }}>{f}</span>
+                    ))}
+                  </div>
+                </div>
+                <p className="font-display font-black text-white" style={{ fontSize: 'clamp(1.6rem, 4vw, 3rem)', letterSpacing: '-0.03em', lineHeight: 1.12 }}>
+                  Making DeFi legible.
+                </p>
+              </div>
+
+              {/* Hindi */}
+              <div className="px-8 md:px-12 py-8 md:py-10 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(249,115,22,0.02)' }}>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-[9px] font-bold font-mono tracking-[0.25em] uppercase" style={{ color: 'rgba(249,115,22,0.35)' }}>हिंदी · Vernacular education layer</span>
+                  <div className="flex flex-wrap gap-2">
+                    {['Explainer videos', 'Shorter formats', 'Conceptual primers'].map(f => (
+                      <span key={f} className="text-[9.5px] font-mono px-2 py-0.5 rounded" style={{ background: 'rgba(249,115,22,0.06)', border: '1px solid rgba(249,115,22,0.1)', color: 'rgba(249,115,22,0.38)' }}>{f}</span>
+                    ))}
+                  </div>
+                </div>
+                <p className="font-black text-white" style={{ fontSize: 'clamp(1.6rem, 4vw, 3rem)', letterSpacing: '-0.015em', lineHeight: 1.2, fontFamily: 'system-ui, sans-serif' }}>
+                  DeFi को समझने योग्य बनाना।
+                </p>
+              </div>
+
+              {/* Regional */}
+              <div className="px-8 md:px-12 py-8 md:py-10">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-[9px] font-bold font-mono tracking-[0.25em] uppercase" style={{ color: 'rgba(255,255,255,0.17)' }}>Regional · Multilingual access layer</span>
+                  <div className="flex flex-wrap gap-2">
+                    {['Regional formats', 'Comprehension-first', 'Education-led'].map(f => (
+                      <span key={f} className="text-[9.5px] font-mono px-2 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.2)' }}>{f}</span>
+                    ))}
+                  </div>
+                </div>
+                <p className="font-black text-white" style={{ fontSize: 'clamp(1.6rem, 4vw, 3rem)', letterSpacing: '-0.01em', lineHeight: 1.2, fontFamily: 'system-ui, sans-serif', opacity: 0.65 }}>
+                  DeFi ని అర్థమయ్యేలా చేయడం.
+                </p>
+                <p className="text-[10px] font-mono mt-2" style={{ color: 'rgba(255,255,255,0.16)' }}>(Telugu — representative regional script)</p>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ════════════════════════════════════
+            WHY IT WORKED — tall vertical strips
+        ════════════════════════════════════ */}
+        <section className="py-16 md:py-24 bg-background">
+          <div className="max-w-7xl mx-auto px-6 md:px-12">
+            <motion.div {...fadeIn()} className="mb-12">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="h-px w-6 bg-primary flex-shrink-0" />
+                <span className="text-[11px] font-bold tracking-[0.22em] text-primary/60 uppercase font-mono">Why It Worked</span>
+              </div>
+              <h2 className="font-display font-black text-foreground leading-tight" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.3rem)', letterSpacing: '-0.025em' }}>
+                The category demanded explanation before promotion.
+              </h2>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border">
+              {[
+                {
+                  keyword: 'Category first.',
+                  strategic: 'Most DeFi content leads with the product and trusts the market to connect to the problem. Lithium could not. The category — pricing infrastructure for private and illiquid assets — did not exist as a named, understood thing. Before anyone would evaluate the mechanism, they needed to feel the structural absence it was filling. Making the gap visible was the first and most important communication act.',
+                  note: 'Leading with problem definition before product description.',
+                },
+                {
+                  keyword: 'Credibility over hype.',
+                  strategic: 'Over-marketing Lithium would have backfired. The protocol\'s value came from the rigour of its mechanism design — and the market would sense immediately if the communication style was softer than the product deserved. The positioning lane was intellectual credibility: precise, grounded, defensible. Loudness would have undermined the exact trust the product needed to build before anyone would use it.',
+                  note: 'Calibrating communication style to the nature of the product.',
+                },
+                {
+                  keyword: 'Depth made portable.',
+                  strategic: 'The whitepaper was the deepest layer. The vernacular explainers were the most accessible. The design principle connecting them was not simplification — it was layered entry points. Someone entering through a Hindi video should be able to follow the thread all the way to the whitepaper\'s mechanism without ever feeling they crossed into a different product story. That continuity was the design goal.',
+                  note: 'Designing a comprehension system, not just content pieces.',
+                },
+              ].map((strip, i) => (
+                <motion.div key={i} {...fadeIn(i * 0.1)} className="p-8 md:p-10 flex flex-col gap-6">
+                  <div className="w-8 h-[3px] bg-primary rounded" />
+                  <h3 className="font-display font-black text-primary" style={{ fontSize: 'clamp(1.4rem, 2.2vw, 1.9rem)', letterSpacing: '-0.03em', lineHeight: 1.1 }}>{strip.keyword}</h3>
+                  <p className="text-[13.5px] text-muted-foreground leading-[1.8] flex-1">{strip.strategic}</p>
+                  <div className="rounded-lg px-4 py-3 bg-primary/5 border border-primary/10">
+                    <p className="text-[10.5px] text-primary/55 font-mono leading-[1.6]">{strip.note}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ════════════════════════════════════
+            OUTCOME — dark, monospace stats
+        ════════════════════════════════════ */}
+        <section className="py-16 md:py-24 relative overflow-hidden" style={{ background: '#060C16' }}>
+          <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+
+          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
+            <motion.div {...fadeIn()} className="flex items-center gap-3 mb-4">
+              <span className="h-px w-6 bg-primary flex-shrink-0" />
+              <span className="text-[11px] font-bold tracking-[0.22em] uppercase font-mono" style={{ color: 'rgba(249,115,22,0.55)' }}>Outcome</span>
+            </motion.div>
+            <motion.h2 {...fadeIn(0.06)} className="font-display font-black text-white leading-tight mb-14" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.3rem)', letterSpacing: '-0.025em' }}>
+              A sharper explanation for one of DeFi's hardest categories.
+            </motion.h2>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-px mb-16" style={{ background: 'rgba(255,255,255,0.045)' }}>
+              {[
+                { val: 'WP', lab: 'Whitepaper', sub: 'Co-authored · First iteration' },
+                { val: '4', lab: 'Framing layers', sub: 'Problem · Mechanism · Trust · Use case' },
+                { val: '3', lab: 'Languages', sub: 'Hindi · English · Regional' },
+                { val: '6+', lab: 'Content pillars', sub: 'Strategy to vernacular' },
+              ].map((s, i) => (
+                <motion.div key={i} {...fadeIn(i * 0.07)} className="flex flex-col gap-1.5 p-7" style={{ background: '#060C16' }}>
+                  <span className="font-display font-black leading-none text-primary" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.04em' }}>{s.val}</span>
+                  <span className="text-[12px] font-bold mt-2" style={{ color: 'rgba(255,255,255,0.52)' }}>{s.lab}</span>
+                  <span className="text-[10.5px] font-mono" style={{ color: 'rgba(255,255,255,0.18)' }}>{s.sub}</span>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.div {...fadeIn(0.16)} className="rounded-2xl p-8 md:p-10" style={{ background: 'rgba(249,115,22,0.04)', border: '1px solid rgba(249,115,22,0.12)' }}>
+              <p className="text-[14.5px] leading-[1.85]" style={{ color: 'rgba(255,255,255,0.46)' }}>
+                The communication layer made the protocol legible across four dimensions: the structural problem of illiquid asset pricing, the mechanism design of the Seeker-Expert information market, the trust model embedded in the cryptoeconomic incentive structure, and the use cases that connected the protocol to the broader private-assets-into-DeFi narrative. Extending into vernacular formats made the same depth more portable — reducing comprehension friction without reducing the intellectual rigour that the protocol's credibility depended on.
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ════════════════════════════════════
+            KEY TAKEAWAY — full-bleed centered
+        ════════════════════════════════════ */}
+        <section className="py-20 md:py-32 bg-background">
+          <div className="max-w-5xl mx-auto px-6 md:px-12 text-center">
+            <motion.div {...fadeIn()}>
+              <span className="text-[11px] font-bold tracking-[0.22em] text-primary/55 uppercase font-mono block mb-12">Key Takeaway</span>
+              <blockquote>
+                <p className="font-display font-black text-foreground leading-[1.18]" style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.7rem)', letterSpacing: '-0.03em' }}>
+                  At Lithium, the real job was not writing about DeFi.{' '}
+                  <br className="hidden md:block" />
+                  It was making a highly technical oracle for illiquid assets feel{' '}
+                  <span className="text-primary italic" style={{ fontStyle: 'normal' }}>coherent enough to trust</span>,{' '}
+                  clear enough to repeat, and accessible enough to explain across both crypto-native and vernacular market contexts.
+                </p>
+              </blockquote>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ── Bottom nav ── */}
+        <section className="py-10 border-t border-border bg-card">
           <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-            <Link
-              href="/case-studies/reneverse"
-              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group"
-            >
+            <Link href="/case-studies/reneverse" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group">
               <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
               Reneverse
             </Link>
-
             <div className="flex items-center gap-2">
               {[0, 1, 2].map(i => (
                 <div key={i} className="rounded-full transition-all" style={{ width: i === 2 ? 20 : 6, height: 6, background: i === 2 ? '#F97316' : 'rgba(249,115,22,0.2)' }} />
               ))}
             </div>
-
-            <span className="text-[11px] font-bold tracking-[0.2em] uppercase font-mono text-muted-foreground/30 select-none">
+            <span className="text-[11px] font-bold tracking-[0.2em] uppercase font-mono text-muted-foreground/28 select-none">
               Final case study
             </span>
           </div>
