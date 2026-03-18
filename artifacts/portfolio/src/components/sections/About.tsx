@@ -41,7 +41,7 @@ export function About() {
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-14 pb-24 md:pt-16 md:pb-32">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-14 pb-12 md:pt-16 md:pb-16">
 
         {/* Eyebrow */}
         <motion.div {...fadeUp()} className="flex items-center gap-3 mb-16">

@@ -56,7 +56,7 @@ const STRATEGY_PILLARS = [
 
 const OUTCOMES = [
   { value: '~10K', label: 'Stakers reached', sub: 'Up from 6,700', icon: TrendingUp },
-  { value: '+26%', label: 'AUM growth', sub: '521M+ tokens staked', icon: TrendingUp },
+  { value: '+26%', label: 'AUM growth', sub: '$521,048,664 staked', icon: TrendingUp },
   { value: '15+', label: 'New chains onboarded', sub: 'In 6 months', icon: Link2 },
   { value: '6 mo', label: 'Timeline', sub: 'Content & Social Lead', icon: Award },
 ];
@@ -511,7 +511,7 @@ export default function CaseStudyEncapsulate() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-14">
               {[
                 { value: '~10K', label: 'Stakers reached', sub: 'From 6,700 at start' },
-                { value: '+26%', label: 'AUM growth', sub: '521M+ tokens staked' },
+                { value: '+26%', label: 'AUM growth', sub: '$521,048,664 staked' },
                 { value: '15+', label: 'New chains', sub: 'Onboarded in 6 months' },
                 { value: '6 mo', label: 'Duration', sub: 'Content & Social Lead' },
               ].map((s, i) => (

@@ -711,8 +711,7 @@ export default function CaseStudyReneverse() {
 
             <Link
               href="/case-studies/lithium"
-              className="flex items-center gap-2 text-sm font-medium transition-colors group"
-              style={{ color: 'rgba(255,255,255,0.4)' }}
+              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group"
             >
               Lithium Finance
               <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
