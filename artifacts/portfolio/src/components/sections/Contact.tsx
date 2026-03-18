@@ -44,7 +44,7 @@ export function Contact() {
         }}
       />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12 py-28 md:py-40">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12 py-20 md:py-32">
 
         {/* Availability signal */}
         <motion.div {...fadeUp()} className="flex items-center gap-2.5 mb-12">
@@ -142,24 +142,20 @@ export function Contact() {
           </a>
         </motion.div>
 
-        {/* Secondary contact strip */}
+        {/* Secondary contact strip + signature — single compact row */}
         <motion.div
           {...fadeUp(0.3)}
-          className="flex flex-wrap items-center gap-x-6 gap-y-4"
+          className="flex flex-wrap items-center gap-x-5 gap-y-3"
         >
           <a
             href="mailto:abhishekkr711@gmail.com"
-            className="group flex items-center gap-2.5 transition-colors duration-150"
+            className="flex items-center gap-2 transition-colors duration-150"
             style={{ color: 'rgba(255,255,255,0.32)' }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.color = 'rgba(249,115,22,0.75)';
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.32)';
-            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(249,115,22,0.75)'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.32)'; }}
           >
-            <Mail size={13} />
-            <span className="font-mono text-[12px]">abhishekkr711@gmail.com</span>
+            <Mail size={12} />
+            <span className="font-mono text-[11.5px]">abhishekkr711@gmail.com</span>
           </a>
 
           <span style={{ color: 'rgba(255,255,255,0.1)' }}>·</span>
@@ -168,53 +164,20 @@ export function Contact() {
             href="https://www.linkedin.com/in/abhishek-akoo7/"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-2.5 transition-colors duration-150"
+            className="flex items-center gap-2 transition-colors duration-150"
             style={{ color: 'rgba(255,255,255,0.32)' }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.color = 'rgba(249,115,22,0.75)';
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.32)';
-            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(249,115,22,0.75)'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.32)'; }}
           >
-            <Linkedin size={13} />
-            <span className="font-mono text-[12px]">LinkedIn</span>
-            <ArrowUpRight size={10} className="opacity-50" />
+            <Linkedin size={12} />
+            <span className="font-mono text-[11.5px]">LinkedIn</span>
+            <ArrowUpRight size={10} className="opacity-40" />
           </a>
 
           <span style={{ color: 'rgba(255,255,255,0.1)' }}>·</span>
 
-          <span
-            className="font-mono text-[12px]"
-            style={{ color: 'rgba(255,255,255,0.2)' }}
-          >
-            Hyderabad, India
-          </span>
-        </motion.div>
-
-        {/* Bottom signature line */}
-        <motion.div
-          {...fadeUp(0.38)}
-          className="mt-24 pt-8 border-t flex items-center justify-between flex-wrap gap-4"
-          style={{ borderColor: 'rgba(255,255,255,0.05)' }}
-        >
-          <div className="flex items-center gap-2">
-            <span
-              className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"
-              style={{ opacity: 0.6 }}
-            />
-            <span
-              className="font-display font-bold"
-              style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.35)', letterSpacing: '-0.01em' }}
-            >
-              Abhishek Kumar
-            </span>
-          </div>
-          <span
-            className="font-mono text-[10.5px]"
-            style={{ color: 'rgba(255,255,255,0.15)' }}
-          >
-            Content Strategist &amp; Web3 Marketer · Hyderabad, India
+          <span className="font-mono text-[11.5px]" style={{ color: 'rgba(255,255,255,0.2)' }}>
+            Hyderabad, India · Remote-first
           </span>
         </motion.div>
 

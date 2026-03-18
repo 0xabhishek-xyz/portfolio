@@ -299,7 +299,7 @@ export function SelectedImpact() {
   return (
     <section
       id="selected-impact"
-      className="relative py-24 md:py-32 bg-card overflow-hidden"
+      className="relative py-16 md:py-24 bg-card overflow-hidden"
     >
       {/* Dot-grid background */}
       <div

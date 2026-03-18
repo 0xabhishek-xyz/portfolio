@@ -2,19 +2,28 @@ import React from 'react';
 
 export function Footer() {
   return (
-    <footer className="bg-foreground border-t border-background/10 py-8 text-center text-background/60">
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-        <span className="font-display font-bold text-lg text-background tracking-tight flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-primary inline-block"></span>
-          Abhishek.
+    <footer
+      className="border-t flex items-center justify-between flex-wrap gap-3 px-6 md:px-12 py-5"
+      style={{
+        background: '#030609',
+        borderColor: 'rgba(255,255,255,0.05)',
+      }}
+    >
+      <div className="flex items-center gap-2">
+        <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" style={{ opacity: 0.5 }} />
+        <span
+          className="font-display font-bold"
+          style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.3)', letterSpacing: '-0.01em' }}
+        >
+          Abhishek Kumar
         </span>
-        <p className="text-sm">
-          © {new Date().getFullYear()} Abhishek Kumar. All rights reserved.
-        </p>
-        <p className="text-sm">
-          Designed with <span className="text-primary">♥</span> & Strategy.
-        </p>
       </div>
+      <span
+        className="font-mono text-[10px]"
+        style={{ color: 'rgba(255,255,255,0.14)' }}
+      >
+        © {new Date().getFullYear()} · Content Strategist &amp; Web3 Marketer
+      </span>
     </footer>
   );
 }

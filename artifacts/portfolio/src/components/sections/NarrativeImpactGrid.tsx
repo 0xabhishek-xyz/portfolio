@@ -104,7 +104,7 @@ export function NarrativeImpactGrid() {
   return (
     <section
       id="narrative-grid"
-      className="relative py-24 md:py-32 bg-background overflow-hidden"
+      className="relative py-16 md:py-24 bg-background overflow-hidden"
     >
       <div
         className="absolute inset-0 pointer-events-none"

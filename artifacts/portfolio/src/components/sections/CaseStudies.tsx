@@ -99,7 +99,7 @@ const CASES = [
 
 export function CaseStudies() {
   return (
-    <section id="case-studies" className="relative py-24 md:py-32 bg-background overflow-hidden">
+    <section id="case-studies" className="relative py-16 md:py-24 bg-background overflow-hidden">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -152,7 +152,7 @@ export function CaseStudies() {
         </div>
 
         {/* Cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">
           {CASES.map((c, i) => (
             <motion.div
               key={c.slug}
@@ -160,16 +160,17 @@ export function CaseStudies() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.55, delay: i * 0.1 }}
+              className="h-full"
             >
-              <Link href={`/case-studies/${c.slug}`}>
+              <Link href={`/case-studies/${c.slug}`} className="h-full block">
                 <div
-                  className="group relative rounded-2xl overflow-hidden flex flex-col cursor-pointer"
+                  className="group relative rounded-2xl overflow-hidden flex flex-col cursor-pointer h-full"
                   style={{
                     background: 'hsl(var(--card))',
                     border: '1px solid hsl(var(--border))',
                     boxShadow: '0 2px 10px rgba(0,0,0,0.04)',
                     transition: 'all 0.32s cubic-bezier(0.22,1,0.36,1)',
-                    minHeight: 400,
+                    minHeight: 380,
                   }}
                   onMouseEnter={e => {
                     const el = e.currentTarget as HTMLDivElement;
