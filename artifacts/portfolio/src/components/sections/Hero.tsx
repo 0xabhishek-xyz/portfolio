@@ -418,7 +418,7 @@ export function Hero() {
               <Button size="lg" variant="primary" className="rounded-full group" onClick={() => scrollTo('#work')}>
                 View Case Studies <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"/>
               </Button>
-              <a href="/resume.pdf" download
+              <a href={`${import.meta.env.BASE_URL}resume.pdf`} download="Abhishek_Kumar_Resume.pdf"
                 className="inline-flex items-center gap-2 text-sm font-semibold border border-border px-5 py-2.5 rounded-full hover:border-primary/50 hover:text-primary transition-colors">
                 <Download className="w-4 h-4"/> Download Resume
               </a>
