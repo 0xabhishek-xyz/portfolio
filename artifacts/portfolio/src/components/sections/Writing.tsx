@@ -44,6 +44,18 @@ const PIECES = [
     ghost: 'PROTOCOL',
     accent: '#F97316',
   },
+  {
+    id: 'lithium',
+    type: 'Co-authored Litepaper',
+    category: 'DeFi · Pricing Oracle · Collective Intelligence',
+    headline: 'Lithium Finance Litepaper v1 — Pricing the Unpriced',
+    thesis: "Private equity and pre-IPO assets lack reliable price discovery — not because the data doesn't exist, but because no one with knowledge has an incentive to share it honestly. Lithium Finance built a collective-intelligence oracle using cryptographic peer-prediction to fix that.",
+    url: '__PDF__',
+    pdfPath: 'lithium-litepaper.pdf',
+    readTime: 'Litepaper · April 2021',
+    ghost: 'ORACLE',
+    accent: '#F97316',
+  },
 ];
 
 function HeroCard({ piece }: { piece: typeof PIECES[0] }) {
@@ -151,10 +163,12 @@ function HeroCard({ piece }: { piece: typeof PIECES[0] }) {
 }
 
 function SecondaryCard({ piece, delay }: { piece: typeof PIECES[0]; delay: number }) {
+  const href = piece.pdfPath ? `${import.meta.env.BASE_URL}${piece.pdfPath}` : piece.url;
+  const source = piece.id === 'lithium' ? 'Lithium Finance' : 'Encapsulate.xyz';
   return (
     <motion.a
       {...fadeIn(delay)}
-      href={piece.url}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       className="block relative rounded-2xl overflow-hidden group border border-border bg-card hover:border-primary/20 transition-colors duration-300"
@@ -207,7 +221,7 @@ function SecondaryCard({ piece, delay }: { piece: typeof PIECES[0]; delay: numbe
         {/* Footer */}
         <div className="flex items-center gap-3 pt-2 border-t border-border">
           <span className="text-[10px] font-mono font-bold text-muted-foreground/40 tracking-[0.08em]">
-            Encapsulate.xyz
+            {source}
           </span>
           <span className="w-px h-3 bg-border" />
           <span className="text-[10px] font-mono text-muted-foreground/35">{piece.readTime}</span>
@@ -246,7 +260,7 @@ export function Writing() {
 
           <div className="hidden md:flex flex-col items-end gap-1">
             <span className="text-[11px] font-mono text-muted-foreground/40 text-right leading-[1.6]">
-              3 pieces · Encapsulate.xyz
+              4 pieces · Web3 publishing
               <br />
               Deep-dives, research, explainers
             </span>
@@ -258,8 +272,8 @@ export function Writing() {
           <HeroCard piece={hero} />
         </div>
 
-        {/* Secondary pair */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Secondary cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {secondary.map((piece, i) => (
             <SecondaryCard key={piece.id} piece={piece} delay={0.08 + i * 0.07} />
           ))}
