@@ -415,7 +415,7 @@ export function Hero() {
             <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.28 }}
               className="flex flex-wrap items-center gap-3 mb-9">
-              <Button size="lg" variant="primary" className="rounded-full group" onClick={() => scrollTo('#work')}>
+              <Button size="lg" variant="primary" className="rounded-full group" onClick={() => scrollTo('#case-studies')}>
                 View Case Studies <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"/>
               </Button>
               <a href={`${import.meta.env.BASE_URL}resume.pdf`} download="Abhishek_Kumar_Resume.pdf"
