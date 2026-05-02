@@ -1,6 +1,1 @@
-{
-  "installCommand": "pnpm install",
-  "buildCommand": "pnpm --filter @workspace/portfolio run build:vercel && mv artifacts/portfolio/dist dist",
-  "outputDirectory": "dist",
-  "framework": null
-}
+{}
